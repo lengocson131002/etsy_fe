@@ -1,12 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import logo from './logo.svg'
+import './App.css'
+import type { DatePickerProps } from 'antd/es/date-picker'
+import { DatePicker } from 'antd'
 
 function App() {
+  const onChange: DatePickerProps['onChange'] = (date, dateString) => {
+    console.log(date, dateString)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <DatePicker onChange={onChange} />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
@@ -20,7 +27,7 @@ function App() {
         </a>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
