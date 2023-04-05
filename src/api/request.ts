@@ -5,10 +5,12 @@ import axios from 'axios';
 
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
-// import { history } from '@/routes/history';
 
 const axiosInstance = axios.create({
   timeout: 6000,
+  validateStatus: function(status) {
+    return status >= 200 && status < 300;
+  }
 });
 
 axiosInstance.interceptors.request.use(
@@ -53,10 +55,10 @@ axiosInstance.interceptors.response.use(
     );
     // if needs to navigate to login page when request exception
     // history.replace('/login');
-    let errorMessage = '系统异常';
+    let errorMessage = 'Error';
 
     if (error?.message?.includes('Network Error')) {
-      errorMessage = '网络错误，请检查您的网络';
+      errorMessage = 'Network error';
     } else {
       errorMessage = error?.message;
     }

@@ -17,6 +17,7 @@ import { useGuide } from '../guide/useGuide';
 import HeaderComponent from './header';
 import MenuComponent from './menu';
 import TagsView from './tagView';
+import menuData from '@/utils/menu';
 
 const { Sider, Content } = Layout;
 const WIDTH = 992;
@@ -64,17 +65,13 @@ const LayoutPage: FC = () => {
     return MenuListAll;
   };
 
-  const fetchMenuList = useCallback(async () => {
-    const { status, result } = await getMenuList();
-
-    if (status) {
-      setMenuList(result);
+  const fetchMenuList = useCallback( () => {
+      setMenuList(menuData);
       dispatch(
         setUserItem({
-          menuList: initMenuListAll(result),
+          menuList: initMenuListAll(menuData),
         }),
       );
-    }
   }, [dispatch]);
 
   useEffect(() => {

@@ -23,6 +23,7 @@ interface SearchApi {
 type ParseDataType<S> = S extends (params?: any) => MyResponse<PageData<infer T>> ? T : S;
 
 export type MyPageTableOptions<S> = ColumnsType<S>;
+
 export interface PageProps<S> {
   searchRender?: React.ReactNode;
   pageApi?: S;
