@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { Button, Image, Tag } from 'antd';
 import { Order } from '@/interface/order';
 import { dateToStringWithFormat } from '@/utils/datetime';
+import { getShopOrders } from '@/api/orders';
 import { numberWithCommas } from '@/utils/number';
-import { getOrders } from '@/api/orders';
 
 const { Item: FilterItem } = Table.MyFilter;
 
+interface ShopOrderProps {
+  id: string | number;
+}
 
 const columnOptions: MyTableOptions<Order> = [
   {
@@ -102,12 +105,19 @@ const columnOptions: MyTableOptions<Order> = [
   },
 ];
 
-const OrderPage: FC = () => {
+const ShopOrders: FC<ShopOrderProps> = ({ id, ...rest }) => {
+
+  const getShopOrderAPI = useCallback(
+      (params: any) => {
+        return getShopOrders(id, params);
+      }
+    , [id]);
+
   return (
     <div>
       <Table
         tableOptions={columnOptions}
-        filterApi={getOrders}
+        filterApi={getShopOrderAPI}
         filterRender={
           <>
             <FilterItem
@@ -146,4 +156,4 @@ const OrderPage: FC = () => {
   );
 };
 
-export default OrderPage;
+export default ShopOrders;

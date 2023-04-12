@@ -29,6 +29,7 @@ export interface MyFormItemProps<T extends ControlTypes = ControlTypes> extends 
   /** 控件内部属性，非必填 **/
   innerProps?: InnerProps[T];
   required?: string | boolean;
+  allowClear?: boolean
 }
 
 export class ControlMap {
@@ -75,9 +76,7 @@ export class ControlMap {
 }
 
 const MyformItem: FC<MyFormItemProps> = props => {
-  // 取出我们自定义的参数，其余的全部原封不动的还给 `Form.Item`
-  // type: 用于我们判断外面传进来的控件类型我们再渲染好了直接生成出来
-  // children: 因为我们需要自定义 `Form.Item` 的子元素了，如果不取出来但父组件又提供的话会发生冲突
+
   const { type, required, rules: userRules, ...restProps } = props;
 
   const rules = useMemo(() => {

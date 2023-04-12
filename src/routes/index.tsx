@@ -33,6 +33,8 @@ const ShopPage = lazy(() => import('@/pages/shop'));
 const ProductPage = lazy(() => import('@/pages/product'));
 const OrderPage = lazy(() => import('@/pages/order'));
 const StaffPage = lazy(() => import('@/pages/staff'));
+const ShopDetail = lazy(() => import('@/pages/shop/shop-detail'))
+const OrderDetailPage = lazy(() => import('@/pages/order/order-detail'))
 
 
 const routeList: RouteObject[] = [
@@ -61,12 +63,20 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<ShopPage />} titleId="title.shop" />,
       },
       {
+        path: 'shop/:id',
+        element: <WrapperRouteComponent element={<ShopDetail />} titleId='title.shop.detail'/>
+      },
+      {
         path: 'product',
         element: <WrapperRouteComponent element={<ProductPage />} titleId="title.product" />,
       },
       {
         path: 'order',
         element: <WrapperRouteComponent element={<OrderPage />} titleId="title.order" />,
+      },
+      {
+        path: 'order/:id',
+        element: <WrapperRouteComponent element={<OrderDetailPage />} titleId="title.order.detail" />,
       },
       {
         path: 'staff',

@@ -30,16 +30,21 @@ const MyTabs = Object.assign(BaseTabs, Tabs);
 export default MyTabs;
 
 const styles = css`
-  padding: 0 20px;
-  box-shadow: 0 10px 10px -10px rgb(0 0 0 / 10%);
+
+  // padding: 0 20px;
   height: 62px;
   .ant-tabs-nav {
     margin: 0;
+    // box-shadow: 0 10px 10px -10px rgb(0 0 0 / 10%);
   }
   .ant-tabs-tab {
     padding: 20px 0;
     & + .ant-tabs-tab {
       margin: 0 0 0 42px;
     }
+  }
+
+  .ant-tabs-content {
+    padding: 10px 0;
   }
 `;

@@ -11,5 +11,7 @@ export const enUS_title = {
   'title.product': 'Products',
   'title.shop': 'Shops',
   'title.order': 'Orders',
-  'title.staff': 'Staffs'
+  'title.staff': 'Staffs',
+  'title.shop.detail': 'Shop detail',
+  'title.order.detail': 'Order detail'
 };

@@ -6,11 +6,14 @@ import axios from 'axios';
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
 
+const baseURL = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL + '' : 'https://localhost:8080';
+
 const axiosInstance = axios.create({
+  // baseURL: baseURL,
   timeout: 6000,
-  validateStatus: function(status) {
+  validateStatus: function (status) {
     return status >= 200 && status < 300;
-  }
+  },
 });
 
 axiosInstance.interceptors.request.use(
@@ -41,36 +44,39 @@ axiosInstance.interceptors.response.use(
       }),
     );
 
-    if (config?.data?.message) {
-      // $message.success(config.data.message)
-    }
+    const response: Response<any> = {
+      status: true,
+      message: 'Success',
+      code: config?.status,
+      result: config?.data
+    };
 
-    return config?.data;
+    return response;
   },
+
   error => {
     store.dispatch(
       setGlobalState({
         loading: false,
       }),
     );
-    // if needs to navigate to login page when request exception
-    // history.replace('/login');
-    let errorMessage = 'Error';
 
-    if (error?.message?.includes('Network Error')) {
-      errorMessage = 'Network error';
-    } else {
-      errorMessage = error?.message;
-    }
-
-    console.dir(error);
-    error.message && $message.error(errorMessage);
-
-    return {
+    let errorResponse: Response<null> = {
       status: false,
-      message: errorMessage,
+      message: 'Error',
       result: null,
     };
+
+    if (error?.response?.data) {
+      errorResponse.message = error?.response?.data?.message;
+      errorResponse.code = error?.response?.status;
+    } else {
+      errorResponse.message = error?.message;
+    }
+
+    errorResponse.message && $message.error(errorResponse.message);
+
+    return errorResponse;
   },
 );
 
@@ -78,6 +84,7 @@ export type Response<T = any> = {
   status: boolean;
   message: string;
   result: T;
+  code?: number
 };
 
 export type MyResponse<T = any> = Promise<Response<T>>;
@@ -94,17 +101,25 @@ export const request = <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): MyResponse<T> => {
-  // const prefix = '/api'
   const prefix = '';
 
   url = prefix + url;
 
-  if (method === 'post') {
-    return axiosInstance.post(url, data, config);
-  } else {
-    return axiosInstance.get(url, {
-      params: data,
-      ...config,
-    });
+  console.log(url);
+
+
+  switch(method) {
+    case 'post':
+      return axiosInstance.post(url, data, config);
+    case 'put':
+      return axiosInstance.put(url, data, config);
+    case 'delete':
+      return axiosInstance.delete(url, config)
+    case 'get':
+    default:
+      return axiosInstance.get(url, {
+        params: data,
+        ...config,
+      });
   }
 };

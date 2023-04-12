@@ -8,6 +8,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { addTag, removeTag, setActiveTag } from '@/stores/tags-view.store';
 
 import TagsViewAction from './tagViewAction';
+import { TagItem } from '@/interface/layout/tagsView.interface';
+import { normalize } from '@/utils/text';
 
 const TagsView: FC = () => {
   const { tags, activeTagId } = useSelector(state => state.tagsView);
@@ -62,6 +64,21 @@ const TagsView: FC = () => {
             closable: menu.code !== 'dashboard',
           }),
         );
+      } else {
+        const currentPath = location.pathname;
+        const label = document.title ? document.title : normalize(currentPath, true);
+        if (currentPath) {
+          const tag: TagItem = {
+            code: currentPath,
+            label: {
+              zh_CN: label,
+              en_US: label,
+            },
+            path: currentPath,
+            closable: true,
+          };
+          dispatch(addTag(tag));
+        }
       }
     }
   }, [dispatch, location.pathname, menuList]);
