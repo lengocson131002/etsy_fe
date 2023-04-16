@@ -1,0 +1,7 @@
+version: '3'
+services:
+  shop-fe:
+    build: .
+    container_name: shop-fe
+    ports:
+      - '3000:80'
