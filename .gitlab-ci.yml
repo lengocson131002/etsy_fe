@@ -1,0 +1,40 @@
+variables:
+  DOCKER_BUILDKIT: 1
+  APP_NAME: "shop-fe"
+  PORT: "3001"
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  image: docker:20.10.16
+  services: 
+    - docker:dind
+  before_script:
+    - docker --version
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script: 
+    - docker build -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  tags:
+    - docker
+
+deploy:
+  stage: deploy
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker stop $APP_NAME || true
+    - docker rm $APP_NAME || true
+    - docker pull $CI_REGISTRY_IMAGE
+    - docker container run -d --name $APP_NAME -p $PORT:3000 $CI_REGISTRY_IMAGE
+    - docker logout
+  tags:
+    - shell
+  only:
+    - develop
