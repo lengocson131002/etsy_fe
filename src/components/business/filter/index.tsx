@@ -48,7 +48,7 @@ const MyFilter = Object.assign(BaseFilter, {
 export default MyFilter;
 
 const styles = css`
-  padding: 20px;
+  padding: 20px 0 10px 0;
   .ant-form-item {
     margin-bottom: 20px;
   }

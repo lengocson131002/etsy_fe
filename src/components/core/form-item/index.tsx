@@ -3,8 +3,9 @@ import type { FC } from 'react';
 
 import { Checkbox, DatePicker, Form, Input, InputNumber, Radio, Select, Switch } from 'antd';
 import React, { useMemo } from 'react';
+import TextArea from 'antd/es/input/TextArea';
 
-export type ControlTypes = 'input' | 'input-number' | 'switch' | 'date-picker' | 'checkbox' | 'radio' | 'select';
+export type ControlTypes = 'input' | 'input-number' | 'switch' | 'date-picker' | 'checkbox' | 'radio' | 'select' | 'text-area';
 
 type GetRCPropsType<T> = T extends (props: infer R) => any ? R : T extends React.ComponentClass<infer R> ? R : any;
 
@@ -16,6 +17,7 @@ type InnerProps = {
   checkbox: GetRCPropsType<typeof Checkbox>;
   radio: GetRCPropsType<typeof Radio>;
   select: GetRCPropsType<typeof Select>;
+  'text-area': GetRCPropsType<typeof TextArea>
 };
 
 export interface MyFormItemProps<T extends ControlTypes = ControlTypes> extends Omit<FormItemProps, 'required'> {
@@ -72,6 +74,10 @@ export class ControlMap {
   select() {
     // highlight-next-line
     return <Select children={this.props.children} options={this.props.options} {...this.innerProps} />;
+  }
+
+  'text-area'() {
+    return <TextArea { ...this.innerProps} />
   }
 }
 

@@ -16,18 +16,6 @@ const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/d
 const Guide = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/guide'));
 const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/permission/route'));
 const FormPage = lazy(() => import(/* webpackChunkName: "form'"*/ '@/pages/components/form'));
-const TablePage = lazy(() => import(/* webpackChunkName: "table'"*/ '@/pages/components/table'));
-const SearchPage = lazy(() => import(/* webpackChunkName: "search'"*/ '@/pages/components/search'));
-const TabsPage = lazy(() => import(/* webpackChunkName: "tabs'"*/ '@/pages/components/tabs'));
-const AsidePage = lazy(() => import(/* webpackChunkName: "aside'"*/ '@/pages/components/aside'));
-const RadioCardsPage = lazy(() => import(/* webpackChunkName: "radio-cards'"*/ '@/pages/components/radio-cards'));
-const BusinessBasicPage = lazy(() => import(/* webpackChunkName: "basic-page" */ '@/pages/business/basic'));
-const BusinessWithSearchPage = lazy(() => import(/* webpackChunkName: "with-search" */ '@/pages/business/with-search'));
-const BusinessWithAsidePage = lazy(() => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-aside'));
-const BusinessWithRadioCardsPage = lazy(
-  () => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-radio-cards'),
-);
-const BusinessWithTabsPage = lazy(() => import(/* webpackChunkName: "with-tabs" */ '@/pages/business/with-tabs'));
 
 const ShopPage = lazy(() => import('@/pages/shop'));
 const ProductPage = lazy(() => import('@/pages/product'));
@@ -35,7 +23,10 @@ const OrderPage = lazy(() => import('@/pages/order'));
 const StaffPage = lazy(() => import('@/pages/staff'));
 const ShopDetail = lazy(() => import('@/pages/shop/shop-detail'))
 const OrderDetailPage = lazy(() => import('@/pages/order/order-detail'))
-
+const MessagePage = lazy(() => import('@/pages/message'))
+const StaffDetailPage = lazy(() => import('@/pages/staff/staff-detail'))
+const TaskPage = lazy(() => import('@/pages/task'))
+const AddStaffPage= lazy(() => import('@/pages/staff/add-staff'))
 
 const routeList: RouteObject[] = [
   {
@@ -67,7 +58,7 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<ShopDetail />} titleId='title.shop.detail'/>
       },
       {
-        path: 'product',
+        path: 'listing',
         element: <WrapperRouteComponent element={<ProductPage />} titleId="title.product" />,
       },
       {
@@ -79,63 +70,35 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<OrderDetailPage />} titleId="title.order.detail" />,
       },
       {
+        path: 'message',
+        element: <WrapperRouteComponent element={<MessagePage />} titleId="title.message" />,
+      },
+      {
         path: 'staff',
         element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
       },
       {
-        path: 'guide',
-        element: <WrapperRouteComponent element={<Guide />} titleId="title.guide" />,
+        path: 'staff/:id',
+        element: <WrapperRouteComponent element={<StaffDetailPage />} titleId="title.staff.detail" />,
+      },
+      {
+        path: 'add-staff',
+        element: <WrapperRouteComponent element={<AddStaffPage />} titleId="title.staff.add" />,
+      },
+      {
+        path: 'task',
+        element: <WrapperRouteComponent element={<TaskPage />} titleId="title.task" />,
       },
       {
         path: 'permission/route',
         element: <WrapperRouteComponent element={<RoutePermission />} titleId="title.permission.route" auth />,
       },
       {
-        path: 'component/form',
-        element: <WrapperRouteComponent element={<FormPage />} titleId="title.account" />,
-      },
-      {
-        path: 'component/table',
-        element: <WrapperRouteComponent element={<TablePage />} titleId="title.account" />,
-      },
-      {
-        path: 'component/search',
-        element: <WrapperRouteComponent element={<SearchPage />} titleId="title.account" />,
-      },
-      {
-        path: 'component/tabs',
-        element: <WrapperRouteComponent element={<TabsPage />} titleId="title.account" />,
-      },
-      {
-        path: 'component/aside',
-        element: <WrapperRouteComponent element={<AsidePage />} titleId="title.account" />,
-      },
-      {
-        path: 'component/radio-cards',
-        element: <WrapperRouteComponent element={<RadioCardsPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/basic',
-        element: <WrapperRouteComponent element={<BusinessBasicPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-search',
-        element: <WrapperRouteComponent element={<BusinessWithSearchPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-aside',
-        element: <WrapperRouteComponent element={<BusinessWithAsidePage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-radio-cards',
-        element: <WrapperRouteComponent element={<BusinessWithRadioCardsPage />} titleId="title.account" />,
-      },
-      {
-        path: 'business/with-tabs',
-        element: <WrapperRouteComponent element={<BusinessWithTabsPage />} titleId="title.account" />,
-      },
-      {
         path: '*',
+        element: <WrapperRouteComponent element={<NotFound />} titleId="title.notFount" />,
+      },
+      {
+        path: 'notfound',
         element: <WrapperRouteComponent element={<NotFound />} titleId="title.notFount" />,
       },
     ],

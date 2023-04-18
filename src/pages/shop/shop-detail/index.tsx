@@ -1,5 +1,5 @@
 import { getShop } from '@/api/shop';
-import { Card, Col, ColProps, Row, Space, Tag, Tooltip, Typography, theme } from 'antd';
+import { Card, Col, ColProps, Row, Select, Space, Tag, Tooltip, Typography, theme } from 'antd';
 import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
@@ -88,6 +88,10 @@ const ShopDetailPage: FC = () => {
     }
   }, [id]);
 
+  const handleDateRangeChange = () => {
+
+  }
+
   return (
     <div className="shop-detail-containier">
       {shopData && (
@@ -96,6 +100,17 @@ const ShopDetailPage: FC = () => {
             Shop: {shopData.name}
           </Title>
           <div className="shop-detail-statistic">
+            <Select
+              defaultValue="lucy"
+              style={{ width: 120 }}
+              onChange={handleDateRangeChange}
+              options={[
+                { value: 'jack', label: 'Jack' },
+                { value: 'lucy', label: 'Lucy' },
+                { value: 'Yiminghe', label: 'yiminghe' },
+                { value: 'disabled', label: 'Disabled', disabled: true },
+              ]}
+            />
             <Row gutter={[12, 12]}>
               <ColCard metaName="Total Products" metaCount={numberWithCommas(100000)} unit="products" />
               <ColCard metaName="Total Orders" metaCount={numberWithCommas(423523523)} unit="orders" />
@@ -107,43 +122,55 @@ const ShopDetailPage: FC = () => {
             <Card bordered={false}>
               <Space direction="vertical">
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Shop Name :</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Shop Name :
+                  </Text>
                   <Text className="shop-detail-overview-item-info">{shopData.name}</Text>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Profile ID :</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Profile ID :
+                  </Text>
                   <Text className="shop-detail-overview-item-info">{shopData.profileId}</Text>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Profile Name :</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Profile Name :
+                  </Text>
                   <Text className="shop-detail-overview-item-info">{shopData.profileName}</Text>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Shop Address :</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Shop Address :
+                  </Text>
                   <Text className="shop-detail-overview-item-info">{shopData.address}</Text>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Website URL :</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Website URL :
+                  </Text>
                   <Link className="shop-detail-overview-item-info" href={shopData.websiteUrl} target="_blank">
                     {shopData.websiteUrl}
                   </Link>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Shop Status :</Text>
-                  {
-                    shopData.isActive ? (
-                      <Tag color="green">Active</Tag>
-                    ) : (
-                      <Tag color="red">Inactive</Tag>
-                    )
-                  }
+                  <Text strong className="shop-detail-overview-item-title">
+                    Shop Status :
+                  </Text>
+                  {shopData.isActive ? <Tag color="green">Active</Tag> : <Tag color="red">Inactive</Tag>}
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Created date : </Text>
-                  <Text className="shop-detail-overview-item-info">{shopData.createdAt ? dateToStringWithFormat(shopData.createdAt) : 'N/A'}</Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Created date :{' '}
+                  </Text>
+                  <Text className="shop-detail-overview-item-info">
+                    {shopData.createdAt ? dateToStringWithFormat(shopData.createdAt) : 'N/A'}
+                  </Text>
                 </div>
                 <div className="shop-detail-overview-item">
-                  <Text strong className="shop-detail-overview-item-title">Descrition : </Text>
+                  <Text strong className="shop-detail-overview-item-title">
+                    Descrition :{' '}
+                  </Text>
                   <Text className="shop-detail-overview-item-info">{shopData.description}</Text>
                 </div>
               </Space>
@@ -161,14 +188,14 @@ const ShopDetailPage: FC = () => {
                     <Suspense fallback={null}>
                       <ShopProducts id={shopData.id} />
                     </Suspense>
-                    ),
+                  ),
                 },
                 {
                   label: 'Orders',
                   value: 'order',
-                  children:(
+                  children: (
                     <Suspense fallback={null}>
-                       <ShopOrders id={shopData.id} />
+                      <ShopOrders id={shopData.id} />
                     </Suspense>
                   ),
                 },

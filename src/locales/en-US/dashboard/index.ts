@@ -1,6 +1,6 @@
 export const enUS_dashboard = {
   'app.dashboard.overview.totalSales': 'Total Sales',
-  'app.dashboard.overview.visits': 'Visits',
+  'app.dashboard.overview.visits': 'Total Visits',
   'app.dashboard.overview.payments': 'Payments',
   'app.dashboard.overview.operationalEffect': 'Operational Effect',
   'app.dashboard.overview.wowChange': 'WoW Change',
@@ -14,4 +14,12 @@ export const enUS_dashboard = {
   'app.dashboard.salePercent.offline': 'Offline',
   'app.dashboard.timeline.traffic': 'Traffic',
   'app.dashboard.timeline.payments': 'Payments',
+  'app.dashboard.overview.shops': 'Total shops',
+  'app.dashboard.overview.unit.shops': 'Shops',
+  'app.dashboard.overview.unit.visits': 'Visits',
+  'app.dashboard.overview.orders':'Total orders',
+  'app.dashboard.overview.unit.orders': 'Orders',
+  'app.dashboard.revenueStatistic': 'Revenue statistic',
+  'app.dashboard.overview.listings' : 'Total listings',
+  'app.dashboard.overview.unit.listings': 'Listings',
 };

@@ -9,7 +9,8 @@ import { ReactComponent as ShopSvg } from '@/assets/menu/shop.svg';
 import { ReactComponent as ProductSvg } from '@/assets/menu/product.svg';
 import { ReactComponent as OrderSvg } from '@/assets/menu/cart.svg';
 import { ReactComponent as StaffSvg } from '@/assets/menu/staff.svg';
-
+import { ReactComponent as MessageSvg} from '@/assets/menu/message.svg';
+import { ReactComponent as TaskSvg} from '@/assets/menu/task.svg';
 interface CustomIconProps {
   type: string;
 }
@@ -36,6 +37,10 @@ export const CustomIcon: FC<CustomIconProps> = props => {
     com = <OrderSvg />;
   } else if (type == 'staff') {
     com = <StaffSvg />;
+  } else if (type == 'message') {
+    com = <MessageSvg />;
+  }  else if (type == 'task') {
+    com = <TaskSvg />;
   } else {
     com = <ProductSvg />;
   }

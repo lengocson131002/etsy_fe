@@ -3257,6 +3257,11 @@
     "object-assign" "^4.1.1"
     "scheduler" "^0.20.2"
 
+"react-icons@^4.8.0":
+  "integrity" "sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg=="
+  "resolved" "https://registry.npmjs.org/react-icons/-/react-icons-4.8.0.tgz"
+  "version" "4.8.0"
+
 "react-intl@^5.23.0":
   "integrity" "sha512-SK1m9tA9QmYbcRY7NJhKoVZAG1QCd1KjwzP2guPzrPf3xEKU8hbzuJSHPES1UCncGtPaqFrtKyDzs1+iQivazw=="
   "resolved" "https://registry.npmjs.org/react-intl/-/react-intl-5.23.0.tgz"
