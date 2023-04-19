@@ -46,11 +46,11 @@ const radioCardsOptions: MyRadioCardssOption[] = [
 const tabsOptions: MyTabsOption[] = [
   {
     label: 'Tab-1',
-    value: 1,
+    value: "1",
   },
   {
     label: 'Tab-2',
-    value: 2,
+    value: "2",
   },
 ];
 

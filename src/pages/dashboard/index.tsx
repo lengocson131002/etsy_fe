@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import Overview from './overview';
 import RevenueStatistic from './revenues';
 import { Select } from 'antd';
-import { DashboardOVerview, RevenueStatisticItem } from '@/interface/dashboard';
+import { DashboardOVerview, DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
 
 
 const overviewData: DashboardOVerview = {
@@ -36,20 +36,9 @@ const revenueStatistic: RevenueStatisticItem[] = [
 ]
 
 
-const dateRangeOptions = [
-  { value: 'all-time', label: 'All time' },
-  { value: 'today', label: 'Today' },
-  { value: 'yesterday', label: 'Yesterday' },
-  { value: 'last-7', label: 'Last 7 days'},
-  { value: 'last-30', label: 'Last 30 days'},
-  { value: 'this-month', label: 'This month'},
-  { value: 'this-year', label: 'This year'},
-  { value: 'last-year', label: 'Last year'},
-]
-
 const DashBoardPage: FC = () => {
   const [loading, setLoading] = useState(true);
-  const [dateRange, setDateRange] = useState<string>(dateRangeOptions[0].value);
+  const [dateRange, setDateRange] = useState<string>(DateRanges[0].value);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -69,10 +58,10 @@ const DashBoardPage: FC = () => {
     <div>
       <div className='dashboard-select'>
         <Select
-          defaultValue={dateRangeOptions[0].value}
+          defaultValue={DateRanges[0].value}
           style={{ width: 120 }}
           onChange={handleDateRangeChange}
-          options={dateRangeOptions}
+          options={DateRanges}
         />
       </div>
       <Overview overview={overviewData} loading={loading} />

@@ -1,0 +1,255 @@
+{
+  "shops": [
+    {
+      "shop": {
+        "id": "abcd-afsf-sfdf-fsdf",
+        "name": "Shop bán giày",
+        "status": "active",
+        "currency_symbol": "đ",
+        "currency_code": "VND",
+        "opened_date": "2023-04-18T10:39:48.110Z"
+      },
+      "profile": {
+        "name": "abc@gmail.com",
+        "notes": "gologin account",
+        "created_date": "2023-04-18T10:39:48.110Z",
+        "proxy": "192.168.1.1",
+        "folder_name": "abc"
+      },
+      "dashboard": {
+        "today": {
+          "visits": 18,
+          "orders": 23,
+          "conversion_rate": 0.6,
+          "revenue": 120000
+        },
+        "yesterday": {
+          "visits": 43,
+          "orders": 44,
+          "conversion_rate": 0.3,
+          "revenue": 132423423
+        },
+        "last_7": {
+          "visits": 3,
+          "orders": 5254,
+          "conversion_rate": 0.5,
+          "revenue": 4235552
+        },
+        "last_30": {
+          "visits": 243,
+          "orders": 24524,
+          "conversion_rate": 0.1,
+          "revenue": 245252
+        },
+        "this_month": {
+          "visits": 3,
+          "orders": 4234,
+          "conversion_rate": 0.4,
+          "revenue": 252454
+        },
+        "this_year": {
+          "visits": 254,
+          "orders": 24234,
+          "conversion_rate": 0.3,
+          "revenue": 423423
+        },
+        "last_year": {
+          "visits": 423,
+          "orders": 2423,
+          "conversion_rate": 0.3,
+          "revenue": 42423423
+        },
+        "all_time": {
+          "visits": 4234234,
+          "orders": 2423423,
+          "conversion_rate": 0.3,
+          "revenue": 5856786474
+        }
+      },
+      "listings": [
+        {
+          "id": "abcd-1234-abcs-1333",
+          "title": "Giày Nike",
+          "image_url": "https://th.bing.com/th/id/R.7d40ed0466d9a46c8136cfb4475ae83a?rik=%2bjS8%2fU1S%2bXNVqQ&pid=ImgRaw&r=0",
+          "status": "active",
+          "stock": 40,
+          "price_from": 1600000,
+          "price_to": 1600000,
+          "last_30_visits": 23,
+          "last_30_favorites": 20,
+          "all_time_sales": 32,
+          "all_time_revenue": 3233232,
+          "all_time_renewals": 32
+        }
+      ],
+      "conversations": [
+        {
+          "customer_name": "Alexender Grahembel",
+          "unread_count": 34,
+          "message_time": "2 minutes ago"
+        }
+      ],
+      "orders": [
+        {
+          "id": "fsdf-fdsf-fsds-fdsf",
+          "progress_step": "new",
+          "item_count": 4,
+          "item_total": 1200000,
+          "coupon_rate": 0.1,
+          "coupon_value": 120000,
+          "coupon_code": "MY_SUMMER",
+          "sub_total": 1180000,
+          "order_total": 1180000,
+          "adjusted_total": 1180000,
+          "tax": 10000,
+          "order_name": "Alexender Grahembel",
+          "order_time": "2023-04-18T10:39:48.110Z",
+          "shipping_customer_name": "Le Ngoc Son",
+          "shipping_price": 10000,
+          "shipping_address": "Thu Duc, Ho Chi Minh",
+          "shipping_by": "VN Poster",
+          "shipping_career": "ABC",
+          "estimate_delivery": "April 14 - April 16",
+          "tracking_number": "123",
+          "mark_as_gift": true,
+          "items": [
+            {
+              "listing_id": "abc-1234-1323-3223",
+              "image": "https://th.bing.com/th/id/R.7d40ed0466d9a46c8136cfb4475ae83a?rik=%2bjS8%2fU1S%2bXNVqQ&pid=ImgRaw&r=0",
+              "name": "Giày Nike",
+              "price": 100000,
+              "quantity": 100000,
+              "description": "Color: red; Size: XXL"
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "shop": {
+        "id": "abcd-afsf-sfdf-2123",
+        "name": "Shop bán Áo Lê Ngọc Sơn",
+        "status": "inactive",
+        "currency_symbol": "$",
+        "currency_code": "USD",
+        "opened_date": "2023-04-18T10:39:48.110Z"
+      },
+      "profile": {
+        "name": "def@gmail.com",
+        "notes": "gologin account def",
+        "created_date": "2023-04-18T10:39:48.110Z",
+        "proxy": "192.168.1.3",
+        "folder_name": "def"
+      },
+      "dashboard": {
+        "today": {
+          "visits": 1438,
+          "orders": 243,
+          "conversion_rate": 0.6,
+          "revenue": 1200040
+        },
+        "yesterday": {
+          "visits": 443,
+          "orders": 434,
+          "conversion_rate": 0.33,
+          "revenue": 1324233423
+        },
+        "last_7": {
+          "visits": 33,
+          "orders": 52524,
+          "conversion_rate": 0.5,
+          "revenue": 423554352
+        },
+        "last_30": {
+          "visits": 2443,
+          "orders": 245324,
+          "conversion_rate": 0.1,
+          "revenue": 2435252
+        },
+        "this_month": {
+          "visits": 33,
+          "orders": 42734,
+          "conversion_rate": 0.4,
+          "revenue": 2524854
+        },
+        "this_year": {
+          "visits": 2354,
+          "orders": 242334,
+          "conversion_rate": 0.3,
+          "revenue": 4234223
+        },
+        "last_year": {
+          "visits": 42433,
+          "orders": 242433,
+          "conversion_rate": 0.3,
+          "revenue": 4242344323
+        },
+        "all_time": {
+          "visits": 423434234,
+          "orders": 242433423,
+          "conversion_rate": 0.3,
+          "revenue": 585678643474
+        }
+      },
+      "listings": [
+        {
+          "id": "abcd-1234-abcs-32333",
+          "title": "Áo thun",
+          "image_url": "https://th.bing.com/th/id/R.8760f6fd236781453e38b589af1b8844?rik=9E4AYEOPcFb8zA&pid=ImgRaw&r=0",
+          "status": "active",
+          "stock": 50,
+          "price_from": 1600000,
+          "price_to": null,
+          "last_30_visits": 23,
+          "last_30_favorites": 20,
+          "all_time_sales": 32,
+          "all_time_revenue": 3233232,
+          "all_time_renewals": 32
+        }
+      ],
+      "conversations": [
+        {
+          "customer_name": "Lê Ngọc Sơn",
+          "unread_count": 2,
+          "message_time": "2 days ago"
+        }
+      ],
+      "orders": [
+        {
+          "id": "fsdf-fdsf-fsds-fd5f",
+          "progress_step": "completed",
+          "item_count": 4,
+          "item_total": 1200000,
+          "coupon_rate": 0.1,
+          "coupon_value": 120000,
+          "coupon_code": "MY_SUMMER",
+          "sub_total": 1180000,
+          "order_total": 1180000,
+          "adjusted_total": 1180000,
+          "tax": 10000,
+          "order_name": "Alexender Grahembel",
+          "order_time": "2023-04-18T10:39:48.110Z",
+          "shipping_customer_name": "Le Ngoc Son",
+          "shipping_price": 10000,
+          "shipping_address": "Thu Duc, Ho Chi Minh",
+          "shipping_by": "VN Poster",
+          "shipping_career": "ABC",
+          "estimate_delivery": "April 14 - April 16",
+          "tracking_number": "123",
+          "mark_as_gift": true,
+          "items": [
+            {
+              "listing_id": "abc-1234-1323-3223",
+              "image": "https://th.bing.com/th/id/R.8760f6fd236781453e38b589af1b8844?rik=9E4AYEOPcFb8zA&pid=ImgRaw&r=0",
+              "name": "Áo thun",
+              "price": 100000,
+              "quantity": 100000,
+              "description": "Color: red; Size: XXL"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

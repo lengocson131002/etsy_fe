@@ -101,9 +101,10 @@ export const request = <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): MyResponse<T> => {
-  const prefix = '';
 
-  url = prefix + url;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+  url = apiBaseUrl + url;
 
   console.log(url);
 

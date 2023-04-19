@@ -8,7 +8,7 @@ const { TabPane } = Tabs;
 
 export interface MyTabsOption extends Omit<TabPaneProps, 'tab' | 'key'> {
   label: string;
-  value: string | number;
+  value: string;
 }
 
 export interface MyTabsProps extends TabsProps {
@@ -19,9 +19,17 @@ const BaseTabs: FC<MyTabsProps> = props => {
   const { options, children, ...rest } = props;
 
   return (
-    <Tabs {...rest} css={styles}>
-      {options ? options.map(option => <TabPane {...option} tab={option.label} key={option.value} />) : children}
-    </Tabs>
+    <Tabs
+      {...rest}
+      css={styles}
+      items={
+        options.map(option => ({
+          key: option.value,
+          label: option.label,
+          children: option.children,
+        }))
+      }
+    />
   );
 };
 

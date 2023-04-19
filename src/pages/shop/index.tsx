@@ -6,64 +6,82 @@ import { Image, Tag } from 'antd';
 import Button from '@/components/basic/button';
 import { getAllShops } from '@/api/shop';
 import { Link } from 'react-router-dom';
+import { normalizeString } from '@/utils/string';
+import { dateToStringWithFormat } from '@/utils/datetime';
+import { numberWithCommas } from '@/utils/number';
 
 const { Item: FilterItem } = Table.MyFilter;
 
 const tableColumns: MyTableOptions<Shop> = [
   {
-    title: 'Logo',
-    dataIndex: 'logo',
-    key: 'logo',
-    render: (logo: string) => (
-      <>
-        <Image width={90} height={90} src={logo} />
-      </>
-    ),
-    fixed: 'left'
-  },
-  {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    fixed: 'left'
-  },
-  {
-    title: 'Profile Id',
-    dataIndex: 'profileId',
-    key: 'profileId',
-  },
-  {
-    title: 'Profile Name',
-    dataIndex: 'profileName',
-    key: 'profileName',
-  },
-  {
-    title: 'Website URL',
-    dataIndex: 'websiteUrl',
-    key: 'websiteUrl',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    width: 200,
+    fixed: 'left',
   },
   {
     title: 'Status',
-    dataIndex: 'isActive',
-    key: 'isActive',
-    render: (isActive: boolean) => (
-      <>
-        {isActive ? (
-          <Tag color="blue" key={isActive + ''}>
-            Active
-          </Tag>
-        ) : (
-          <Tag color="red" key={isActive + ''}>
-            Inactive
-          </Tag>
-        )}
-      </>
+    dataIndex: 'status',
+    key: 'status',
+    render: status => (
+      <Tag color="blue" key={status + ''}>
+        {normalizeString(status)}
+      </Tag>
     ),
+  },
+  {
+    title: 'Currency',
+    dataIndex: 'currencyCode',
+    key: 'currencyCode',
+    width: 100,
+    render: (currency, record) => <span>{currency} ({record.currencySymbol})</span>,
+  },
+  {
+    title: 'Total orders',
+    dataIndex: 'orderCount',
+    key: 'orderCount',
+    align: 'right',
+    render: value => <strong>{numberWithCommas(value)}</strong>,
+  },
+  {
+    title: 'Total visit',
+    dataIndex: 'visitCount',
+    key: 'visitCount',
+    align: 'right',
+    render: value => <strong>{numberWithCommas(value)}</strong>,
+  },
+  {
+    title: 'Total revenue',
+    dataIndex: 'revenue',
+    key: 'revenue',
+    align: 'right',
+    render: (value, record) => <strong>{numberWithCommas(value)} {record.currencySymbol}</strong>,
+  },
+  {
+    title: 'Conversion Rate',
+    dataIndex: 'conversionRate',
+    key: 'conversionRate',
+    align: 'right',
+    width: 120,
+  },
+  {
+    title: 'Opened Date',
+    dataIndex: 'openedDate',
+    key: 'openedDate',
+    render: openedDate => <span>{dateToStringWithFormat(openedDate)}</span>,
+  },
+  {
+    title: 'Profile ID',
+    dataIndex: 'profile',
+    key: 'profile',
+    render: profile => <span>{profile.id}</span>,
+  },
+  {
+    title: 'Profile Name',
+    dataIndex: 'profile',
+    key: 'profile',
+    render: profile => <span>{profile.name}</span>,
   },
   {
     title: 'Action',
