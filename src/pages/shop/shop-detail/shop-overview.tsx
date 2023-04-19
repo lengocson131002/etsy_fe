@@ -21,7 +21,7 @@ interface ColCardProps {
   body?: React.ReactNode;
   footer?: React.ReactNode;
   loading?: boolean;
-  unit: string;
+  unit?: string;
 }
 
 const ColCard: FC<ColCardProps> = ({ metaName, metaCount, unit, body, footer, loading }) => {
@@ -47,9 +47,11 @@ const ColCard: FC<ColCardProps> = ({ metaName, metaCount, unit, body, footer, lo
 };
 interface ShopOverviewProps {
   dashboard: ShopDashboard;
+  currency?: string,
+  currencySymbol?: string
 }
 
-const ShopOverview: FC<ShopOverviewProps> = ({ dashboard }) => {
+const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymbol }) => {
   const [activeDashboard, setActiveDashboard] = useState<DashboardItem>();
   const [dateRange, setDateRange] = useState(DateRanges[0].value);
 
@@ -107,7 +109,7 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard }) => {
             <ColCard
               metaName="Total Revenue"
               metaCount={activeDashboard.revenue ? numberWithCommas(activeDashboard.revenue) : ''}
-              unit="vnđ"
+              unit={currency}
             />
             <ColCard
               metaName="Conversion rate"

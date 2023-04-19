@@ -5,13 +5,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
 import './index.less';
 import { Shop, ShopDetail } from '@/interface/shop/shop.interface';
-import { numberWithCommas } from '@/utils/number';
 import { dateToStringWithFormat } from '@/utils/datetime';
-import { DateRanges } from '@/interface/dashboard';
 import ShopOverview from './shop-overview';
 
-const ShopOrders = lazy(() => import('../shop-orders'));
-const ShopProducts = lazy(() => import('../shop-products'));
+const ShopConversations = lazy(() => import('../../components/shop-conversations'));
+const ShopListings = lazy(() => import('../../components/shop-listings'));
+const ShopOrders = lazy(() => import('../../components/shop-orders'));
+
+
 
 const { Title, Text } = Typography;
 
@@ -45,7 +46,7 @@ const ShopDetailPage: FC = () => {
           <Title className="shop-detail-title" level={3}>
             Shop: {shopData.name}
           </Title>
-          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard}/>}
+          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencyCode}/>}
           <div className="shop-detail-overview">
             <Space direction="vertical" style={{ width: '100%' }} size="middle">
               <Card bordered={false}>
@@ -150,7 +151,7 @@ const ShopDetailPage: FC = () => {
                   value: 'listing',
                   children: (
                     <Suspense fallback={null}>
-                      <ShopProducts id={shopData.id} />
+                      <ShopListings shopId={shopData.id} />
                     </Suspense>
                   ),
                 },
@@ -159,7 +160,7 @@ const ShopDetailPage: FC = () => {
                   value: 'order',
                   children: (
                     <Suspense fallback={null}>
-                      <ShopOrders id={shopData.id} />
+                      <ShopOrders shopId={shopData.id} />
                     </Suspense>
                   ),
                 },
@@ -168,7 +169,7 @@ const ShopDetailPage: FC = () => {
                   value: 'message',
                   children: (
                     <Suspense fallback={null}>
-                      <ShopOrders id={shopData.id} />
+                      <ShopConversations shopId={shopData.id} />
                     </Suspense>
                   ),
                 },

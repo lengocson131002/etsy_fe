@@ -24,7 +24,7 @@ const MyTable = <T extends object = object>(props: MyTableProps<T>) => {
 
   return (
     <div style={{ height }} css={styles}>
-      <Table<T> {...rest} scroll={{ x: 'max-content', y: 500 }} pagination={combinedPagination} />
+      <Table<T> bordered {...rest} scroll={{ x: 'max-content', y: 500 }} pagination={combinedPagination} />
     </div>
   );
 };
@@ -75,5 +75,9 @@ const styles = css`
     .ant-pagination {
       padding: 0 10px;
     }
+  }
+
+  .ant-table-cell {
+    min-width: 100px;
   }
 `;

@@ -7,8 +7,7 @@
     text-transform: uppercase;
   }
 }
-.order-items {
-  min-height: 100% !important;
+.order-items-wrapper {
   & .order-detail-card {
     height: 100%;
   }
@@ -18,9 +17,21 @@
   &-title {
     display: inline-block;
     margin-right: 10px;
-    width: 100px;
+    width: 130px;
     text-align: end;
   }
-  &-content {
+}
+
+.order-price-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  &-configure {
+    font-size: 16px;
+    font-style: 600;
   }
+}
+
+.order-price-info:not(:last-child) {
+  border-bottom: 1px solid #adb5bd;
 }

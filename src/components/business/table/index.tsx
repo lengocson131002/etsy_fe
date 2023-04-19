@@ -114,7 +114,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
           {tableOptions && (
             <div className="table">
               <MyTable
-                height="100%"
+                // height="100%"
                 dataSource={filterPagingData.data}
                 columns={tableOptions}
                 pagination={{

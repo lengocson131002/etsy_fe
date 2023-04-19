@@ -18,12 +18,12 @@ const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission
 const FormPage = lazy(() => import(/* webpackChunkName: "form'"*/ '@/pages/components/form'));
 
 const ShopPage = lazy(() => import('@/pages/shop'));
-const ProductPage = lazy(() => import('@/pages/product'));
+const ListingPage = lazy(() => import('@/pages/listing'));
 const OrderPage = lazy(() => import('@/pages/order'));
 const StaffPage = lazy(() => import('@/pages/staff'));
 const ShopDetail = lazy(() => import('@/pages/shop/shop-detail'))
 const OrderDetailPage = lazy(() => import('@/pages/order/order-detail'))
-const MessagePage = lazy(() => import('@/pages/message'))
+const MessagePage = lazy(() => import('@/pages/conversation'))
 const StaffDetailPage = lazy(() => import('@/pages/staff/staff-detail'))
 const TaskPage = lazy(() => import('@/pages/task'))
 const AddStaffPage= lazy(() => import('@/pages/staff/add-staff'))
@@ -59,7 +59,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'listing',
-        element: <WrapperRouteComponent element={<ProductPage />} titleId="title.product" />,
+        element: <WrapperRouteComponent element={<ListingPage />} titleId="title.listings" />,
       },
       {
         path: 'order',

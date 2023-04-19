@@ -4,91 +4,74 @@ import { Link } from 'react-router-dom';
 import { Button, Image, Tag } from 'antd';
 import { Order } from '@/interface/order';
 import { dateToStringWithFormat } from '@/utils/datetime';
-import { getShopOrders } from '@/api/orders';
 import { numberWithCommas } from '@/utils/number';
+import { getOrders } from '@/api/orders.api';
+import { normalizeString } from '@/utils/string';
 
 const { Item: FilterItem } = Table.MyFilter;
 
 interface ShopOrderProps {
-  id: string | number;
+  shopId?: string | number;
+  curency?: string;
 }
 
 const columnOptions: MyTableOptions<Order> = [
   {
-    title: 'Order ID',
-    dataIndex: 'id',
-    key: 'id',
-    fixed: 'left',
-    width: 100
-  },
-  {
-    title: 'Order Name',
-    dataIndex: 'orderName',
-    key: 'orderName',
+    title: 'Etsy Order ID',
+    dataIndex: 'etsyOrderId',
+    key: 'etsyOrderId',
     fixed: 'left',
   },
   {
-    title: 'Order Phone',
-    dataIndex: 'orderPhone',
-    key: 'orderPhone',
-    fixed: 'left',
+    title: 'Progress step',
+    dataIndex: 'progressStep',
+    key: 'progressStep',
+    render: value => <Tag color="blue">{normalizeString(value)}</Tag>,
+    align: 'center',
   },
   {
-    title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amount',
-    width: 200,
+    title: 'Item count',
+    dataIndex: 'itemCount',
+    key: 'itemCount',
     align: 'right',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
-    title: 'Discount',
-    dataIndex: 'discount',
-    key: 'discount',
-    width: 200,
-    align: 'right'
+    title: 'Customer',
+    dataIndex: 'shippingCustomerName',
+    key: 'shippingCustomerName',
   },
   {
-    title: 'Order Country',
-    dataIndex: 'orderCountry',
-    key: 'orderCountry',
-    width: 100,
+    title: 'Order total',
+    dataIndex: 'orderTotal',
+    key: 'orderTotal',
+    align: 'right',
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
-    title: 'Order State',
-    dataIndex: 'orderState',
-    key: 'orderState',
-  },
-  {
-    title: 'Order City',
-    dataIndex: 'orderCity',
-    key: 'orderCity',
-  },
-  {
-    title: 'Order Address',
-    dataIndex: 'orderAddress',
-    key: 'orderAddress',
-    width: 150,
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: status => <Tag color="blue">{status}</Tag>,
+    title: 'Tax',
+    dataIndex: 'tax',
+    key: 'tax',
+    align: 'right',
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Tracking number',
     dataIndex: 'trackingNumber',
     key: 'trackingNumber',
-    width: 100,
+    width: 200,
   },
   {
-    title: 'Created At',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
-    render: createdAt => <span>{dateToStringWithFormat(createdAt)}</span>,
+    title: 'Mark as gift?',
+    dataIndex: 'markAsGift',
+    key: 'markAsGift',
+    render: value => (value ? <Tag color="green">Marked</Tag> : <Tag color="red">Unmarked</Tag>),
+  },
+  {
+    title: 'Order time',
+    dataIndex: 'orderTime',
+    key: 'orderTime',
+    render: value => <span>{dateToStringWithFormat(value)}</span>,
   },
   {
     title: 'Action',
@@ -105,13 +88,19 @@ const columnOptions: MyTableOptions<Order> = [
   },
 ];
 
-const ShopOrders: FC<ShopOrderProps> = ({ id, ...rest }) => {
-
+const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   const getShopOrderAPI = useCallback(
-      (params: any) => {
-        return getShopOrders(id, params);
+    (params: any) => {
+      if (shopId) {
+        params = {
+          ...params,
+          shopId
+        };
       }
-    , [id]);
+      return getOrders(params);
+    },
+    [shopId],
+  );
 
   return (
     <div>

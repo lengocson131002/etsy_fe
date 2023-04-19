@@ -8,7 +8,7 @@ export const enUS_title = {
   'title.permission.config': 'Permission Config',
   'title.account': 'Account',
   'title.notFount': '404',
-  'title.product': 'Products',
+  'title.listings': 'Listings',
   'title.shop': 'Shops',
   'title.order': 'Orders',
   'title.staff': 'Staffs',

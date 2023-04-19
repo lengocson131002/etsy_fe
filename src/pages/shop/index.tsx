@@ -29,11 +29,13 @@ const tableColumns: MyTableOptions<Shop> = [
         {normalizeString(status)}
       </Tag>
     ),
+    align: 'center',
   },
   {
     title: 'Currency',
     dataIndex: 'currencyCode',
     key: 'currencyCode',
+    align: 'center',
     width: 100,
     render: (currency, record) => <span>{currency} ({record.currencySymbol})</span>,
   },
@@ -62,7 +64,7 @@ const tableColumns: MyTableOptions<Shop> = [
     title: 'Conversion Rate',
     dataIndex: 'conversionRate',
     key: 'conversionRate',
-    align: 'right',
+    align: 'center',
     width: 120,
   },
   {
