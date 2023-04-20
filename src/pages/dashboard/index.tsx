@@ -6,57 +6,52 @@ import { useEffect, useState } from 'react';
 
 import Overview from './overview';
 import RevenueStatistic from './revenues';
-import { Select } from 'antd';
-import { DashboardOVerview, DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
+import { Col, ColProps, Empty, Row, Select } from 'antd';
+import { DashboardOVerview, DateRange, DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
+import { getDashboard } from '@/api/dashboard.api';
+import StatusChart from './statusChart';
+import Item from 'antd/es/list/Item';
 
-
-const overviewData: DashboardOVerview = {
-  shopCount: 100,
-  orderCount: 243,
-  visitCount: 43434,
-  listingCount: 4234
-}
-
-const revenueStatistic: RevenueStatisticItem[] = [
-  {
-    currency: 'VND',
-    currencySymbol: 'đ',
-    value: 1000000
-  },
-  {
-    currency: 'USD',
-    currencySymbol: '$',
-    value: 170000
-  },
-  {
-    currency: 'Euro',
-    currencySymbol: '@',
-    value: 140000
-  },
-]
-
+const wrapperCol: ColProps = {
+  xs: 24,
+  sm: 12,
+  md: 12,
+  lg: 12,
+  xl: 6,
+  xxl: 6,
+};
 
 const DashBoardPage: FC = () => {
   const [loading, setLoading] = useState(true);
-  const [dateRange, setDateRange] = useState<string>(DateRanges[0].value);
+  const [dateRange, setDateRange] = useState<DateRange>(DateRanges[0].value);
+  const [dashboard, setDashboard] = useState<DashboardOVerview>();
+
+  console.log(dashboard);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(undefined as any);
-    }, 2000);
+    const getDashboarData = async (dateRange: string) => {
+      setLoading(true);
+      const dashboardResponse = await getDashboard(dateRange);
+      setLoading(false);
 
-    return () => {
-      clearTimeout(timer);
+      if (!dashboardResponse || !dashboardResponse.status || !dashboardResponse.result) {
+        setDashboard(undefined);
+        return;
+      }
+
+      setDashboard(dashboardResponse.result);
     };
-  }, []);
 
-  const handleDateRangeChange = (value: string) => {
-    setDateRange(value)
-  }
+    getDashboarData(dateRange.toUpperCase());
+  }, [dateRange]);
+
+  const handleDateRangeChange = (value: any) => {
+    setDateRange(value);
+  };
 
   return (
     <div>
-      <div className='dashboard-select'>
+      <div className="dashboard-select">
         <Select
           defaultValue={DateRanges[0].value}
           style={{ width: 120 }}
@@ -64,8 +59,19 @@ const DashBoardPage: FC = () => {
           options={DateRanges}
         />
       </div>
-      <Overview overview={overviewData} loading={loading} />
-      <RevenueStatistic data={revenueStatistic} loading={loading} />
+      {dashboard && (
+        <>
+          <Row gutter={[12, 12]}>
+            <Col lg={9} xs={24}>
+              <StatusChart items={dashboard.statusCount?.sort((item1, item2) => item1.status > item2.status ? 1 : -1) ?? []} />
+            </Col>
+            <Col lg={15} xs={24}>
+              <Overview overview={dashboard} loading={loading} />
+            </Col>
+          </Row>
+          <RevenueStatistic data={dashboard.revenues ?? []} loading={loading} />
+        </>
+      )}
     </div>
   );
 };

@@ -56,30 +56,28 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymb
   const [dateRange, setDateRange] = useState(DateRanges[0].value);
 
   useEffect(() => {
-    if (dateRange === 'all-time') {
+    if (dateRange === 'all_time') {
       setActiveDashboard(dashboard.allTime);
     } else if (dateRange === 'today') {
       setActiveDashboard(dashboard.today);
     } else if (dateRange === 'yesterday') {
       setActiveDashboard(dashboard.yesterday);
-    } else if (dateRange === 'last-7') {
+    } else if (dateRange === 'last_7') {
       setActiveDashboard(dashboard.last7);
-    } else if (dateRange === 'last-30') {
+    } else if (dateRange === 'last_30') {
       setActiveDashboard(dashboard.last30);
-    } else if (dateRange === 'this-month') {
+    } else if (dateRange === 'this_month') {
       setActiveDashboard(dashboard.thisMonth);
-    } else if (dateRange === 'this-year') {
+    } else if (dateRange === 'this_year') {
       setActiveDashboard(dashboard.thisYear);
-    } else if (dateRange === 'last-year') {
+    } else if (dateRange === 'last_year') {
       setActiveDashboard(dashboard.lastYear);
     } else {
       setActiveDashboard(undefined);
     }
   }, [dateRange, dashboard]);
 
-  const handleDateRangeChange = (value: string) => {
-    console.log(value);
-
+  const handleDateRangeChange = (value: any) => {
     setDateRange(value);
   };
 

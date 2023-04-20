@@ -3,21 +3,22 @@ import type { FC } from 'react';
 import { Badge, Card, Col, Row, theme } from 'antd';
 import { useLocale } from '@/locales';
 import { DashboardOVerview } from '@/interface/dashboard';
+import { numberWithCommas } from '@/utils/number';
 
 const { useToken } = theme;
 
 const wrapperCol: ColProps = {
   xs: 24,
-  sm: 12,
+  sm: 24,
   md: 12,
   lg: 12,
-  xl: 6,
-  xxl: 6,
+  xl: 12,
+  xxl: 12,
 };
 
 interface ColCardProps {
   metaName?: string;
-  metaCount?: number;
+  metaCount?: string | number;
   body?: React.ReactNode;
   footer: React.ReactNode;
   loading: boolean;
@@ -61,25 +62,25 @@ const Overview: FC<{ loading: boolean, overview: DashboardOVerview }> = ({ loadi
       <ColCard
         loading={loading}
         metaName={formatMessage({ id: 'app.dashboard.overview.shops' })}
-        metaCount={overview.shopCount}
+        metaCount={numberWithCommas(overview.shopCount)}
         footer={<Field name={formatMessage({ id: 'app.dashboard.overview.unit.shops' })} />}
       />
         <ColCard
         loading={loading}
         metaName={formatMessage({ id: 'app.dashboard.overview.orders' })}
-        metaCount={overview.orderCount}
+        metaCount={numberWithCommas(overview.orderCount)}
         footer={<Field name={formatMessage({ id: 'app.dashboard.overview.unit.orders' })} />}
       />
       <ColCard
         loading={loading}
         metaName={formatMessage({ id: 'app.dashboard.overview.visits' })}
-        metaCount={overview.visitCount}
+        metaCount={numberWithCommas(overview.visitCount)}
         footer={<Field name={formatMessage({ id: 'app.dashboard.overview.unit.visits' })} />}
       />
       <ColCard
         loading={loading}
         metaName={formatMessage({ id: 'app.dashboard.overview.listings' })}
-        metaCount={overview.listingCount}
+        metaCount={numberWithCommas(overview.listingCount)}
         footer={<Field name={formatMessage({ id: 'app.dashboard.overview.unit.listings' })} />}
       />
     </Row>
