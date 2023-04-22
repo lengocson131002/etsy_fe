@@ -9,6 +9,7 @@ import MyTable from '@/components/core/table';
 import { useStates } from '@/utils/use-states';
 
 import MyFilter from '../filter';
+import initCollapseMotion from 'antd/es/_util/motion';
 
 export interface SearchApi {
   (params?: any): MyResponse<PageData<any>>;
@@ -31,7 +32,7 @@ export interface RefTableProps {
 }
 
 interface FilterPagingData<T> extends PageData<T> {
-  filter?: Record<string, any>
+  filter?: Record<string, any>;
 }
 
 const filterPagingInitData = {
@@ -39,25 +40,18 @@ const filterPagingInitData = {
   pageNum: 1,
   total: 0,
   data: [],
-  filter: {}
-}
-
+  filter: {},
+};
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-  const {
-    filterApi,
-    pageParams,
-    filterRender,
-    tableOptions,
-    tableRender
-  } = props;
+  const { filterApi, pageParams, filterRender, tableOptions, tableRender } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
 
   const getTableData = useCallback(
     async (params: Record<string, any> = {}) => {
       if (filterApi) {
-        let queryObject:Record<string, any> = {
+        let queryObject: Record<string, any> = {
           ...params,
           ...pageParams,
           ...filterPagingData.filter,
@@ -66,7 +60,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
         };
 
         // remove undefined fields
-        Object.keys(queryObject).forEach(key => !queryObject[key] ? delete queryObject[key] : {})
+        Object.keys(queryObject).forEach(key => (!queryObject[key] ? delete queryObject[key] : {}));
 
         const res = await filterApi(queryObject);
 
@@ -86,9 +80,9 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     setFilterPagingData({
       filter: filterParams,
       pageNum: filterPagingInitData.pageNum,
-      pageSize: filterPagingInitData.pageSize
+      pageSize: filterPagingInitData.pageSize,
     });
-  }
+  };
 
   const onPageChange = (pageNum: number, pageSize?: number) => {
     setFilterPagingData({ pageNum });
@@ -99,7 +93,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
   };
 
   useImperativeHandle(ref, () => ({
-    load: (data?: object) => getTableData(data)
+    load: (data?: object) => getTableData(data),
   }));
 
   return (

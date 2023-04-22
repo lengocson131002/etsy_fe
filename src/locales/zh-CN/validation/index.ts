@@ -1,4 +1,4 @@
-export const enUS_validation = {
+export const zhCN_validation = {
   'app.validation.password.required': 'Password is required',
   'app.validation.password.invalid': 'Password must have more than 8 character',
   'app.validation.phoneNumber.invalid': 'Invalid phone number',

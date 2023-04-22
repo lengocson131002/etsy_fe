@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Layout } from 'antd';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -12,11 +12,6 @@ import { formatSearch } from '@/utils/formatSearch';
 
 import { loginAsync } from '../../stores/user.action';
 
-const initialValues: LoginParams = {
-  username: 'guest',
-  password: 'guest',
-  // remember: true
-};
 
 const LoginForm: FC = () => {
   const navigate = useNavigate();
@@ -25,7 +20,7 @@ const LoginForm: FC = () => {
   const { formatMessage } = useLocale();
 
   const onFinished = async (form: LoginParams) => {
-    const res = dispatch(await loginAsync(form));
+    const res = await dispatch(await loginAsync(form));
 
     if (!!res) {
       const search = formatSearch(location.search);
@@ -36,9 +31,9 @@ const LoginForm: FC = () => {
   };
 
   return (
-    <div className="login-page">
-      <Form<LoginParams> onFinish={onFinished} className="login-page-form" initialValues={initialValues}>
-        <h2>REACT ANTD ADMIN</h2>
+    <Layout className="login-page">
+      <Form<LoginParams> onFinish={onFinished} className="login-page-form">
+        <h2>ETSY SHOP MANAGEMENT</h2>
         <Form.Item
           name="username"
           rules={[
@@ -67,17 +62,12 @@ const LoginForm: FC = () => {
             },
           ]}
         >
-          <Input
+          <Input.Password
             type="password"
             placeholder={formatMessage({
               id: 'gloabal.tips.password',
             })}
           />
-        </Form.Item>
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox>
-            <LocaleFormatter id="gloabal.tips.rememberUser" />
-          </Checkbox>
         </Form.Item>
         <Form.Item>
           <Button htmlType="submit" type="primary" className="login-page-form_button">
@@ -85,7 +75,7 @@ const LoginForm: FC = () => {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+    </Layout>
   );
 };
 

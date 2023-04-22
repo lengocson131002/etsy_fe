@@ -1,4 +1,4 @@
-import { getShop } from '@/api/shop';
+import { getShop } from '@/api/shop.api';
 import { Card, Col, ColProps, Row, Select, Space, Tag, Tooltip, Typography, theme } from 'antd';
 import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

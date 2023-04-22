@@ -14,3 +14,10 @@ export interface PageData<T> {
   data: T[];
 }
 
+export interface StatusResponse {
+  status: boolean
+}
+
+export interface ListResponse<T> {
+  items: T[]
+}

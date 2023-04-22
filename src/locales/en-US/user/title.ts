@@ -17,5 +17,6 @@ export const enUS_title = {
   'title.message' : 'Messages',
   'title.task': 'My tasks',
   'title.staff.detail': 'Staff detail',
-  'title.staff.add': 'Add Staff'
+  'title.staff.add': 'Add Staff',
+  'title.profile': 'Profile'
 };

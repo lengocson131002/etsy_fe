@@ -1,5 +1,7 @@
+import { Role } from '../role';
+
 export interface Staff {
-  id: string;
+  id: number;
   username: string;
   password?: string;
   phoneNumber?: string;
@@ -8,12 +10,35 @@ export interface Staff {
   staffId?: string;
   address?: string;
   description?: string;
-  role: string;
+  roles: Role[];
   createdAt?: Date;
   createdBy?: string;
-  updatedAt?: Date
+  updatedAt?: Date;
   updatedBy?: string;
-  deletedAt?: Date
-  deletedBy?: string;
-  isActive: boolean;
+}
+
+export interface CreateStaffRequest {
+  username: string;
+  password: string;
+  staffId?: string;
+  fullName?: string;
+  phoneNumber?: string;
+  email?: string;
+  address?: string;
+  description?: string;
+  roles: string[];
+}
+
+
+export interface UpdateStaffRequest {
+  id: number;
+  username: string;
+  password: string;
+  staffId?: string;
+  fullName?: string;
+  phoneNumber?: string;
+  email?: string;
+  address?: string;
+  description?: string;
+  roles: string[];
 }

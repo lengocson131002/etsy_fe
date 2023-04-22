@@ -16,8 +16,8 @@ const wrapperCol: ColProps = {
 };
 
 interface ColCardProps {
-  metaName: string;
-  metaCount: string | number;
+  metaName?: string;
+  metaCount?: string | number;
   body?: React.ReactNode;
   footer?: React.ReactNode;
   loading?: boolean;

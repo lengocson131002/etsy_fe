@@ -1,15 +1,14 @@
 import type { AxiosRequestConfig, Method } from 'axios';
-
 import { message as $message } from 'antd';
 import axios from 'axios';
-
+import { Navigate } from 'react-router-dom'
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
-
-const baseURL = import.meta.env.VITE_API_BASE_URL ? import.meta.env.VITE_API_BASE_URL + '' : 'https://localhost:8080';
+import { apiRefreshToken } from './user.api';
+import { LocalStorageConstants } from '@/utils/constants';
 
 const axiosInstance = axios.create({
-  // baseURL: baseURL,
+  baseURL: import.meta.env.VITE_API_BASE_URL + '',
   timeout: 6000,
   validateStatus: function (status) {
     return status >= 200 && status < 300;
@@ -48,18 +47,50 @@ axiosInstance.interceptors.response.use(
       status: true,
       message: 'Success',
       code: config?.status,
-      result: config?.data
+      result: config?.data,
     };
 
     return response;
   },
 
-  error => {
+  async error => {
     store.dispatch(
       setGlobalState({
         loading: false,
       }),
     );
+
+    /**
+     *  if error code is 401
+     * refresh new token
+     *
+    */
+    const config = error?.config;
+
+   if (error?.response?.status === 401) {
+      // config.sent = true;
+
+      // const {result, status} = await apiRefreshToken();
+
+      // if (status && result?.token) {
+      //   // resave access token
+      //   localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN_KEY, result.token);
+      //   localStorage.setItem(LocalStorageConstants.REFRESH_TOKEN_KEY, result.refreshToken);
+
+      //   config.headers = {
+      //     ...config.headers,
+      //     "Authorization": `Bearer ${result.token}`
+      //   }
+
+      //   return axios(config);
+      // }
+
+      // $message.error("Session expired");
+
+      // return Promise.reject(error);
+   }
+
+    // if error code is 403
 
     let errorResponse: Response<null> = {
       status: false,
@@ -76,7 +107,8 @@ axiosInstance.interceptors.response.use(
 
     errorResponse.message && $message.error(errorResponse.message);
 
-    return errorResponse;
+    return Promise.reject(errorResponse);
+
   },
 );
 
@@ -84,7 +116,7 @@ export type Response<T = any> = {
   status: boolean;
   message: string;
   result: T;
-  code?: number
+  code?: number;
 };
 
 export type MyResponse<T = any> = Promise<Response<T>>;
@@ -101,21 +133,16 @@ export const request = <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): MyResponse<T> => {
+  // remove undefined | null | '' field
+  // Object.keys(data).forEach(key => (data[key] ?? delete data[key]));
 
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
-  url = apiBaseUrl + url;
-
-  console.log(url);
-
-
-  switch(method) {
+  switch (method) {
     case 'post':
       return axiosInstance.post(url, data, config);
     case 'put':
       return axiosInstance.put(url, data, config);
     case 'delete':
-      return axiosInstance.delete(url, config)
+      return axiosInstance.delete(url, config);
     case 'get':
     default:
       return axiosInstance.get(url, {

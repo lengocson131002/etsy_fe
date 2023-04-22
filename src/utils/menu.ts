@@ -29,6 +29,15 @@ const menuData: MenuList = [
     path: '/shop'
   },
   {
+    code: 'profile',
+    label: {
+      zh_CN: 'Profiles',
+      en_US: 'Profiles',
+    },
+    icon: 'profile',
+    path: '/profile'
+  },
+  {
     code: 'listings',
     label: {
       zh_CN: '引导',

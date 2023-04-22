@@ -6,6 +6,10 @@ import { Tooltip } from 'recharts';
 import { normalizeString } from '@/utils/string';
 import { useLocale } from '@/locales';
 
+import { Typography } from 'antd';
+
+const { Text } = Typography;
+
 const { useToken } = theme;
 
 interface CustomTooltipProps {
@@ -18,7 +22,7 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="chart-tooltip">
-        <p className="char-tooltip-label">{`${normalizeString(label)} : ${payload[0].value}`} shops</p>
+        <Text className="chart-tooltip-label">{`${normalizeString(label)} : ${payload[0].value}`} shops</Text>
       </div>
     );
   }
@@ -28,21 +32,26 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label }) => {
 
 interface StatusChartProps {
   items: StatusCountItem[];
+  loading: boolean;
 }
-const StatusChart: FC<StatusChartProps> = ({ items }) => {
+const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
   const { token } = useToken();
   const { formatMessage } = useLocale();
 
   return (
     <div>
-      <Card className="status-chart-card" title={formatMessage({ id: 'app.dashboard.statusStatistic' })}>
+      <Card
+        loading={loading}
+        className="status-chart-card"
+        title={formatMessage({ id: 'app.dashboard.statusStatistic' })}
+      >
         <ResponsiveContainer width={'100%'} height={180}>
           {items.length > 0 ? (
             <BarChart
               className="status-chart"
               data={items}
               margin={{
-                left: -30,
+                left: -20,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -52,7 +61,7 @@ const StatusChart: FC<StatusChartProps> = ({ items }) => {
               <Bar dataKey="count" barSize={40} fill={token.colorPrimary} name="Status" />
             </BarChart>
           ) : (
-            <Empty style={{margin: 'auto'}} image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty style={{ margin: 'auto' }} image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </ResponsiveContainer>
       </Card>

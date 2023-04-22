@@ -1,5 +1,6 @@
 import { ShopDashboard } from "../dashboard";
 import { Profile } from "../profile";
+import { Staff } from "../staff";
 
 export interface Shop {
   id: string;
@@ -13,7 +14,9 @@ export interface Shop {
   visitCount?: number;
   conversionRate?: number;
   revenue?: number;
-  profile?: Profile
+  profile?: Profile;
+  isTracked?: boolean;
+  trackers?: string[]
 }
 
 
@@ -29,6 +32,7 @@ export interface ShopDetail {
   visitCount?: number;
   conversionRate?: number;
   revenue?: number;
-  profile?: Profile
-  dashboard?: ShopDashboard
+  profile?: Profile;
+  dashboard?: ShopDashboard;
+  trackers?: Staff[];
 }

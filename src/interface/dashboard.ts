@@ -10,12 +10,12 @@ export interface StatusCountItem {
 }
 
 export interface DashboardOVerview {
-  shopCount?: number;
-  orderCount?: number;
-  visitCount?: number;
-  listingCount?: number;
-  revenues?: RevenueStatisticItem[];
-  statusCount?: StatusCountItem[];
+  shopCount: number;
+  orderCount: number;
+  visitCount: number;
+  listingCount: number;
+  revenues: RevenueStatisticItem[];
+  statusCount: StatusCountItem[];
 
 }
 

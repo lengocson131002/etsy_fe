@@ -49,9 +49,9 @@ const TagsView: FC = () => {
     [dispatch, location.pathname, tags],
   );
 
-  useEffect(() => {
-    navigate(activeTagId);
-  }, [activeTagId]);
+  // useEffect(() => {
+  //   navigate(activeTagId);
+  // }, [activeTagId]);
 
   useEffect(() => {
     if (menuList.length) {

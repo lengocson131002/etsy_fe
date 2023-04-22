@@ -11,6 +11,8 @@ import { ReactComponent as OrderSvg } from '@/assets/menu/cart.svg';
 import { ReactComponent as StaffSvg } from '@/assets/menu/staff.svg';
 import { ReactComponent as MessageSvg} from '@/assets/menu/message.svg';
 import { ReactComponent as TaskSvg} from '@/assets/menu/task.svg';
+import { ReactComponent as ProfileSvg} from '@/assets/menu/documentation.svg';
+
 interface CustomIconProps {
   type: string;
 }
@@ -41,6 +43,8 @@ export const CustomIcon: FC<CustomIconProps> = props => {
     com = <MessageSvg />;
   }  else if (type == 'task') {
     com = <TaskSvg />;
+  } else if (type == 'profile') {
+    com = <ProfileSvg />;
   } else {
     com = <ProductSvg />;
   }

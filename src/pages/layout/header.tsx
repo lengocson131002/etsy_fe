@@ -18,8 +18,6 @@ import { LocaleFormatter, useLocale } from '@/locales';
 import { setGlobalState } from '@/stores/global.store';
 import { setUserItem } from '@/stores/user.store';
 
-import { logoutAsync } from '../../stores/user.action';
-import HeaderNoticeComponent from './notice';
 
 const { Header } = Layout;
 
@@ -27,8 +25,6 @@ interface HeaderProps {
   collapsed: boolean;
   toggle: () => void;
 }
-
-type Action = 'userInfo' | 'userSetting' | 'logout';
 
 const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
   const { logged, locale, device } = useSelector(state => state.user);
@@ -38,19 +34,18 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
   const dispatch = useDispatch();
   const { formatMessage } = useLocale();
 
-  const onActionClick = async (action: Action) => {
-    switch (action) {
-      case 'userInfo':
-        return;
-      case 'userSetting':
-        return;
-      case 'logout':
-        const res = Boolean(await dispatch(logoutAsync()));
+  const onLogout = async () => {
+    localStorage.clear();
+    dispatch(
+      setUserItem({
+        logged: false,
+        userId: undefined,
+        username: undefined,
+        roles: []
+      }),
+    );
 
-        res && navigate('/login');
-
-        return;
-    }
+    navigate('/login');
   };
 
   const toLogin = () => {
@@ -97,7 +92,6 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
               })}
             </span>
           </Tooltip>
-          <HeaderNoticeComponent />
           <Dropdown
             menu={{
               onClick: info => selectLocale(info),
@@ -139,7 +133,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
                     key: '2',
                     icon: <LogoutOutlined />,
                     label: (
-                      <span onClick={() => onActionClick('logout')}>
+                      <span onClick={onLogout}>
                         <LocaleFormatter id="header.avator.logout" />
                       </span>
                     ),

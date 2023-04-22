@@ -10,7 +10,7 @@ import { Col, ColProps, Empty, Row, Select } from 'antd';
 import { DashboardOVerview, DateRange, DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
 import { getDashboard } from '@/api/dashboard.api';
 import StatusChart from './statusChart';
-import Item from 'antd/es/list/Item';
+import { useSelector } from 'react-redux';
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -22,27 +22,22 @@ const wrapperCol: ColProps = {
 };
 
 const DashBoardPage: FC = () => {
-  const [loading, setLoading] = useState(true);
+  const { loading } = useSelector(state => state.global);
   const [dateRange, setDateRange] = useState<DateRange>(DateRanges[0].value);
   const [dashboard, setDashboard] = useState<DashboardOVerview>();
 
-  console.log(dashboard);
-
   useEffect(() => {
     const getDashboarData = async (dateRange: string) => {
-      setLoading(true);
-      const dashboardResponse = await getDashboard(dateRange);
-      setLoading(false);
+      const {result, status} = await getDashboard(dateRange);
 
-      if (!dashboardResponse || !dashboardResponse.status || !dashboardResponse.result) {
-        setDashboard(undefined);
-        return;
+      if (status || result) {
+        setDashboard(result);
       }
 
-      setDashboard(dashboardResponse.result);
     };
 
     getDashboarData(dateRange.toUpperCase());
+
   }, [dateRange]);
 
   const handleDateRangeChange = (value: any) => {
@@ -63,7 +58,7 @@ const DashBoardPage: FC = () => {
         <>
           <Row gutter={[12, 12]}>
             <Col lg={9} xs={24}>
-              <StatusChart items={dashboard.statusCount?.sort((item1, item2) => item1.status > item2.status ? 1 : -1) ?? []} />
+              <StatusChart loading={loading} items={dashboard.statusCount?.sort((item1, item2) => item1.status > item2.status ? 1 : -1) ?? []} />
             </Col>
             <Col lg={15} xs={24}>
               <Overview overview={dashboard} loading={loading} />

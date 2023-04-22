@@ -1,20 +1,20 @@
-import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
 import { PageData } from '@/interface';
-import { Order, OrderDetail } from '@/interface/order';
+import { request } from './request';
+import { Shop, ShopDetail } from '@/interface/shop/shop.interface';
+import { AxiosRequestConfig } from 'axios';
 import { LocalStorageConstants } from '@/utils/constants';
 
-export const getOrders = (params: any) =>
-  request<PageData<Order>>('get', `/api/v1/orders`, params, {
+export const getAllShops = (params: any) =>
+  request<PageData<Shop>>('get', '/api/v1/shops', params, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },
   });
 
-export const getOrderDetail = (orderId: number) =>
-  request<OrderDetail>(
+export const getShop = (id: string) =>
+  request<ShopDetail>(
     'get',
-    `/api/v1/orders/${orderId}`,
+    `/api/v1/shops/${id}`,
     {},
     {
       headers: {

@@ -13,6 +13,10 @@ import { history, HistoryRouter } from '@/routes/history';
 import { localeConfig, LocaleFormatter } from './locales';
 import RenderRouter from './routes';
 import { setGlobalState } from './stores/global.store';
+import { setUserItem } from './stores/user.store';
+import { apiAccount } from './api/user.api';
+import { LocalStorageConstants } from './utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 const App: React.FC = () => {
   const { locale } = useSelector(state => state.user);
@@ -41,6 +45,7 @@ const App: React.FC = () => {
 
       mql.addEventListener('change', matchMode);
     }
+
   }, []);
 
   // set the locale for the user
