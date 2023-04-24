@@ -1,4 +1,5 @@
 import type { Role } from '../role';
+import { Shop } from '../shop/shop.interface';
 
 export interface Staff {
   id: number;
@@ -15,6 +16,7 @@ export interface Staff {
   createdBy?: string;
   updatedAt?: Date;
   updatedBy?: string;
+  trackings?: Shop[]
 }
 
 export interface CreateStaffRequest {

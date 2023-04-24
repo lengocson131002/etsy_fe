@@ -4,16 +4,18 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Col, ColProps, Modal, Row, Space } from 'antd';
+import { Col, ColProps, Modal, Row, Space, Tag } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { getAllRoles } from '@/api/role.api';
 import MyButton from '@/components/basic/button';
 import MyForm from '@/components/core/form';
 import { useLocale } from '@/locales';
 import { emailRegex, phoneNumberRegex } from '@/utils/regex';
+import MyTable from '@/components/core/table';
+import { normalizeString } from '@/utils/string';
 
 interface StaffFormProps {
   data?: Staff;
@@ -181,6 +183,40 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
           type="text-area"
           initialValue={data?.description}
         />
+
+        <div>
+          <p>Trackings ({data?.trackings?.length})</p>
+          <MyTable
+            pagination={false}
+            dataSource={data?.trackings}
+            columns={[
+              {
+                title: 'Etsy Shop ID',
+                dataIndex: 'id',
+                key: 'id',
+                render: (value) => (
+                  <Link to={`/shop/${value}`}>{value}</Link>
+                )
+              },
+              {
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name'
+              },
+              {
+                title: 'Status',
+                dataIndex: 'status',
+                key: 'status',
+                render: status => (
+                  <Tag color="blue" key={status + ''}>
+                    {normalizeString(status)}
+                  </Tag>
+                ),
+                align: 'center',
+              },
+            ]}
+          />
+        </div>
 
         <Space>
           <MyForm.Item>

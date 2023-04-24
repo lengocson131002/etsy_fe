@@ -5,7 +5,7 @@ import './index.less';
 
 import { Card, Col, ColProps, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getShop } from '@/api/shop.api';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
@@ -13,6 +13,7 @@ import { Shop } from '@/interface/shop/shop.interface';
 import { dateToStringWithFormat } from '@/utils/datetime';
 
 import ShopOverview from './shop-overview';
+import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
@@ -58,9 +59,11 @@ const ShopDetailPage: FC = () => {
                 <Space direction="vertical">
                   <div className="shop-detail-overview-item">
                     <Text strong className="shop-detail-overview-item-title">
-                      Shop ID :
+                      Etsy Shop ID :
                     </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.id}</Text>
+                    <Text className="shop-detail-overview-item-info">
+                      <Link target='_blank' to={`${EtsyUrlPrefixes.listings}/${shopData.id}`}>{shopData.id}</Link>
+                    </Text>
                   </div>
                   <div className="shop-detail-overview-item">
                     <Text strong className="shop-detail-overview-item-title">
