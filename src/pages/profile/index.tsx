@@ -105,6 +105,9 @@ const ProfilePage: FC = () => {
             title: 'Notes',
             dataIndex: 'notes',
             key: 'notes',
+            render: (value: string) => (
+              <div dangerouslySetInnerHTML={{__html: value}}></div>
+            )
           },
           {
             title: 'Created date',

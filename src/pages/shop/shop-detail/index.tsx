@@ -121,7 +121,9 @@ const ShopDetailPage: FC = () => {
                       <Text strong className="shop-detail-overview-item-title">
                         Notes :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.notes}</Text>
+                      <Text className="shop-detail-overview-item-info">
+                        <div dangerouslySetInnerHTML={{__html: shopData.profile.notes ?? ''}}/>
+                      </Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">

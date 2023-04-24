@@ -11,6 +11,7 @@ import { LocaleFormatter, useLocale } from '@/locales';
 import { formatSearch } from '@/utils/formatSearch';
 
 import { loginAsync } from '../../stores/user.action';
+import Logo from '@/assets/logo/logo.png';
 
 const LoginForm: FC = () => {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ const LoginForm: FC = () => {
 
   return (
     <Layout className="login-page">
+      <img className="login-page-logo" src={Logo} />
       <Form<LoginParams> onFinish={onFinished} className="login-page-form">
-        <h2>ETSY SHOP MANAGEMENT</h2>
         <Form.Item
           name="username"
           rules={[

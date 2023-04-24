@@ -13,7 +13,7 @@ import { ReactComponent as MoonSvg } from '@/assets/header/moon.svg';
 import { ReactComponent as SunSvg } from '@/assets/header/sun.svg';
 import { ReactComponent as ZhCnSvg } from '@/assets/header/zh_CN.svg';
 import AntdSvg from '@/assets/logo/antd.svg';
-import ReactSvg from '@/assets/logo/react.svg';
+import Logo from '@/assets/logo/logo.png';
 import { LocaleFormatter, useLocale } from '@/locales';
 import { setGlobalState } from '@/stores/global.store';
 import { setUserItem } from '@/stores/user.store';
@@ -71,8 +71,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
     <Header className="layout-page-header bg-2" style={{ backgroundColor: token.token.colorBgContainer }}>
       {device !== 'MOBILE' && (
         <div className="logo" style={{ width: collapsed ? 80 : 200 }}>
-          <img src={ReactSvg} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} />
-          <img src={AntdSvg} alt="" />
+          <img src={Logo} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} />
         </div>
       )}
       <div className="layout-page-header-main">
@@ -121,15 +120,6 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
                 items: [
                   {
                     key: '1',
-                    icon: <UserOutlined />,
-                    label: (
-                      <span onClick={() => navigate('/dashboard')}>
-                        <LocaleFormatter id="header.avator.account" />
-                      </span>
-                    ),
-                  },
-                  {
-                    key: '2',
                     icon: <LogoutOutlined />,
                     label: (
                       <span onClick={onLogout}>

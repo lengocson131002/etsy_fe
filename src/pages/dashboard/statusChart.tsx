@@ -1,36 +1,37 @@
 import type { StatusCountItem } from '@/interface/dashboard';
-import type { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Card, Empty, theme, Typography } from 'antd';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Label,
+  LabelList,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { useLocale } from '@/locales';
 import { normalizeString } from '@/utils/string';
+import { randomColor } from '@/utils/color';
 
 const { Text } = Typography;
 
 const { useToken } = theme;
 
-interface CustomTooltipProps {
-  active: any;
-  payload: any;
-  label: any;
+interface StatusChartItem extends StatusCountItem {
+  label?: string;
 }
 
-const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="chart-tooltip">
-        <Text className="chart-tooltip-label">{`${normalizeString(label)} : ${payload[0].value}`} shops</Text>
-      </div>
-    );
-  }
-
-  return null;
-};
-
 interface StatusChartProps {
-  items: StatusCountItem[];
+  items: StatusChartItem[];
   loading: boolean;
 }
 
@@ -45,21 +46,42 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
         className="status-chart-card"
         title={formatMessage({ id: 'app.dashboard.statusStatistic' })}
       >
-        <ResponsiveContainer width={'100%'} height={180}>
+        <ResponsiveContainer height={180}>
           {items.length > 0 ? (
-            <BarChart
-              className="status-chart"
-              data={items}
-              margin={{
-                left: -20,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="status" />
-              <YAxis />
-              <Tooltip content={<CustomTooltip active={''} payload={''} label={''} />} />
-              <Bar dataKey="count" barSize={40} fill={token.colorPrimary} name="Status" />
-            </BarChart>
+            <PieChart>
+              <Tooltip
+                content={({ active, payload }: any) => {
+                  if (active) {
+                    const { status, count } = payload[0].payload;
+                    const total = items.map(d => d.count).reduce((a, b) => a + b);
+                    const percent = total !== 0 ? ((count / total) * 100).toFixed(2) + '%' : 0;
+
+                    return (
+                      <span className="customTooltip">
+                        {normalizeString(status)}: {count} | {percent}
+                      </span>
+                    );
+                  }
+
+                  return null;
+                }}
+              />
+              <Pie
+                strokeOpacity={1}
+                data={items}
+                innerRadius={0}
+                outerRadius={70}
+                paddingAngle={0}
+                dataKey="count"
+                label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}
+              >
+                {items.map((_, index) => (
+                  <>
+                    <Cell key={`cell-${index}`} fill={randomColor()} />
+                  </>
+                ))}
+              </Pie>
+            </PieChart>
           ) : (
             <Empty style={{ margin: 'auto' }} image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}

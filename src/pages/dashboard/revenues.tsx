@@ -2,23 +2,32 @@ import type { RevenueStatisticItem } from '@/interface/dashboard';
 import type { ColProps } from 'antd/es/col';
 import type { FC } from 'react';
 
-import { Badge, Card, Col, Empty, List, Radio, Row } from 'antd';
+import { Badge, Card, Col, Empty, List, Radio, Row, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Label,
+  LabelList,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import { useLocale } from '@/locales';
 import { randomColor } from '@/utils/color';
 import { numberWithCommas } from '@/utils/number';
+import { theme } from 'antd';
+import { normalizeString } from '@/utils/string';
+
+const { useToken } = theme;
 
 type SortType = 'asc' | 'desc';
-
-interface Values {
-  name: {
-    zh_CN: string;
-    en_US: string;
-  };
-  value: number;
-}
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -29,25 +38,56 @@ const wrapperCol: ColProps = {
   xxl: 12,
 };
 
+interface CustomTooltipProps {
+  active: any;
+  payload: any;
+  label: any;
+  unit?: any;
+}
+
+interface RevenueChartItem extends RevenueStatisticItem {
+  label?: string
+}
+
+const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label, unit }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="chart-tooltip">
+        <span className="chart-tooltip-label">{`${numberWithCommas(payload[0].value)}  ${normalizeString(
+          label,
+        )}`}</span>
+      </div>
+    );
+  }
+
+  return null;
+};
+
 const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> = ({ loading, data }) => {
   const [colors, setColors] = useState<string[]>([]);
-  const [revenueData, setRevenueData] = useState<RevenueStatisticItem[]>(data);
+  const [revenueData, setRevenueData] = useState<RevenueChartItem[]>([]);
   const [sort, setSort] = useState<SortType>('asc');
+  const { token } = useToken();
 
   const { formatMessage } = useLocale();
 
   useEffect(() => {
-    const colors = Array(revenueData.length)
-      .fill(undefined)
-      .map(_ => randomColor());
-    const newData = data.sort((val1, val2) => (sort === 'asc' ? val1.value - val2.value : val2.value - val1.value));
+    const newData = data
+        .map(item => ({
+          ...item,
+          label: `${numberWithCommas(item.value)}${item.currencySymbol}`
+        }))
+        .sort((val1, val2) => (sort === 'asc' ? val1.value - val2.value : val2.value - val1.value));
 
-    setColors(colors);
     setRevenueData(newData);
   }, [sort, data]);
 
   return (
-    <Card className="salePercent" title={formatMessage({ id: 'app.dashboard.revenueStatistic' })} loading={loading}>
+    <Card
+      className="revenue-statistic-card"
+      title={formatMessage({ id: 'app.dashboard.revenueStatistic' })}
+      loading={loading}
+    >
       <Radio.Group defaultValue={sort} buttonStyle="solid" onChange={e => setSort(e.target.value)}>
         <Radio.Button value="asc">Ascending</Radio.Button>
         <Radio.Button value="desc">Descending</Radio.Button>
@@ -56,41 +96,20 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
         {data.length > 0 ? (
           <>
             <Col {...wrapperCol}>
-              <ResponsiveContainer height={250}>
-                <PieChart>
-                  <Tooltip
-                    content={({ active, payload }: any) => {
-                      if (active) {
-                        const { currency, currencySymbol, value } = payload[0].payload;
-                        const total = revenueData.map(d => d.value).reduce((a, b) => a + b);
-                        const percent = ((value / total) * 100).toFixed(2) + '%';
-
-                        return (
-                          <span className="customTooltip">
-                            {currency}: {numberWithCommas(value)} {currencySymbol} | {percent}
-                          </span>
-                        );
-                      }
-
-                      return null;
-                    }}
-                  />
-                  <Pie
-                    strokeOpacity={1}
-                    data={revenueData}
-                    innerRadius={0}
-                    outerRadius={100}
-                    paddingAngle={0}
-                    dataKey="value"
-                    label
-                  >
-                    {revenueData.map((_, index) => (
-                      <>
-                        <Cell key={`cell-${index}`} fill={colors[index]} />
-                      </>
-                    ))}
-                  </Pie>
-                </PieChart>
+              <ResponsiveContainer height={320}>
+                <BarChart
+                  margin={{ top: 40, right: 20, bottom: 20, left: 40 }}
+                  className="revenue-chart"
+                  data={revenueData}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="currencyCode" allowDecimals={true} />
+                  <YAxis />
+                  <Tooltip content={<CustomTooltip active={''} payload={''} label={''} />} />
+                  <Bar dataKey="value" barSize={40} fill={token.colorPrimary} name="Status">
+                    <LabelList dataKey="label" position="top" style={{color: token.colorPrimary}}/>
+                  </Bar>
+                </BarChart>
               </ResponsiveContainer>
             </Col>
             <Col {...wrapperCol}>
@@ -98,17 +117,14 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
                 bordered
                 dataSource={revenueData}
                 renderItem={(item, index) => {
-                  const total = revenueData.map(d => d.value).reduce((a, b) => a + b);
-                  const percent = ((item.value / total) * 100).toFixed(2) + '%';
-
                   return (
                     <List.Item>
-                      <Badge color={colors[index]} />
-                      <span>{item.currencyCode}</span> |{' '}
-                      <span>
-                        {numberWithCommas(item.value)} {item.currencySymbol} |
-                      </span>{' '}
-                      <span>{percent}</span>
+                      <div>
+                        <Tag color="blue">{item.currencyCode}</Tag>
+                        <span>
+                          {numberWithCommas(item.value)} {item.currencySymbol}
+                        </span>
+                      </div>
                     </List.Item>
                   );
                 }}

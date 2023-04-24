@@ -82,10 +82,6 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
       },
       {
-        path: 'task',
-        element: <WrapperRouteComponent element={<TaskPage />} titleId="title.task" />,
-      },
-      {
         path: 'profile',
         element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
       },

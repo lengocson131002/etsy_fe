@@ -16,11 +16,11 @@ const OrderItemCard: FC<OrderItemProps> = ({ item }) => {
   return (
     <div>
       <div className="order-item">
-        <Image width={100} height={100} src={item.image}></Image>
+        <Image height={100} src={item.image}></Image>
         <div className="order-item-name-wrapper">
           <div className="order-item-name">{item.name}</div>
           <div className="order-item-quantity">x{numberWithCommas(item.quantity)}</div>
-          <div className="order-item-description">{item.description}</div>
+          <div className="order-item-description" dangerouslySetInnerHTML={{__html: item.description ?? ''}}></div>
         </div>
         <div className="order-item-price">{numberWithCommas(item.price)}</div>
       </div>

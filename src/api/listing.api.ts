@@ -1,4 +1,4 @@
-import type { PageData } from '@/interface';
+import type { ListResponse, PageData } from '@/interface';
 import type { Listing } from '@/interface/listing';
 
 import { AxiosRequestConfig } from 'axios';
@@ -13,3 +13,5 @@ export const getListings = (params?: any) =>
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },
   });
+
+export const getListingStatuses = () => request<ListResponse<string>>('get', '/api/v1/listings/statuses');

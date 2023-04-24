@@ -1,14 +1,16 @@
 import type { MyTableOptions } from '@/components/business/table';
 import type { Listing } from '@/interface/listing';
-import type { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Image, Tag } from 'antd';
 import { useCallback } from 'react';
 
-import { getListings } from '@/api/listing.api';
+import { getListingStatuses, getListings } from '@/api/listing.api';
 import Table, { SearchApi } from '@/components/business/table';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
+import { Link } from 'react-router-dom';
+import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -23,7 +25,7 @@ const columnOptions: MyTableOptions<Listing> = [
     key: 'imageUrl',
     render: (image: string) => (
       <>
-        <Image width={90} height={90} src={image} />
+        <Image width={90} height={90} style={{objectFit: 'contain'}} src={image} />
       </>
     ),
     fixed: 'left',
@@ -32,6 +34,9 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Etsy Listing ID',
     dataIndex: 'etsyListingId',
     key: 'etsyListingId',
+    render: (value) => (
+      <Link target='_blank' to={`${EtsyUrlPrefixes.listings}/${value}`}>{value}</Link>
+    )
   },
   {
     title: 'Title',
@@ -104,6 +109,20 @@ const columnOptions: MyTableOptions<Listing> = [
 ];
 
 const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
+
+  const [statusOptions, setStatusOptions] = useState<{value: string, label: string}[]>([])
+
+  useEffect(() => {
+    const loadStatusOptions = async () => {
+      const { result, status } = await getListingStatuses();
+      if (status && result?.items) {
+        setStatusOptions([...result.items.map(item => ({ value: item, label: normalizeString(item) }))]);
+      }
+    };
+
+    loadStatusOptions();
+  }, []);
+
   const getShopProductsAPI = useCallback(
     (params: any) => {
       if (shopId) {
@@ -133,6 +152,16 @@ const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
               label="Search"
               name="query"
               type="input"
+            />
+            <FilterItem
+              innerProps={{
+                allowClear: true,
+              }}
+              style={{ width: 200 }}
+              label="Status"
+              name="status"
+              type="select"
+              options={statusOptions}
             />
           </>
         }

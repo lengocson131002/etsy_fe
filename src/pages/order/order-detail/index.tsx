@@ -26,7 +26,7 @@ const wrapperCol: ColProps = {
   md: 12,
   lg: 12,
   xl: 12,
-  xxl: 6,
+  xxl: 12,
 };
 
 interface ColCardProps {

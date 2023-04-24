@@ -64,15 +64,6 @@ const menuData: MenuList = [
     icon: 'message',
     path: '/message',
   },
-  {
-    code: 'task',
-    label: {
-      zh_CN: '权限',
-      en_US: 'My Tasks',
-    },
-    icon: 'task',
-    path: '/task',
-  },
 ];
 
 export default menuData;

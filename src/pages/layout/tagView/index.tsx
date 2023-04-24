@@ -51,6 +51,8 @@ const TagsView: FC = () => {
 
   useEffect(() => {
     navigate(activeTagId);
+    console.log("Active tag change to: ", activeTagId);
+
   }, [activeTagId]);
 
   useEffect(() => {
@@ -58,29 +60,13 @@ const TagsView: FC = () => {
       const menu = menuList.find(m => m.path === location.pathname);
 
       if (menu) {
+        console.log('Current path: ', menu.path);
         dispatch(
           addTag({
             ...menu,
             closable: menu.code !== 'dashboard',
           }),
         );
-      } else {
-        const currentPath = location.pathname;
-        const label = document.title ? document.title : normalize(currentPath, true);
-
-        if (currentPath) {
-          const tag: TagItem = {
-            code: currentPath,
-            label: {
-              zh_CN: label,
-              en_US: label,
-            },
-            path: currentPath,
-            closable: true,
-          };
-
-          dispatch(addTag(tag));
-        }
       }
     }
   }, [dispatch, location.pathname, menuList]);

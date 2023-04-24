@@ -1,16 +1,17 @@
 import type { MyTableOptions } from '@/components/business/table';
 import type { Order } from '@/interface/order';
-import type { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import { Button, Image, Tag } from 'antd';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getOrders } from '@/api/orders.api';
+import { getOrderStatuses, getOrders } from '@/api/orders.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
+import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -24,7 +25,9 @@ const columnOptions: MyTableOptions<Order> = [
     title: 'Etsy Order ID',
     dataIndex: 'etsyOrderId',
     key: 'etsyOrderId',
-    fixed: 'left',
+    render: (value) => (
+      <Link target='_blank' to={`${EtsyUrlPrefixes.orders}/${value}`}>{value}</Link>
+    )
   },
   {
     title: 'Progress step',
@@ -93,6 +96,19 @@ const columnOptions: MyTableOptions<Order> = [
 ];
 
 const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
+  const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+
+  useEffect(() => {
+    const loadStatusOptions = async () => {
+      const { result, status } = await getOrderStatuses();
+      if (status && result?.items) {
+        setStatusOptions([...result.items.map(item => ({ value: item, label: normalizeString(item) }))]);
+      }
+    };
+
+    loadStatusOptions();
+  }, []);
+
   const getShopOrderAPI = useCallback(
     (params: any) => {
       if (shopId) {
@@ -132,16 +148,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
               label="Status"
               name="status"
               type="select"
-              options={[
-                {
-                  value: 'active',
-                  label: 'Active',
-                },
-                {
-                  value: 'inactive',
-                  label: 'Inactive',
-                },
-              ]}
+              options={statusOptions}
             />
           </>
         }

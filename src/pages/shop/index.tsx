@@ -1,23 +1,23 @@
 import type { RefTableProps } from '@/components/business/table';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import type { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, Image, message, Space, Tag } from 'antd';
+import { Checkbox, DropDownProps, Image, message, SelectProps, Space, Tag } from 'antd';
 import useSelection from 'antd/es/table/hooks/useSelection';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getAllShops } from '@/api/shop.api';
+import { getAllShops, getShopStatuses } from '@/api/shop.api';
 import { addTracking, unTracking } from '@/api/tracking.api';
 import Button from '@/components/basic/button';
 import Table, { MyTableOptions } from '@/components/business/table';
-import { Shop } from '@/interface/shop/shop.interface';
-import { dateToStringWithFormat } from '@/utils/datetime';
+import { dateToStringWithFormat, GLOBAL_DATE_FORMAT } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
+import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -26,6 +26,18 @@ const ShopPage: FC = () => {
 
   const { userId, username } = useSelector(state => state.user);
   const [myTrackings, setMyTrackings] = useState(false);
+  const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+
+  useEffect(() => {
+    const loadStatusOptions = async () => {
+      const { result, status } = await getShopStatuses();
+      if (status && result?.items) {
+        setStatusOptions([...result.items.map(item => ({ value: item, label: normalizeString(item) }))]);
+      }
+    };
+
+    loadStatusOptions();
+  }, []);
 
   const onTracking = async (id: string) => {
     const { status, result } = await addTracking(id);
@@ -63,22 +75,17 @@ const ShopPage: FC = () => {
         filterApi={getAllShopsAPI}
         tableOptions={[
           {
+            title: 'Etsy Shop ID',
+            dataIndex: 'id',
+            key: 'id',
+            render: (value) => (
+              <Link target='_blank' to={`${EtsyUrlPrefixes.shops}/${value}`}>{value}</Link>
+            )
+          },
+          {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            width: 200,
-          },
-          {
-            title: 'Profile ID',
-            dataIndex: 'profile',
-            key: 'profile',
-            render: profile => <span>{profile.goLoginProfileId}</span>,
-          },
-          {
-            title: 'Profile Name',
-            dataIndex: 'profile',
-            key: 'profile',
-            render: profile => <span>{profile.name}</span>,
           },
           {
             title: 'Status',
@@ -139,7 +146,7 @@ const ShopPage: FC = () => {
             title: 'Opened Date',
             dataIndex: 'openedDate',
             key: 'openedDate',
-            render: openedDate => <span>{dateToStringWithFormat(openedDate)}</span>,
+            render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
           },
           {
             title: 'Trackers',
@@ -208,16 +215,7 @@ const ShopPage: FC = () => {
               label="Status"
               name="status"
               type="select"
-              options={[
-                {
-                  value: 'active',
-                  label: 'Active',
-                },
-                {
-                  value: 'inactive',
-                  label: 'Inactive',
-                },
-              ]}
+              options={statusOptions}
             />
           </>
         }

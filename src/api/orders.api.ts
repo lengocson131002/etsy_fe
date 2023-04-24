@@ -1,4 +1,4 @@
-import type { PageData } from '@/interface';
+import type { ListResponse, PageData } from '@/interface';
 import type { Order, OrderDetail } from '@/interface/order';
 
 import { AxiosRequestConfig } from 'axios';
@@ -25,3 +25,5 @@ export const getOrderDetail = (orderId: number) =>
       },
     },
   );
+
+export const getOrderStatuses = () => request<ListResponse<string>>('get', '/api/v1/orders/statuses');
