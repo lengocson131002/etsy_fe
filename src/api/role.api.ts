@@ -1,8 +1,11 @@
+import type { ListResponse } from '@/interface';
+import type { Role } from '@/interface/role';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { ListResponse } from '@/interface';
-import { Role } from '@/interface/role';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getAllRoles = () =>
   request<ListResponse<Role>>(

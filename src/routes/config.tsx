@@ -5,7 +5,7 @@ import { useIntl } from 'react-intl';
 
 import PrivateRoute from './pravateRoute';
 
-export interface WrapperRouteProps extends RouteProps {
+export type WrapperRouteProps = RouteProps & {
   /** document title locale id */
   titleId: string;
   /** authorization？ */

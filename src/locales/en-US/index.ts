@@ -10,7 +10,7 @@ import { enUS_permissionRole } from './permission/role';
 import { enUS_avatorDropMenu } from './user/avatorDropMenu';
 import { enUS_tagsViewDropMenu } from './user/tagsViewDropMenu';
 import { enUS_title } from './user/title';
-import { enUS_validation} from './validation'
+import { enUS_validation } from './validation';
 
 const en_US = {
   ...enUS_account,
@@ -25,7 +25,7 @@ const en_US = {
   ...enUS_notice,
   ...en_US_component,
   ...enUS_validation,
-  ...enUS_modal
+  ...enUS_modal,
 };
 
 export default en_US;

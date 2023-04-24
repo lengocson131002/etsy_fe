@@ -1,13 +1,19 @@
-import { FC, lazy, useCallback, useRef, useState } from 'react';
+import type { RefTableProps } from '@/components/business/table';
+import type { CreateProfile, Profile } from '@/interface/profile';
+import type { FC } from 'react';
+
 import './index.less';
-import Table, { MyTableOptions, RefTableProps } from '@/components/business/table';
-import { CreateProfile, Profile } from '@/interface/profile';
-import { dateToStringWithFormat } from '@/utils/datetime';
-import { createProfile, removeProfile, getAllProfiles, getProfile, updateProfile } from '@/api/profile.api';
-import { Button, Drawer, Modal, Space, message } from 'antd';
+
+import { Button, Drawer, message, Modal, Space } from 'antd';
+import { lazy, useCallback, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import ProfileForm from '../components/profile-form';
 import { Link } from 'react-router-dom';
+
+import { createProfile, getAllProfiles, getProfile, removeProfile, updateProfile } from '@/api/profile.api';
+import Table, { MyTableOptions } from '@/components/business/table';
+import { dateToStringWithFormat } from '@/utils/datetime';
+
+import ProfileForm from '../components/profile-form';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -42,6 +48,7 @@ const ProfilePage: FC = () => {
 
   const handleUpdateProfile = async (profile: Profile) => {
     const { status, result } = await updateProfile(profile);
+
     if (status && result?.status) {
       message.success('Update profile successfully');
       setOpened(false);
@@ -51,6 +58,7 @@ const ProfilePage: FC = () => {
 
   const handRemoveProfile = async (profileId: string | number) => {
     const { status, result } = await removeProfile(profileId);
+
     if (status && result?.status) {
       message.success('Remove profile successfully');
       setOpened(false);
@@ -64,6 +72,7 @@ const ProfilePage: FC = () => {
     }
 
     const { result, status } = await getProfile(id);
+
     if (status && result) {
       setProfile(result);
       setOpened(true);

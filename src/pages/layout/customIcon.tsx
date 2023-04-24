@@ -1,17 +1,16 @@
 import type { FC } from 'react';
 
 import { ReactComponent as AccountSvg } from '@/assets/menu/account.svg';
-import { ReactComponent as DashboardSvg } from '@/assets/menu/dashboard.svg';
-import { ReactComponent as DocumentationSvg } from '@/assets/menu/documentation.svg';
-import { ReactComponent as GuideSvg } from '@/assets/menu/guide.svg';
-import { ReactComponent as PermissionSvg } from '@/assets/menu/permission.svg';
-import { ReactComponent as ShopSvg } from '@/assets/menu/shop.svg';
-import { ReactComponent as ProductSvg } from '@/assets/menu/product.svg';
 import { ReactComponent as OrderSvg } from '@/assets/menu/cart.svg';
+import { ReactComponent as DashboardSvg } from '@/assets/menu/dashboard.svg';
+import { ReactComponent as DocumentationSvg, ReactComponent as ProfileSvg } from '@/assets/menu/documentation.svg';
+import { ReactComponent as GuideSvg } from '@/assets/menu/guide.svg';
+import { ReactComponent as MessageSvg } from '@/assets/menu/message.svg';
+import { ReactComponent as PermissionSvg } from '@/assets/menu/permission.svg';
+import { ReactComponent as ProductSvg } from '@/assets/menu/product.svg';
+import { ReactComponent as ShopSvg } from '@/assets/menu/shop.svg';
 import { ReactComponent as StaffSvg } from '@/assets/menu/staff.svg';
-import { ReactComponent as MessageSvg} from '@/assets/menu/message.svg';
-import { ReactComponent as TaskSvg} from '@/assets/menu/task.svg';
-import { ReactComponent as ProfileSvg} from '@/assets/menu/documentation.svg';
+import { ReactComponent as TaskSvg } from '@/assets/menu/task.svg';
 
 interface CustomIconProps {
   type: string;
@@ -41,7 +40,7 @@ export const CustomIcon: FC<CustomIconProps> = props => {
     com = <StaffSvg />;
   } else if (type == 'message') {
     com = <MessageSvg />;
-  }  else if (type == 'task') {
+  } else if (type == 'task') {
     com = <TaskSvg />;
   } else if (type == 'profile') {
     com = <ProfileSvg />;

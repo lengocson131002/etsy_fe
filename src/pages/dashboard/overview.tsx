@@ -1,8 +1,10 @@
+import type { DashboardOVerview } from '@/interface/dashboard';
 import type { ColProps } from 'antd/es/col';
 import type { FC } from 'react';
+
 import { Badge, Card, Col, Row, theme } from 'antd';
+
 import { useLocale } from '@/locales';
-import { DashboardOVerview } from '@/interface/dashboard';
 import { numberWithCommas } from '@/utils/number';
 
 const { useToken } = theme;
@@ -25,7 +27,6 @@ interface ColCardProps {
 }
 
 const ColCard: FC<ColCardProps> = ({ metaName, metaCount, body, footer, loading }) => {
-
   const { token } = useToken();
 
   return (
@@ -33,7 +34,11 @@ const ColCard: FC<ColCardProps> = ({ metaName, metaCount, body, footer, loading 
       <Card loading={loading} className="overview" bordered={false}>
         <div className="overview-header">
           {metaName && <div className="overview-header-meta">{metaName}</div>}
-          {metaCount && <div className="overview-header-count" style={{color: token.colorPrimary}}>{metaCount}</div>}
+          {metaCount && (
+            <div className="overview-header-count" style={{ color: token.colorPrimary }}>
+              {metaCount}
+            </div>
+          )}
         </div>
         {body && <div className="overview-body">{body}</div>}
         {footer && <div className="overview-footer">{footer}</div>}
@@ -54,7 +59,7 @@ const Field: FC<FieldProps> = ({ name, number }) => (
   </div>
 );
 
-const Overview: FC<{ loading: boolean, overview: DashboardOVerview }> = ({ loading, overview }) => {
+const Overview: FC<{ loading: boolean; overview: DashboardOVerview }> = ({ loading, overview }) => {
   const { formatMessage } = useLocale();
 
   return (
@@ -65,7 +70,7 @@ const Overview: FC<{ loading: boolean, overview: DashboardOVerview }> = ({ loadi
         metaCount={numberWithCommas(overview.shopCount)}
         footer={<Field name={formatMessage({ id: 'app.dashboard.overview.unit.shops' })} />}
       />
-        <ColCard
+      <ColCard
         loading={loading}
         metaName={formatMessage({ id: 'app.dashboard.overview.orders' })}
         metaCount={numberWithCommas(overview.orderCount)}

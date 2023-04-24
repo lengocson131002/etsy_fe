@@ -16,10 +16,10 @@ export const zhCN_dashboard = {
   'app.dashboard.overview.shops': 'Total shops',
   'app.dashboard.overview.unit.shops': 'Shops',
   'app.dashboard.overview.unit.visits': 'Visits',
-  'app.dashboard.overview.orders':'Total orders',
+  'app.dashboard.overview.orders': 'Total orders',
   'app.dashboard.overview.unit.orders': 'Orders',
   'app.dashboard.revenueStatistic': 'Revenue statistic',
-  'app.dashboard.overview.listings' : 'Total listings',
+  'app.dashboard.overview.listings': 'Total listings',
   'app.dashboard.overview.unit.listings': 'Listings',
-  'app.dashboard.statusStatistic': 'Status statistic'
+  'app.dashboard.statusStatistic': 'Status statistic',
 };

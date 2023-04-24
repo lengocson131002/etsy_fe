@@ -1,16 +1,19 @@
+import type { DashboardOVerview, DateRange } from '@/interface/dashboard';
+import type { ColProps } from 'antd';
 import type { FC } from 'react';
 
 import './index.less';
 
+import { Col, Empty, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import { getDashboard } from '@/api/dashboard.api';
+import { DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
 
 import Overview from './overview';
 import RevenueStatistic from './revenues';
-import { Col, ColProps, Empty, Row, Select } from 'antd';
-import { DashboardOVerview, DateRange, DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
-import { getDashboard } from '@/api/dashboard.api';
 import StatusChart from './statusChart';
-import { useSelector } from 'react-redux';
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -28,16 +31,14 @@ const DashBoardPage: FC = () => {
 
   useEffect(() => {
     const getDashboarData = async (dateRange: string) => {
-      const {result, status} = await getDashboard(dateRange);
+      const { result, status } = await getDashboard(dateRange);
 
       if (status || result) {
         setDashboard(result);
       }
-
     };
 
     getDashboarData(dateRange.toUpperCase());
-
   }, [dateRange]);
 
   const handleDateRangeChange = (value: any) => {
@@ -58,7 +59,10 @@ const DashBoardPage: FC = () => {
         <>
           <Row gutter={[12, 12]}>
             <Col lg={9} xs={24}>
-              <StatusChart loading={loading} items={dashboard.statusCount?.sort((item1, item2) => item1.status > item2.status ? 1 : -1) ?? []} />
+              <StatusChart
+                loading={loading}
+                items={dashboard.statusCount?.sort((item1, item2) => (item1.status > item2.status ? 1 : -1)) ?? []}
+              />
             </Col>
             <Col lg={15} xs={24}>
               <Overview overview={dashboard} loading={loading} />

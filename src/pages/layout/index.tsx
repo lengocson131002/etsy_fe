@@ -11,11 +11,11 @@ import { Outlet, useLocation } from 'react-router';
 import { setUserItem } from '@/stores/user.store';
 import { getFirstPathCode } from '@/utils/getFirstPathCode';
 import { getGlobalState } from '@/utils/getGloabal';
+import menuData from '@/utils/menu';
 
 import HeaderComponent from './header';
 import MenuComponent from './menu';
 import TagsView from './tagView';
-import menuData from '@/utils/menu';
 
 const { Sider, Content } = Layout;
 const WIDTH = 992;
@@ -62,13 +62,13 @@ const LayoutPage: FC = () => {
     return MenuListAll;
   };
 
-  const fetchMenuList = useCallback( () => {
-      setMenuList(menuData);
-      dispatch(
-        setUserItem({
-          menuList: initMenuListAll(menuData),
-        }),
-      );
+  const fetchMenuList = useCallback(() => {
+    setMenuList(menuData);
+    dispatch(
+      setUserItem({
+        menuList: initMenuListAll(menuData),
+      }),
+    );
   }, [dispatch]);
 
   useEffect(() => {

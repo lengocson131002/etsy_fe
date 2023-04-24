@@ -1,8 +1,11 @@
+import type { PageData } from '@/interface';
+import type { Order, OrderDetail } from '@/interface/order';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { PageData } from '@/interface';
-import { Order, OrderDetail } from '@/interface/order';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getOrders = (params: any) =>
   request<PageData<Order>>('get', `/api/v1/orders`, params, {

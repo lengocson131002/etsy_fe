@@ -1,7 +1,8 @@
 import type { AxiosRequestConfig, Method } from 'axios';
+
 import { message as $message } from 'antd';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom'
+
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
 import { apiRefreshToken } from './user.api';
@@ -53,54 +54,53 @@ axiosInstance.interceptors.response.use(
     return response;
   },
 
-  async error => {
+  async err => {
     store.dispatch(
       setGlobalState({
         loading: false,
       }),
     );
 
-    /**
-     *  if error code is 401
-     * refresh new token
-     *
-    */
-    const config = error?.config;
+    const error = err.response;
+    const config = err.config;
 
-   if (error?.response?.status === 401) {
-      // config.sent = true;
+    if (error.status === 401 && config && !config?.__isRetryRequest) {
+      config.__isRetryRequest = true;
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${localStorage.getItem(LocalStorageConstants.REFRESH_TOKEN_KEY)}`,
+      };
 
-      // const {result, status} = await apiRefreshToken();
+      const { result, status } = await apiRefreshToken(config);
 
-      // if (status && result?.token) {
-      //   // resave access token
-      //   localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN_KEY, result.token);
-      //   localStorage.setItem(LocalStorageConstants.REFRESH_TOKEN_KEY, result.refreshToken);
+      if (status && result?.token) {
+        // resave access token
+        localStorage.setItem(LocalStorageConstants.ACCESS_TOKEN_KEY, result.token);
+        localStorage.setItem(LocalStorageConstants.REFRESH_TOKEN_KEY, result.refreshToken);
 
-      //   config.headers = {
-      //     ...config.headers,
-      //     "Authorization": `Bearer ${result.token}`
-      //   }
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${result.token}`,
+        };
 
-      //   return axios(config);
-      // }
+        return axiosInstance(config);
+      }
 
-      // $message.error("Session expired");
+    } else if (error.status === 401) {
+      $message.error('Session expired. Login again');
+      window.location.href = '/login';
+      return Promise.reject(error);
+    }
 
-      // return Promise.reject(error);
-   }
-
-    // if error code is 403
-
-    let errorResponse: Response<null> = {
+    const errorResponse: Response<null> = {
       status: false,
       message: 'Error',
       result: null,
     };
 
-    if (error?.response?.data) {
-      errorResponse.message = error?.response?.data?.message;
-      errorResponse.code = error?.response?.status;
+    if (error?.data) {
+      errorResponse.message = error.data?.message;
+      errorResponse.code = error.status;
     } else {
       errorResponse.message = error?.message;
     }
@@ -108,7 +108,6 @@ axiosInstance.interceptors.response.use(
     errorResponse.message && $message.error(errorResponse.message);
 
     return Promise.reject(errorResponse);
-
   },
 );
 

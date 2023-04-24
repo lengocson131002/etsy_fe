@@ -1,12 +1,11 @@
-import { StatusCountItem } from '@/interface/dashboard';
-import { FC } from 'react';
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, XAxis, YAxis } from 'recharts';
-import { Card, Empty, theme } from 'antd';
-import { Tooltip } from 'recharts';
-import { normalizeString } from '@/utils/string';
-import { useLocale } from '@/locales';
+import type { StatusCountItem } from '@/interface/dashboard';
+import type { FC } from 'react';
 
-import { Typography } from 'antd';
+import { Card, Empty, theme, Typography } from 'antd';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+
+import { useLocale } from '@/locales';
+import { normalizeString } from '@/utils/string';
 
 const { Text } = Typography;
 
@@ -34,6 +33,7 @@ interface StatusChartProps {
   items: StatusCountItem[];
   loading: boolean;
 }
+
 const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
   const { token } = useToken();
   const { formatMessage } = useLocale();

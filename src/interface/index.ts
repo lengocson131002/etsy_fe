@@ -15,9 +15,9 @@ export interface PageData<T> {
 }
 
 export interface StatusResponse {
-  status: boolean
+  status: boolean;
 }
 
 export interface ListResponse<T> {
-  items: T[]
+  items: T[];
 }

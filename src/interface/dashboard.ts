@@ -16,7 +16,6 @@ export interface DashboardOVerview {
   listingCount: number;
   revenues: RevenueStatisticItem[];
   statusCount: StatusCountItem[];
-
 }
 
 export interface DashboardItem {
@@ -53,4 +52,12 @@ export const DateRanges: DateRangeItem[] = [
   { value: 'last_year', label: 'Last year' },
 ];
 
-export type DateRange = 'all_time' | 'today' | 'yesterday' | 'last_7' | 'last_30' | 'this_month' | 'this_year' | 'last_year';
+export type DateRange =
+  | 'all_time'
+  | 'today'
+  | 'yesterday'
+  | 'last_7'
+  | 'last_30'
+  | 'this_month'
+  | 'this_year'
+  | 'last_year';

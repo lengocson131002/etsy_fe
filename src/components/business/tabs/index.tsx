@@ -22,13 +22,11 @@ const BaseTabs: FC<MyTabsProps> = props => {
     <Tabs
       {...rest}
       css={styles}
-      items={
-        options.map(option => ({
-          key: option.value,
-          label: option.label,
-          children: option.children,
-        }))
-      }
+      items={options.map(option => ({
+        key: option.value,
+        label: option.label,
+        children: option.children,
+      }))}
     />
   );
 };
@@ -38,7 +36,6 @@ const MyTabs = Object.assign(BaseTabs, Tabs);
 export default MyTabs;
 
 const styles = css`
-
   // padding: 0 20px;
   height: 62px;
   .ant-tabs-nav {

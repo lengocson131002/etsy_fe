@@ -14,9 +14,9 @@ export const zhCN_title = {
   'title.staff': 'Staffs',
   'title.shop.detail': 'Shop detail',
   'title.order.detail': 'Order detail',
-  'title.message' : 'Messages',
+  'title.message': 'Messages',
   'title.task': 'My tasks',
   'title.staff.detail': 'Staff detail',
   'title.staff.add': 'Add Staff',
-  'title.profile': 'Profile'
+  'title.profile': 'Profile',
 };

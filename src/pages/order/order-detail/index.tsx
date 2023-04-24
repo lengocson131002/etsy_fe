@@ -1,14 +1,18 @@
-import { Card, Col, ColProps, Divider, Row, Space, Tag } from 'antd';
-import { theme } from 'antd';
-import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import type { OrderDetail } from '@/interface/order';
+import type { ColProps } from 'antd';
+import type { FC } from 'react';
+
 import './index.less';
-import { Typography } from 'antd';
-import { OrderDetail } from '@/interface/order';
-import { dateToStringWithFormat } from '@/utils/datetime';
+
+import { Card, Col, Divider, Row, Space, Tag, theme, Typography } from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { getOrderDetail } from '@/api/orders.api';
-import { normalizeString } from '@/utils/string';
+import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
+import { normalizeString } from '@/utils/string';
+
 import OrderItem from './order-item/orderItem';
 import OrderItemCard from './order-item/orderItem';
 
@@ -53,16 +57,22 @@ const OrderDetailPage: FC = () => {
   useEffect(() => {
     const loadOrderData = async (id: number) => {
       const orderResponse = await getOrderDetail(id);
+
       if (!orderResponse || !orderResponse.status || !orderResponse.result) {
         navigate('/notfound');
+
         return;
       }
+
       setOrderData(orderResponse.result);
     };
+
     if (!id) {
       navigate('/notfound');
+
       return;
     }
+
     loadOrderData(Number.parseInt(id));
   }, [id]);
 
@@ -166,43 +176,43 @@ const OrderDetailPage: FC = () => {
               <div>
                 <div className="order-price-info">
                   <Text strong>Items count:</Text>
-                  <Text className='order-price-info-configure'>{orderData.items?.length}</Text>
+                  <Text className="order-price-info-configure">{orderData.items?.length}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Items totals:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.itemTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.itemTotal)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon code:</Text>
-                  <Text className='order-price-info-configure'>{orderData.couponCode}</Text>
+                  <Text className="order-price-info-configure">{orderData.couponCode}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon rate:</Text>
-                  <Text className='order-price-info-configure'>{orderData.couponRate}</Text>
+                  <Text className="order-price-info-configure">{orderData.couponRate}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon value:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.couponValue)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.couponValue)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Sub total:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.subTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.subTotal)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Shipping price:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.shippingPrice)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.shippingPrice)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Tax:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.tax)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.tax)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Order total:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.orderTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.orderTotal)}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Adjusted total:</Text>
-                  <Text className='order-price-info-configure'>{numberWithCommas(orderData.adjustedTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.adjustedTotal)}</Text>
                 </div>
               </div>
             </OrderCard>

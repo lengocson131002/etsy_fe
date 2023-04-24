@@ -1,6 +1,6 @@
-import { ShopDashboard } from "../dashboard";
-import { Profile } from "../profile";
-import { Staff } from "../staff";
+import type { ShopDashboard } from '../dashboard';
+import type { Profile } from '../profile';
+import type { Staff } from '../staff';
 
 export interface Shop {
   id: string;
@@ -16,9 +16,8 @@ export interface Shop {
   revenue?: number;
   profile?: Profile;
   isTracked?: boolean;
-  trackers?: string[]
+  trackers?: string[];
 }
-
 
 export interface ShopDetail {
   id: string;

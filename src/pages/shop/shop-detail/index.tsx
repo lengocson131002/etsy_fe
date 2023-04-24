@@ -1,18 +1,22 @@
-import { getShop } from '@/api/shop.api';
-import { Card, Col, ColProps, Row, Select, Space, Tag, Tooltip, Typography, theme } from 'antd';
-import React, { FC, Suspense, lazy, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import MyTabs, { MyTabsOption } from '@/components/business/tabs';
+import type { ShopDetail } from '@/interface/shop/shop.interface';
+import type { FC } from 'react';
+
 import './index.less';
-import { Shop, ShopDetail } from '@/interface/shop/shop.interface';
+
+import { Card, Col, ColProps, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { getShop } from '@/api/shop.api';
+import MyTabs, { MyTabsOption } from '@/components/business/tabs';
+import { Shop } from '@/interface/shop/shop.interface';
 import { dateToStringWithFormat } from '@/utils/datetime';
+
 import ShopOverview from './shop-overview';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
 const ShopOrders = lazy(() => import('../../components/shop-orders'));
-
-
 
 const { Title, Text } = Typography;
 
@@ -26,6 +30,7 @@ const ShopDetailPage: FC = () => {
     if (id) {
       const loadShopData = async (id: string) => {
         const response = await getShop(id);
+
         if (!response || !response.status || !response.result) {
           navigate('/notfound');
         }
@@ -46,7 +51,7 @@ const ShopDetailPage: FC = () => {
           <Title className="shop-detail-title" level={3}>
             Shop: {shopData.name}
           </Title>
-          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencyCode}/>}
+          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencyCode} />}
           <div className="shop-detail-overview">
             <Space direction="vertical" style={{ width: '100%' }} size="middle">
               <Card bordered={false}>
@@ -128,7 +133,10 @@ const ShopDetailPage: FC = () => {
                       <Text strong className="shop-detail-overview-item-title">
                         Created Date :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile?.createdDate && dateToStringWithFormat(new Date(shopData.profile.createdDate))}</Text>
+                      <Text className="shop-detail-overview-item-info">
+                        {shopData.profile?.createdDate &&
+                          dateToStringWithFormat(new Date(shopData.profile.createdDate))}
+                      </Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">

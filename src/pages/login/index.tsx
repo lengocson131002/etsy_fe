@@ -12,7 +12,6 @@ import { formatSearch } from '@/utils/formatSearch';
 
 import { loginAsync } from '../../stores/user.action';
 
-
 const LoginForm: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();

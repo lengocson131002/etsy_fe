@@ -1,8 +1,11 @@
+import type { PageData, StatusResponse } from '@/interface';
+import type { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { PageData, StatusResponse } from '@/interface';
-import { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getAllStaffs = (params: any) =>
   request<PageData<Staff>>('get', '/api/v1/staffs', params, {

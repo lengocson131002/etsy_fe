@@ -1,18 +1,23 @@
-import { FC, useRef, useState } from 'react';
-import { Shop } from '@/interface/shop/shop.interface';
+import type { RefTableProps } from '@/components/business/table';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import type { FC } from 'react';
+
 import './index.less';
-import Table, { MyTableOptions, RefTableProps } from '@/components/business/table';
-import { Checkbox, Image, Space, Tag, message } from 'antd';
-import Button from '@/components/basic/button';
-import { getAllShops } from '@/api/shop.api';
+
+import { Checkbox, Image, message, Space, Tag } from 'antd';
+import useSelection from 'antd/es/table/hooks/useSelection';
+import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { normalizeString } from '@/utils/string';
+
+import { getAllShops } from '@/api/shop.api';
+import { addTracking, unTracking } from '@/api/tracking.api';
+import Button from '@/components/basic/button';
+import Table, { MyTableOptions } from '@/components/business/table';
+import { Shop } from '@/interface/shop/shop.interface';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
-import { addTracking, unTracking } from '@/api/tracking.api';
-import useSelection from 'antd/es/table/hooks/useSelection';
-import { useSelector } from 'react-redux';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { normalizeString } from '@/utils/string';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -24,6 +29,7 @@ const ShopPage: FC = () => {
 
   const onTracking = async (id: string) => {
     const { status, result } = await addTracking(id);
+
     if (status && result?.status) {
       ref.current?.load();
       message.success('Tracking shop successfully');
@@ -32,6 +38,7 @@ const ShopPage: FC = () => {
 
   const onUnTrack = async (id: string) => {
     const { status, result } = await unTracking(id);
+
     if (status && result?.status) {
       ref.current?.load();
       message.success('Untrack shop successfully');
@@ -48,7 +55,6 @@ const ShopPage: FC = () => {
       trackerId: myTrackings ? userId : null,
     });
   };
-
 
   return (
     <div className="shop-container">

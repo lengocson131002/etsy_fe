@@ -1,11 +1,15 @@
-import MyForm from '@/components/core/form';
-import { CreateProfile, Profile } from '@/interface/profile';
-import { FC, useEffect, useState } from 'react';
+import type { CreateProfile, Profile } from '@/interface/profile';
+import type { FC } from 'react';
+
 import './index.less';
+
 import { Button, Modal, Space } from 'antd';
-import moment from 'moment';
-import dayjs from 'dayjs';
 import { useForm } from 'antd/es/form/Form';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+
+import MyForm from '@/components/core/form';
 
 interface ProfileFormProps {
   data?: Profile;
@@ -110,7 +114,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ data, handleCreateProfile, handleUp
           type="date-picker"
           initialValue={dayjs(data?.createdDate)}
           innerProps={{
-            format: "YYYY-MM-DD HH:mm:ss",
+            format: 'YYYY-MM-DD HH:mm:ss',
             disabledDate: current => current && current.isAfter(dayjs().endOf('day')),
             showTime: { defaultValue: dayjs('00:00:00', 'HH:mm:ss') },
           }}

@@ -1,6 +1,6 @@
+import type { Role } from '../role';
 import type { Device } from '@/interface/layout/index.interface';
 import type { MenuChild } from '@/interface/layout/menu.interface';
-import { Role } from '../role';
 
 export type Locale = 'zh_CN' | 'en_US';
 
@@ -32,7 +32,6 @@ export interface UserState {
   /** Is first time to view the site ? */
   newUser: boolean;
 }
-
 
 export interface Account {
   id: number;

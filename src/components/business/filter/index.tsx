@@ -8,12 +8,12 @@ import { useLocale } from '@/locales';
 
 interface FilterProps<T> extends MyFormProps<T> {
   onFilter: (values: T) => void;
-  disabled?: boolean,
-  onChange?: () => void
+  disabled?: boolean;
+  onChange?: () => void;
 }
 
 const BaseFilter = <T extends object>(props: FilterProps<T>) => {
-  const { children, onFilter, disabled, onChange,...rest } = props;
+  const { children, onFilter, disabled, onChange, ...rest } = props;
   const [form] = MyForm.useForm<T>();
   const { formatMessage } = useLocale();
 

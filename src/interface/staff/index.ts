@@ -1,4 +1,4 @@
-import { Role } from '../role';
+import type { Role } from '../role';
 
 export interface Staff {
   id: number;
@@ -28,7 +28,6 @@ export interface CreateStaffRequest {
   description?: string;
   roles: string[];
 }
-
 
 export interface UpdateStaffRequest {
   id: number;

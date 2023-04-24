@@ -3,8 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getGlobalState } from '@/utils/getGloabal';
 import { LocalStorageConstants } from '@/utils/constants';
+import { getGlobalState } from '@/utils/getGloabal';
 
 const initialState: UserState = {
   ...getGlobalState(),

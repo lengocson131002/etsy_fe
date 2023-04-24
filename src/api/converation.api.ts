@@ -1,8 +1,11 @@
+import type { PageData } from '@/interface';
+import type { Conversation } from '@/interface/conversation';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { PageData } from '@/interface';
-import { Conversation } from '@/interface/conversation';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getAllConversations = (params: any) =>
   request<PageData<Conversation>>('get', '/api/v1/conversations', params, {

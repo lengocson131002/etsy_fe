@@ -1,3 +1,4 @@
+import type { TagItem } from '@/interface/layout/tagsView.interface';
 import type { FC } from 'react';
 
 import { Tabs } from 'antd';
@@ -6,10 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { addTag, removeTag, setActiveTag } from '@/stores/tags-view.store';
+import { normalize } from '@/utils/text';
 
 import TagsViewAction from './tagViewAction';
-import { TagItem } from '@/interface/layout/tagsView.interface';
-import { normalize } from '@/utils/text';
 
 const TagsView: FC = () => {
   const { tags, activeTagId } = useSelector(state => state.tagsView);
@@ -49,9 +49,9 @@ const TagsView: FC = () => {
     [dispatch, location.pathname, tags],
   );
 
-  // useEffect(() => {
-  //   navigate(activeTagId);
-  // }, [activeTagId]);
+  useEffect(() => {
+    navigate(activeTagId);
+  }, [activeTagId]);
 
   useEffect(() => {
     if (menuList.length) {
@@ -67,6 +67,7 @@ const TagsView: FC = () => {
       } else {
         const currentPath = location.pathname;
         const label = document.title ? document.title : normalize(currentPath, true);
+
         if (currentPath) {
           const tag: TagItem = {
             code: currentPath,
@@ -77,6 +78,7 @@ const TagsView: FC = () => {
             path: currentPath,
             closable: true,
           };
+
           dispatch(addTag(tag));
         }
       }

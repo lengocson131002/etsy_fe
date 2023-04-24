@@ -22,6 +22,7 @@ export function intercepter<T extends any[]>(data: T, page: PageParams): Respons
 export function intercepter(data: any, page?: PageParams) {
   if (page) {
     const result = getTableData(Number(page.pageNum), Number(page.pageSize), data);
+
     return result;
   } else {
     return data;

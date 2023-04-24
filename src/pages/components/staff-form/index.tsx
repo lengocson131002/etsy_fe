@@ -1,16 +1,19 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import type { Role } from '@/interface/role';
+import type { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
+import type { FC } from 'react';
+
 import './index.less';
-import MyForm from '@/components/core/form';
-import { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
-import { useForm } from 'antd/es/form/Form';
+
 import { Col, ColProps, Modal, Row, Space } from 'antd';
+import { useForm } from 'antd/es/form/Form';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { getAllRoles } from '@/api/role.api';
+import MyButton from '@/components/basic/button';
+import MyForm from '@/components/core/form';
 import { useLocale } from '@/locales';
 import { emailRegex, phoneNumberRegex } from '@/utils/regex';
-import MyButton from '@/components/basic/button';
-import { Role } from '@/interface/role';
-import { useNavigate } from 'react-router-dom';
-import { getAllRoles } from '@/api/role.api';
-
 
 interface StaffFormProps {
   data?: Staff;
@@ -20,7 +23,6 @@ interface StaffFormProps {
 }
 
 const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateStaff, handleRemoveStaff }) => {
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const [form] = useForm();
@@ -66,8 +68,10 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
   useEffect(() => {
     const loadRoleData = async () => {
       const rolesResponse = await getAllRoles();
+
       if (rolesResponse.status && rolesResponse.result) {
-        var roles = rolesResponse.result.items;
+        const roles = rolesResponse.result.items;
+
         setRoles(roles);
       }
     };
@@ -193,7 +197,7 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
                   open={modalOpen}
                   onOk={async () => {
                     await handleRemoveStaff(data.id);
-                    setModalOpen(false)
+                    setModalOpen(false);
                   }}
                   onCancel={() => setModalOpen(false)}
                 >

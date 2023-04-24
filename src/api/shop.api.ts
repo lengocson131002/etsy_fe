@@ -1,8 +1,11 @@
-import { PageData } from '@/interface';
-import { request } from './request';
-import { Shop, ShopDetail } from '@/interface/shop/shop.interface';
+import type { PageData } from '@/interface';
+import type { Shop, ShopDetail } from '@/interface/shop/shop.interface';
+
 import { AxiosRequestConfig } from 'axios';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getAllShops = (params: any) =>
   request<PageData<Shop>>('get', '/api/v1/shops', params, {

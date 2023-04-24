@@ -3,13 +3,13 @@ import type { PageData } from '@/interface';
 import type { ColumnsType } from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
+import initCollapseMotion from 'antd/es/_util/motion';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import MyTable from '@/components/core/table';
 import { useStates } from '@/utils/use-states';
 
 import MyFilter from '../filter';
-import initCollapseMotion from 'antd/es/_util/motion';
 
 export interface SearchApi {
   (params?: any): MyResponse<PageData<any>>;
@@ -51,7 +51,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
   const getTableData = useCallback(
     async (params: Record<string, any> = {}) => {
       if (filterApi) {
-        let queryObject: Record<string, any> = {
+        const queryObject: Record<string, any> = {
           ...params,
           ...pageParams,
           ...filterPagingData.filter,
@@ -140,6 +140,7 @@ interface TableType extends BaseTableType {
 }
 
 const Table = BaseTableRef as TableType;
+
 Table.MyFilter = MyFilter;
 Table.MyTable = MyTable;
 

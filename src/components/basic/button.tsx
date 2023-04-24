@@ -1,5 +1,5 @@
 // import type { ButtonProps } from 'antd/es/button';
-import type {ButtonProps} from 'antd'
+import type { ButtonProps } from 'antd';
 import type { FC } from 'react';
 
 import { Button } from 'antd';

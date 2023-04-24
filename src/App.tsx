@@ -10,18 +10,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { history, HistoryRouter } from '@/routes/history';
 
+import { apiAccount } from './api/user.api';
 import { localeConfig, LocaleFormatter } from './locales';
 import RenderRouter from './routes';
 import { setGlobalState } from './stores/global.store';
-import { setUserItem } from './stores/user.store';
-import { apiAccount } from './api/user.api';
-import { LocalStorageConstants } from './utils/constants';
-import { useNavigate } from 'react-router-dom';
 
 const App: React.FC = () => {
   const { locale } = useSelector(state => state.user);
   const { theme, loading } = useSelector(state => state.global);
   const dispatch = useDispatch();
+  const { logged } = useSelector(state => state.user);
 
   const setTheme = (dark = true) => {
     dispatch(
@@ -45,7 +43,6 @@ const App: React.FC = () => {
 
       mql.addEventListener('change', matchMode);
     }
-
   }, []);
 
   // set the locale for the user

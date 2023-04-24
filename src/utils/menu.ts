@@ -1,4 +1,4 @@
-import { MenuList } from "@/interface/layout/menu.interface";
+import type { MenuList } from '@/interface/layout/menu.interface';
 
 const menuData: MenuList = [
   {
@@ -8,7 +8,7 @@ const menuData: MenuList = [
       en_US: 'Dashboard',
     },
     icon: 'dashboard',
-    path: '/dashboard'
+    path: '/dashboard',
   },
   {
     code: 'staff',
@@ -17,7 +17,7 @@ const menuData: MenuList = [
       en_US: 'Staffs',
     },
     icon: 'staff',
-    path: '/staff'
+    path: '/staff',
   },
   {
     code: 'shop',
@@ -26,7 +26,7 @@ const menuData: MenuList = [
       en_US: 'Shops',
     },
     icon: 'shop',
-    path: '/shop'
+    path: '/shop',
   },
   {
     code: 'profile',
@@ -35,7 +35,7 @@ const menuData: MenuList = [
       en_US: 'Profiles',
     },
     icon: 'profile',
-    path: '/profile'
+    path: '/profile',
   },
   {
     code: 'listings',
@@ -44,7 +44,7 @@ const menuData: MenuList = [
       en_US: 'Listings',
     },
     icon: 'product',
-    path: '/listing'
+    path: '/listing',
   },
   {
     code: 'order',
@@ -53,7 +53,7 @@ const menuData: MenuList = [
       en_US: 'Orders',
     },
     icon: 'order',
-    path: '/order'
+    path: '/order',
   },
   {
     code: 'message',
@@ -62,7 +62,7 @@ const menuData: MenuList = [
       en_US: 'Messages',
     },
     icon: 'message',
-    path: '/message'
+    path: '/message',
   },
   {
     code: 'task',
@@ -71,9 +71,8 @@ const menuData: MenuList = [
       en_US: 'My Tasks',
     },
     icon: 'task',
-    path: '/task'
+    path: '/task',
   },
-
 ];
 
 export default menuData;

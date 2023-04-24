@@ -1,12 +1,12 @@
+import type { RevenueStatisticItem } from '@/interface/dashboard';
 import type { ColProps } from 'antd/es/col';
-import { FC, useEffect } from 'react';
+import type { FC } from 'react';
 
 import { Badge, Card, Col, Empty, List, Radio, Row } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Cell, Label, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 import { useLocale } from '@/locales';
-import { RevenueStatisticItem } from '@/interface/dashboard';
 import { randomColor } from '@/utils/color';
 import { numberWithCommas } from '@/utils/number';
 
@@ -41,6 +41,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
       .fill(undefined)
       .map(_ => randomColor());
     const newData = data.sort((val1, val2) => (sort === 'asc' ? val1.value - val2.value : val2.value - val1.value));
+
     setColors(colors);
     setRevenueData(newData);
   }, [sort, data]);
@@ -99,6 +100,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
                 renderItem={(item, index) => {
                   const total = revenueData.map(d => d.value).reduce((a, b) => a + b);
                   const percent = ((item.value / total) * 100).toFixed(2) + '%';
+
                   return (
                     <List.Item>
                       <Badge color={colors[index]} />
@@ -114,7 +116,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
             </Col>
           </>
         ) : (
-          <Empty style={{margin: 'auto'}} image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          <Empty style={{ margin: 'auto' }} image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </Row>
     </Card>

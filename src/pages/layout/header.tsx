@@ -18,7 +18,6 @@ import { LocaleFormatter, useLocale } from '@/locales';
 import { setGlobalState } from '@/stores/global.store';
 import { setUserItem } from '@/stores/user.store';
 
-
 const { Header } = Layout;
 
 interface HeaderProps {
@@ -41,7 +40,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
         logged: false,
         userId: undefined,
         username: undefined,
-        roles: []
+        roles: [],
       }),
     );
 

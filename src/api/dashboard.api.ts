@@ -1,7 +1,11 @@
+import type { DashboardOVerview } from '@/interface/dashboard';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { DashboardOVerview, DateRange } from '@/interface/dashboard';
+
+import { DateRange } from '@/interface/dashboard';
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getDashboard = (dateRange: string) =>
   request<DashboardOVerview>(

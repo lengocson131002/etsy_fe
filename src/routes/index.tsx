@@ -1,20 +1,20 @@
-import { FC, useEffect } from 'react';
+import type { FC } from 'react';
 import type { RouteObject } from 'react-router';
 
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import { useNavigate, useRoutes } from 'react-router-dom';
 
+import { apiAccount } from '@/api/user.api';
 import Dashboard from '@/pages/dashboard';
 import LayoutPage from '@/pages/layout';
 import LoginPage from '@/pages/login';
+import { loadProfile } from '@/stores/user.action';
+import { setUserItem } from '@/stores/user.store';
+import { LocalStorageConstants } from '@/utils/constants';
 
 import WrapperRouteComponent from './config';
-import { LocalStorageConstants } from '@/utils/constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserItem } from '@/stores/user.store';
-import { apiAccount } from '@/api/user.api';
-import { loadProfile } from '@/stores/user.action';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -111,7 +111,12 @@ const RenderRouter: FC = () => {
   const { logged } = useSelector(state => state.user);
 
   useEffect(() => {
-    var token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
+    if (location.pathname === '/login') {
+      return;
+    }
+
+    const token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
+    console.log('TOKEN', token);
 
     if (!token) {
       navigate('/login');
@@ -120,6 +125,7 @@ const RenderRouter: FC = () => {
 
     const loadProfileInfo = async (token: string) => {
       const res = await dispatch(await loadProfile(token));
+
       if (!res) {
         navigate('/login');
       }
@@ -130,7 +136,6 @@ const RenderRouter: FC = () => {
   }, [logged]);
 
   const element = useRoutes(routeList);
-
   return element;
 };
 

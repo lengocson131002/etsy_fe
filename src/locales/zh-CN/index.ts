@@ -23,7 +23,7 @@ const zh_CN = {
   ...zhCN_documentation,
   ...zhCN_notice,
   ...zhCN_component,
-  ...zhCN_validation
+  ...zhCN_validation,
 };
 
 export default zh_CN;

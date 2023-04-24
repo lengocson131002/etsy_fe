@@ -1,11 +1,15 @@
-import { FC, useCallback } from 'react';
-import Table, { MyTableOptions } from '@/components/business/table';
-import { Link } from 'react-router-dom';
+import type { MyTableOptions } from '@/components/business/table';
+import type { Order } from '@/interface/order';
+import type { FC } from 'react';
+
 import { Button, Image, Tag } from 'antd';
-import { Order } from '@/interface/order';
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
+
+import { getAllConversations } from '@/api/converation.api';
+import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
-import { getAllConversations } from '@/api/converation.api';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -45,6 +49,7 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
           shopId,
         };
       }
+
       return getAllConversations(params);
     },
     [shopId],

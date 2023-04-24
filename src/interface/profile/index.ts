@@ -7,7 +7,6 @@ export interface CreateProfile {
   folderName?: string;
 }
 
-
 export interface Profile {
   id: string | number;
   goLoginProfileId: string;

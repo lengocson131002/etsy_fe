@@ -1,8 +1,12 @@
-import { DashboardItem, DateRanges, ShopDashboard } from '@/interface/dashboard';
+import type { DashboardItem, ShopDashboard } from '@/interface/dashboard';
+import type { ColProps } from 'antd';
+import type { FC } from 'react';
+
+import { Card, Col, Row, Select, theme } from 'antd';
+import { useEffect, useState } from 'react';
+
+import { DateRanges } from '@/interface/dashboard';
 import { numberWithCommas } from '@/utils/number';
-import { Card, Col, ColProps, Row, Select } from 'antd';
-import { theme } from 'antd';
-import { FC, useEffect, useState } from 'react';
 
 const { useToken } = theme;
 
@@ -45,10 +49,11 @@ const ColCard: FC<ColCardProps> = ({ metaName, metaCount, unit, body, footer, lo
     </Col>
   );
 };
+
 interface ShopOverviewProps {
   dashboard: ShopDashboard;
-  currency?: string,
-  currencySymbol?: string
+  currency?: string;
+  currencySymbol?: string;
 }
 
 const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymbol }) => {
@@ -96,22 +101,22 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymb
           <Row gutter={[12, 12]}>
             <ColCard
               metaName="Total Orders"
-              metaCount={activeDashboard.orders ? numberWithCommas(activeDashboard.orders) : ''}
+              metaCount={activeDashboard.orders ?? numberWithCommas(activeDashboard.orders)}
               unit="orderes"
             />
             <ColCard
               metaName="Total Visits"
-              metaCount={activeDashboard.visits ? numberWithCommas(activeDashboard.visits) : ''}
+              metaCount={activeDashboard.visits ?? numberWithCommas(activeDashboard.visits)}
               unit="visits"
             />
             <ColCard
               metaName="Total Revenue"
-              metaCount={activeDashboard.revenue ? numberWithCommas(activeDashboard.revenue) : ''}
+              metaCount={activeDashboard.revenue ?? numberWithCommas(activeDashboard.revenue)}
               unit={currency}
             />
             <ColCard
               metaName="Conversion rate"
-              metaCount={activeDashboard.conversionRate ? numberWithCommas(activeDashboard.conversionRate) : ''}
+              metaCount={activeDashboard.conversionRate ?? numberWithCommas(activeDashboard.conversionRate)}
               unit="%"
             />
           </Row>

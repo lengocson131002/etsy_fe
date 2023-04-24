@@ -1,8 +1,11 @@
+import type { PageData, StatusResponse } from '@/interface';
+import type { CreateProfile, Profile } from '@/interface/profile';
+
 import { AxiosRequestConfig } from 'axios';
-import { request } from './request';
-import { PageData, StatusResponse } from '@/interface';
-import { CreateProfile, Profile } from '@/interface/profile';
+
 import { LocalStorageConstants } from '@/utils/constants';
+
+import { request } from './request';
 
 export const getAllProfiles = (params: any) =>
   request<PageData<Profile>>('get', '/api/v1/profiles', params, {

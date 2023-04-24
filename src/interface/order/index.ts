@@ -45,5 +45,5 @@ export interface Order {
 }
 
 export interface OrderDetail extends Order {
-  items?: OrderItem[]
+  items?: OrderItem[];
 }

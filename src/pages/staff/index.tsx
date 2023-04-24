@@ -1,14 +1,20 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import type { RefTableProps } from '@/components/business/table';
+import type { Role } from '@/interface/role';
+import type { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
+import type { FC } from 'react';
+
 import './index.less';
-import Table, { MyTableOptions, RefTableProps } from '@/components/business/table';
-import { CreateStaffRequest, Staff, UpdateStaffRequest } from '@/interface/staff';
-import { Button, Drawer, Tag, message } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import { createStaff, getAllStaffs, getStaff, removeStaff, updateStaff } from '@/api/staff.api';
+
+import { Button, Drawer, message, Tag } from 'antd';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { dateToStringWithFormat } from '@/utils/datetime';
-import { Role } from '@/interface/role';
+import { Link, useNavigate } from 'react-router-dom';
+
 import { getAllRoles } from '@/api/role.api';
+import { createStaff, getAllStaffs, getStaff, removeStaff, updateStaff } from '@/api/staff.api';
+import Table, { MyTableOptions } from '@/components/business/table';
+import { dateToStringWithFormat } from '@/utils/datetime';
+
 import ProfileForm from '../components/profile-form';
 import StaffForm from '../components/staff-form';
 
@@ -29,8 +35,10 @@ const StaffPage: FC = () => {
   useEffect(() => {
     const loadRoleData = async () => {
       const { status, result } = await getAllRoles();
+
       if (status && result) {
-        var roles = result.items;
+        const roles = result.items;
+
         setRoles(roles);
       }
     };
@@ -40,6 +48,7 @@ const StaffPage: FC = () => {
 
   const handleCreateStaff = async (staff: CreateStaffRequest) => {
     const { result, status } = await createStaff(staff);
+
     if (status && result?.status) {
       message.success('Create staff successfully');
       setOpened(false);
@@ -49,6 +58,7 @@ const StaffPage: FC = () => {
 
   const handleUpdateStaff = async (staff: UpdateStaffRequest) => {
     const { result, status } = await updateStaff(staff);
+
     if (status && result?.status) {
       message.success('Update staff successfully');
       setOpened(false);
@@ -58,6 +68,7 @@ const StaffPage: FC = () => {
 
   const handleRemoveStaff = async (staffId: string | number) => {
     const { result, status } = await removeStaff(staffId);
+
     if (status && result?.status) {
       message.success('Remove staff successfully');
       setOpened(false);
@@ -72,12 +83,14 @@ const StaffPage: FC = () => {
   const onOpenDrawer = useCallback(async (id?: string | number) => {
     if (id) {
       const { result, status } = await getStaff(id);
+
       if (status && result) {
         setStaff(result);
       }
     } else {
       setStaff(undefined);
     }
+
     setOpened(true);
   }, []);
 

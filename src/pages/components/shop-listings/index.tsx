@@ -1,10 +1,14 @@
+import type { MyTableOptions } from '@/components/business/table';
+import type { Listing } from '@/interface/listing';
+import type { FC } from 'react';
+
+import { Image, Tag } from 'antd';
+import { useCallback } from 'react';
+
 import { getListings } from '@/api/listing.api';
-import Table, { MyTableOptions, SearchApi } from '@/components/business/table';
-import { Listing } from '@/interface/listing';
+import Table, { SearchApi } from '@/components/business/table';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
-import { Image, Tag } from 'antd';
-import { FC, useCallback } from 'react';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -22,7 +26,7 @@ const columnOptions: MyTableOptions<Listing> = [
         <Image width={90} height={90} src={image} />
       </>
     ),
-    fixed: 'left'
+    fixed: 'left',
   },
   {
     title: 'Etsy Listing ID',
@@ -44,9 +48,7 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Price from',
     dataIndex: 'priceFrom',
     key: 'priceFrom',
-    render: (priceFrom) => (
-      <span>{numberWithCommas(priceFrom)}</span>
-    ),
+    render: priceFrom => <span>{numberWithCommas(priceFrom)}</span>,
     align: 'right',
   },
 
@@ -54,79 +56,67 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Price to',
     dataIndex: 'priceTo',
     key: 'priceTo',
-    render: (price) => (
-      <span>{numberWithCommas(price)}</span>
-    ),
+    render: price => <span>{numberWithCommas(price)}</span>,
     align: 'right',
   },
   {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (status) => (
-      <Tag color='blue'>{normalizeString(status)}</Tag>
-    ),
-    align: 'center'
+    render: status => <Tag color="blue">{normalizeString(status)}</Tag>,
+    align: 'center',
   },
   {
     title: 'Last 30 visits',
     dataIndex: 'last30Visits',
     key: 'last30Visits',
     align: 'center',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Last 30 Favourites',
     dataIndex: 'last30Favourites',
     key: 'last30Favourites',
     align: 'center',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Sales',
     dataIndex: 'allTimeSales',
     key: 'allTimeSales',
     align: 'center',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Revenue',
     dataIndex: 'allTimeRevenue',
     key: 'allTimeRevenue',
     align: 'right',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
-
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Renewals',
     dataIndex: 'allTimeRenewals',
     key: 'allTimeRenewals',
     align: 'center',
-    render: (value) => (
-      <span>{numberWithCommas(value)}</span>
-    )
+    render: value => <span>{numberWithCommas(value)}</span>,
   },
-]
-const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
+];
 
+const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
   const getShopProductsAPI = useCallback(
     (params: any) => {
       if (shopId) {
         params = {
           ...params,
-          shopId
-        }
+          shopId,
+        };
       }
+
       return getListings(params);
-    }, [shopId])
+    },
+    [shopId],
+  );
 
   return (
     <div>

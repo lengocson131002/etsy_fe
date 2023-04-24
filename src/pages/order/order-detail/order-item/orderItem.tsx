@@ -1,12 +1,17 @@
-import { OrderDetail, OrderItem } from '@/interface/order';
-import { numberWithCommas } from '@/utils/number';
-import { Divider, Image } from 'antd';
-import { FC } from 'react';
+import type { OrderItem } from '@/interface/order';
+import type { FC } from 'react';
+
 import './index.less';
+
+import { Divider, Image } from 'antd';
+
+import { OrderDetail } from '@/interface/order';
+import { numberWithCommas } from '@/utils/number';
 
 interface OrderItemProps {
   item: OrderItem;
 }
+
 const OrderItemCard: FC<OrderItemProps> = ({ item }) => {
   return (
     <div>
@@ -22,4 +27,5 @@ const OrderItemCard: FC<OrderItemProps> = ({ item }) => {
     </div>
   );
 };
+
 export default OrderItemCard;

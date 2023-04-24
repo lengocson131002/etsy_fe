@@ -43,6 +43,7 @@ const MenuComponent: FC<MenuProps> = props => {
 
   const onOpenChange = (keys: string[]) => {
     const key = keys.pop();
+
     onChangeOpenKey(key);
   };
 

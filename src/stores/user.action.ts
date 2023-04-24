@@ -1,9 +1,10 @@
 import type { LoginParams } from '../interface/user/login';
 
+import { LocalStorageConstants } from '@/utils/constants';
+
 import { apiAccount, apiLogin, apiLogout } from '../api/user.api';
 import { setUserItem } from './user.store';
 import { createAsyncAction } from './utils';
-import { LocalStorageConstants } from '@/utils/constants';
 
 export const loginAsync = createAsyncAction<LoginParams, boolean>(payload => {
   return async dispatch => {
@@ -29,6 +30,7 @@ export const loginAsync = createAsyncAction<LoginParams, boolean>(payload => {
 export const loadProfile = createAsyncAction<string, boolean>(token => {
   return async dispatch => {
     const { result, status } = await apiAccount(token);
+
     if (result && status) {
       dispatch(
         setUserItem({
@@ -37,8 +39,10 @@ export const loadProfile = createAsyncAction<string, boolean>(token => {
           roles: result.roles.map(role => role.code),
         }),
       );
+
       return true;
     }
+
     return false;
   };
 });
