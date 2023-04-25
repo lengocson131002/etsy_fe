@@ -34,6 +34,17 @@ interface StatusChartProps {
   items: StatusChartItem[];
   loading: boolean;
 }
+const getStatusColor = (status: string): string => {
+  if (status === 'active') {
+    return '#37b24d';
+  } else if (status === 'vacation') {
+    return '#fcc419';
+  } else if (status === 'suspended') {
+    return '#e03131';
+  } else {
+    return randomColor();
+  }
+};
 
 const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
   const { token } = useToken();
@@ -77,7 +88,7 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
               >
                 {items.map((_, index) => (
                   <>
-                    <Cell key={`cell-${index}`} fill={randomColor()} />
+                    <Cell key={`cell-${index}`} fill={getStatusColor(items[index].status)} />
                   </>
                 ))}
               </Pie>

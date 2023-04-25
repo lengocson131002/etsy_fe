@@ -22,5 +22,5 @@ export const enUS_dashboard = {
   'app.dashboard.revenueStatistic': 'Revenue statistic',
   'app.dashboard.overview.listings': 'Total listings',
   'app.dashboard.overview.unit.listings': 'Listings',
-  'app.dashboard.statusStatistic': 'Status statistic',
+  'app.dashboard.statusStatistic': 'Shop status',
 };
