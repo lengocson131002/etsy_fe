@@ -84,12 +84,6 @@ const OrderDetailPage: FC = () => {
             <OrderCard header="Order Information">
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">
-                  Order ID :
-                </Text>
-                <Text className="order-detail-info-content">{orderData.id}</Text>
-              </div>
-              <div className="order-detail-info">
-                <Text strong className="order-detail-info-title">
                   Etsy Order ID :
                 </Text>
                 <Text className="order-detail-info-content">{orderData.etsyOrderId}</Text>
