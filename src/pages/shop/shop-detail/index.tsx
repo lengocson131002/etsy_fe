@@ -71,7 +71,7 @@ const ShopDetailPage: FC = () => {
                       <Link
                         style={{ textDecoration: 'none' }}
                         target="_blank"
-                        to={`${EtsyUrlPrefixes.listings}/${shopData.name}`}
+                        to={`${EtsyUrlPrefixes.shops}/${shopData.name}`}
                       >
                         {shopData.name}
                       </Link>
