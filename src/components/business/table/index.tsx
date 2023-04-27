@@ -1,6 +1,6 @@
 import type { MyResponse } from '@/api/request';
-import type { PageData } from '@/interface';
-import type { ColumnsType } from 'antd/es/table/interface';
+import type { PageData, SortDirection } from '@/interface';
+import type { ColumnsType, FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
 import initCollapseMotion from 'antd/es/_util/motion';
@@ -41,6 +41,8 @@ const filterPagingInitData = {
   total: 0,
   data: [],
   filter: {},
+  sortBy: undefined,
+  sortDir: 'ASC' as SortDirection,
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
@@ -57,6 +59,8 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
           ...filterPagingData.filter,
           pageSize: filterPagingData.pageSize,
           pageNum: filterPagingData.pageNum,
+          sortBy: filterPagingData.sortBy,
+          sortDir: filterPagingData.sortDir,
         };
 
         // remove undefined fields
@@ -69,7 +73,15 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
         }
       }
     },
-    [filterApi, pageParams, filterPagingData.pageSize, filterPagingData.pageNum, filterPagingData.filter],
+    [
+      filterApi,
+      pageParams,
+      filterPagingData.pageSize,
+      filterPagingData.pageNum,
+      filterPagingData.sortBy,
+      filterPagingData.sortDir,
+      filterPagingData.filter,
+    ],
   );
 
   useEffect(() => {
@@ -79,22 +91,29 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
   const onFilter = (filterParams: Record<string, any>) => {
     setFilterPagingData({
       filter: filterParams,
+      // reset sort and paging when filter
       pageNum: filterPagingInitData.pageNum,
       pageSize: filterPagingInitData.pageSize,
     });
   };
 
-  const onPageChange = (pageNum: number, pageSize?: number) => {
-    setFilterPagingData({ pageNum });
-
-    if (pageSize) {
-      setFilterPagingData({ pageSize });
-    }
-  };
-
   useImperativeHandle(ref, () => ({
     load: (data?: object) => getTableData(data),
   }));
+
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: any
+  ) => {
+    setFilterPagingData({
+      ...filterPagingData,
+      pageNum: pagination.current,
+      pageSize: pagination.pageSize,
+      sortBy: sorter?.order ? sorter.columnKey?.toString() : undefined,
+      sortDir: sorter?.order ? (sorter.order === 'ascend' ? 'ASC' : 'DESC') : undefined,
+    });
+  };
 
   return (
     <div css={styles}>
@@ -111,11 +130,11 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
                 // height="100%"
                 dataSource={filterPagingData.data}
                 columns={tableOptions}
+                onChange={handleTableChange}
                 pagination={{
                   current: filterPagingData.pageNum,
                   pageSize: filterPagingData.pageSize,
                   total: filterPagingData.total,
-                  onChange: onPageChange,
                 }}
               >
                 {tableRender?.(filterPagingData.data)}

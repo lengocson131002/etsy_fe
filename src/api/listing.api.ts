@@ -14,4 +14,8 @@ export const getListings = (params?: any) =>
     },
   });
 
-export const getListingStatuses = () => request<ListResponse<string>>('get', '/api/v1/listings/statuses');
+export const getListingStatuses = () => request<ListResponse<string>>('get', '/api/v1/listings/statuses', {}, {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+  },
+});

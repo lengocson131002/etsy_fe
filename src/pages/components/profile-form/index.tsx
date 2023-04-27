@@ -13,9 +13,9 @@ import MyForm from '@/components/core/form';
 
 interface ProfileFormProps {
   data?: Profile;
-  handleCreateProfile: (profile: CreateProfile) => void;
-  handleUpdateProfile: (profile: Profile) => void;
-  handleRemoveProfile: (profileId: string | number) => void;
+  handleCreateProfile: (profile: CreateProfile) => Promise<boolean>;
+  handleUpdateProfile: (profile: Profile) => Promise<boolean>;
+  handleRemoveProfile: (profileId: string | number) => Promise<boolean>;
 }
 
 const ProfileForm: FC<ProfileFormProps> = ({ data, handleCreateProfile, handleUpdateProfile, handleRemoveProfile }) => {
@@ -26,9 +26,10 @@ const ProfileForm: FC<ProfileFormProps> = ({ data, handleCreateProfile, handleUp
     form.resetFields();
   }, [data]);
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
+    let result;
     if (!data) {
-      handleCreateProfile({
+      result = await handleCreateProfile({
         goLoginProfileId: values['goLoginProfileId'],
         name: values['name'],
         notes: values['notes'],
@@ -39,7 +40,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ data, handleCreateProfile, handleUp
         folderName: values['folderName'],
       });
     } else {
-      handleUpdateProfile({
+      result = await handleUpdateProfile({
         id: data.id,
         goLoginProfileId: values['goLoginProfileId'],
         name: values['name'],
@@ -50,6 +51,9 @@ const ProfileForm: FC<ProfileFormProps> = ({ data, handleCreateProfile, handleUp
         proxy: values['proxy'],
         folderName: values['folderName'],
       });
+    }
+    if (result) {
+      form.resetFields();
     }
   };
 

@@ -4,6 +4,7 @@ export interface Locales<T = any> {
   /** English */
   en_US: T;
 }
+export type SortDirection = 'ASC' | 'DESC';
 
 export type Language = keyof Locales;
 
@@ -12,6 +13,8 @@ export interface PageData<T> {
   pageSize: number;
   total: number;
   data: T[];
+  sortBy?: string,
+  sortDir?: SortDirection
 }
 
 export interface StatusResponse {

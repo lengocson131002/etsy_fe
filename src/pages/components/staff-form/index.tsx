@@ -16,12 +16,13 @@ import { useLocale } from '@/locales';
 import { emailRegex, phoneNumberRegex } from '@/utils/regex';
 import MyTable from '@/components/core/table';
 import { normalizeString } from '@/utils/string';
+import { useSelector } from 'react-redux';
 
 interface StaffFormProps {
   data?: Staff;
-  handleCreateStaff: (staff: CreateStaffRequest) => void;
-  handleUpdateStaff: (staff: UpdateStaffRequest) => void;
-  handleRemoveStaff: (staffId: number | string) => void;
+  handleCreateStaff: (staff: CreateStaffRequest) => Promise<boolean>;
+  handleUpdateStaff: (staff: UpdateStaffRequest) => Promise<boolean>;
+  handleRemoveStaff: (staffId: number | string) => Promise<boolean>;
 }
 
 const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateStaff, handleRemoveStaff }) => {
@@ -29,9 +30,12 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
 
   const [form] = useForm();
 
-  const onFinish = (values: any) => {
+  const { userId } = useSelector(state => state.user);
+
+  const onFinish = async (values: any) => {
+    let result;
     if (!data) {
-      handleCreateStaff({
+      result = await handleCreateStaff({
         username: values['username'],
         password: values['password'],
         staffId: values['staffId'],
@@ -43,7 +47,7 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
         roles: values['roles'],
       });
     } else {
-      handleUpdateStaff({
+      result = await handleUpdateStaff({
         id: data.id,
         username: values['username'],
         password: values['password'] && values['password'] !== '' ? values['password'] : null,
@@ -56,10 +60,13 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
         roles: values['roles'],
       });
     }
+    if (result) {
+      console.log(result);
+      form.resetFields();
+    }
   };
 
   const [roles, setRoles] = useState<Role[]>([]);
-  const navigate = useNavigate();
 
   const { formatMessage } = useLocale();
 
@@ -184,46 +191,46 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
           initialValue={data?.description}
         />
 
-        <div>
-          <p>Trackings ({data?.trackings?.length})</p>
-          <MyTable
-            pagination={false}
-            dataSource={data?.trackings}
-            columns={[
-              {
-                title: 'Etsy Shop ID',
-                dataIndex: 'id',
-                key: 'id',
-                render: (value) => (
-                  <Link to={`/shop/${value}`}>{value}</Link>
-                )
-              },
-              {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name'
-              },
-              {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-                render: status => (
-                  <Tag color="blue" key={status + ''}>
-                    {normalizeString(status)}
-                  </Tag>
-                ),
-                align: 'center',
-              },
-            ]}
-          />
-        </div>
+        {data && (
+          <div>
+            <p>Trackings ({data?.trackings?.length || 0})</p>
+            <MyTable
+              pagination={false}
+              dataSource={data?.trackings}
+              columns={[
+                {
+                  title: 'Etsy Shop ID',
+                  dataIndex: 'id',
+                  key: 'id',
+                },
+                {
+                  title: 'Name',
+                  dataIndex: 'name',
+                  key: 'name',
+                  render: (value, record) => <Link to={`/shop/${record.id}`}>{value}</Link>,
+                },
+                {
+                  title: 'Status',
+                  dataIndex: 'status',
+                  key: 'status',
+                  render: status => (
+                    <Tag color="blue" key={status + ''}>
+                      {normalizeString(status)}
+                    </Tag>
+                  ),
+                  align: 'center',
+                },
+              ]}
+            />
+          </div>
+        )}
 
-        <Space>
+        <Space style={{marginTop: 20}}>
           <MyForm.Item>
             <MyButton type="primary" htmlType="submit">
               Submit
             </MyButton>
-            {data && (
+            {data && data.id !== userId && (
               <>
                 <MyButton danger onClick={() => setModalOpen(true)}>
                   Remove

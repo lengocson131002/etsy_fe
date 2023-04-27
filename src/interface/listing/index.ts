@@ -12,4 +12,8 @@ export interface Listing {
   allTimeRevenue?: number;
   allTimeRenewals?: number;
   stock?: number;
+  shopId: string;
+  shopName: string;
+  currencyCode: string;
+  currencySymbol: string
 }

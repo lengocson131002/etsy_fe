@@ -36,34 +36,40 @@ const ProfilePage: FC = () => {
     setOpened(true);
   };
 
-  const handleCreateProfile = async (profile: CreateProfile) => {
+  const handleCreateProfile = async (profile: CreateProfile): Promise<boolean> => {
     const { status, result } = await createProfile(profile);
 
     if (status && result?.status) {
       message.success('Create profile successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
-  const handleUpdateProfile = async (profile: Profile) => {
+  const handleUpdateProfile = async (profile: Profile): Promise<boolean> => {
     const { status, result } = await updateProfile(profile);
 
     if (status && result?.status) {
       message.success('Update profile successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
-  const handRemoveProfile = async (profileId: string | number) => {
+  const handRemoveProfile = async (profileId: string | number): Promise<boolean> => {
     const { status, result } = await removeProfile(profileId);
 
     if (status && result?.status) {
       message.success('Remove profile successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
   const onProfileDetail = useCallback(async (id: string | number) => {
@@ -92,6 +98,16 @@ const ProfilePage: FC = () => {
         filterApi={getAllProfiles}
         tableOptions={[
           {
+            title: 'Shop',
+            dataIndex: 'shopName',
+            key: 'shopName',
+            render: (value, record) => (
+              <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+                {value}
+              </Link>
+            ),
+          },
+          {
             title: 'Goloin Profile ID',
             dataIndex: 'goLoginProfileId',
             key: 'goLoginProfileId',
@@ -100,20 +116,6 @@ const ProfilePage: FC = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-          },
-          {
-            title: 'Notes',
-            dataIndex: 'notes',
-            key: 'notes',
-            render: (value: string) => (
-              <div dangerouslySetInnerHTML={{__html: value}}></div>
-            )
-          },
-          {
-            title: 'Created date',
-            dataIndex: 'createdDate',
-            key: 'createdDate',
-            render: createdDate => <div>{dateToStringWithFormat(createdDate)}</div>,
           },
           {
             title: 'Proxy',
@@ -126,20 +128,25 @@ const ProfilePage: FC = () => {
             key: 'folderName',
           },
           {
-            title: 'Shop ID',
-            dataIndex: 'shopId',
-            key: 'shopId',
+            title: 'Notes',
+            dataIndex: 'notes',
+            key: 'notes',
+            render: (value: string) => <div dangerouslySetInnerHTML={{ __html: value }}></div>,
           },
           {
-            title: 'Shop Name',
-            dataIndex: 'shopName',
-            key: 'shopName',
+            title: 'Created date',
+            dataIndex: 'createdDate',
+            key: 'createdDate',
+            align: 'center',
+            sorter: true,
+            render: createdDate => <div>{dateToStringWithFormat(createdDate)}</div>,
           },
           {
             title: 'Action',
             fixed: 'right',
             dataIndex: 'action',
             key: 'action',
+            align: 'center',
             render: (_, record) => (
               <Space>
                 <Button type="primary" onClick={() => record.id && onProfileDetail(record.id)}>
@@ -156,7 +163,7 @@ const ProfilePage: FC = () => {
               type="input"
               name="query"
               innerProps={{
-                placeholder: 'ID, Name',
+                placeholder: 'Keyword',
                 allowClear: true,
               }}
             />

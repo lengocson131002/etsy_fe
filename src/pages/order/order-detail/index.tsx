@@ -6,7 +6,7 @@ import './index.less';
 
 import { Card, Col, Divider, Row, Space, Tag, theme, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getOrderDetail } from '@/api/orders.api';
 import { dateToStringWithFormat } from '@/utils/datetime';
@@ -82,6 +82,12 @@ const OrderDetailPage: FC = () => {
         <Row align={'stretch'} gutter={[12, 12]}>
           <Col {...wrapperCol}>
             <OrderCard header="Order Information">
+            <div className="order-detail-info">
+                <Text strong className="order-detail-info-title">
+                  Shop :
+                </Text>
+                <Link style={{textDecoration: 'none'}} to={`/shop/${orderData.shopId}`}>{orderData.shopName}</Link>
+              </div>
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">
                   Etsy Order ID :
@@ -140,7 +146,7 @@ const OrderDetailPage: FC = () => {
                 <Text strong className="order-detail-info-title">
                   Shipping price :
                 </Text>
-                <Text className="order-detail-info-content">{numberWithCommas(orderData.shippingPrice)}</Text>
+                <Text className="order-detail-info-content">{numberWithCommas(orderData.shippingPrice)}{orderData.currencySymbol}</Text>
               </div>
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">
@@ -165,7 +171,7 @@ const OrderDetailPage: FC = () => {
           <Col className="order-items-wrapper" {...wrapperCol} span={6}>
             <OrderCard header={`Order items`}>
               <div className="order-items">
-                {orderData.items && orderData.items.map(item => <OrderItemCard item={item} />)}
+                {orderData.items && orderData.items.map(item => <OrderItemCard currency={orderData.currencySymbol} item={item} />)}
               </div>
               <div>
                 <div className="order-price-info">
@@ -174,7 +180,7 @@ const OrderDetailPage: FC = () => {
                 </div>
                 <div className="order-price-info">
                   <Text strong>Items totals:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.itemTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.itemTotal)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon code:</Text>
@@ -182,31 +188,31 @@ const OrderDetailPage: FC = () => {
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon rate:</Text>
-                  <Text className="order-price-info-configure">{orderData.couponRate}</Text>
+                  <Text className="order-price-info-configure">{orderData.couponRate}%</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Coupon value:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.couponValue)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.couponValue)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Sub total:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.subTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.subTotal)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Shipping price:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.shippingPrice)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.shippingPrice)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Tax:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.tax)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.tax)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Order total:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.orderTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.orderTotal)}{orderData.currencySymbol}</Text>
                 </div>
                 <div className="order-price-info">
                   <Text strong>Adjusted total:</Text>
-                  <Text className="order-price-info-configure">{numberWithCommas(orderData.adjustedTotal)}</Text>
+                  <Text className="order-price-info-configure">{numberWithCommas(orderData.adjustedTotal)}{orderData.currencySymbol}</Text>
                 </div>
               </div>
             </OrderCard>

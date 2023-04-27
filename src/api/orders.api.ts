@@ -26,4 +26,8 @@ export const getOrderDetail = (orderId: number) =>
     },
   );
 
-export const getOrderStatuses = () => request<ListResponse<string>>('get', '/api/v1/orders/statuses');
+export const getOrderStatuses = () => request<ListResponse<string>>('get', '/api/v1/orders/statuses', {}, {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+  },
+});

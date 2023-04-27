@@ -42,6 +42,10 @@ export interface Order {
   estimateDelivery?: string;
   trackingNumber?: string;
   markAsGift?: true;
+  shopId: string;
+  shopName: string;
+  currencyCode: string;
+  currencySymbol: string
 }
 
 export interface OrderDetail extends Order {

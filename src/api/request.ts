@@ -61,10 +61,10 @@ axiosInstance.interceptors.response.use(
       }),
     );
 
-    const error = err.response;
-    const config = err.config;
+    const error = err?.response;
+    const config = err?.config;
 
-    if (error.status === 401 && config && !config?.__isRetryRequest) {
+    if (error?.status === 401 && config && !config?.__isRetryRequest) {
       config.__isRetryRequest = true;
       config.headers = {
         ...config.headers,

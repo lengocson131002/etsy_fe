@@ -78,14 +78,14 @@ const ShopPage: FC = () => {
             title: 'Etsy Shop ID',
             dataIndex: 'id',
             key: 'id',
-            render: (value) => (
-              <Link target='_blank' to={`${EtsyUrlPrefixes.shops}/${value}`}>{value}</Link>
-            )
           },
           {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            render: (value) => (
+              <Link style={{ textDecoration: 'none'}} target='_blank' to={`${EtsyUrlPrefixes.shops}/${value}`}>{value}</Link>
+            )
           },
           {
             title: 'Status',
@@ -103,7 +103,6 @@ const ShopPage: FC = () => {
             dataIndex: 'currencyCode',
             key: 'currencyCode',
             align: 'center',
-            width: 100,
             render: (currency, record) => (
               <span>
                 {currency} ({record.currencySymbol})
@@ -113,21 +112,23 @@ const ShopPage: FC = () => {
           {
             title: 'Total orders',
             dataIndex: 'orderCount',
-            key: 'orderCount',
+            key: 'allTimeDashboardOrders',
             align: 'right',
+            sorter: true,
             render: value => <strong>{numberWithCommas(value)}</strong>,
           },
           {
             title: 'Total visit',
             dataIndex: 'visitCount',
-            key: 'visitCount',
+            key: 'allTimeDashboardVisits',
             align: 'right',
+            sorter: true,
             render: value => <strong>{numberWithCommas(value)}</strong>,
           },
           {
             title: 'Total revenue',
             dataIndex: 'revenue',
-            key: 'revenue',
+            key: 'allTimeDashboardRevenue',
             align: 'right',
             render: (value, record) => (
               <strong>
@@ -138,14 +139,20 @@ const ShopPage: FC = () => {
           {
             title: 'Conversion Rate',
             dataIndex: 'conversionRate',
-            key: 'conversionRate',
+            key: 'allTimeDashboardConversionRate',
             align: 'center',
-            width: 120,
+            sorter: true,
+            render: value => (
+              <span>{value}%</span>
+            )
+
           },
           {
             title: 'Opened Date',
             dataIndex: 'openedDate',
             key: 'openedDate',
+            align: 'center',
+            sorter: true,
             render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
           },
           {
@@ -164,7 +171,6 @@ const ShopPage: FC = () => {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            width: 100,
             align: 'center',
             fixed: 'right',
             render: (_, record) => (
@@ -187,7 +193,6 @@ const ShopPage: FC = () => {
           <>
             <FilterItem
               innerProps={{
-                placeholder: 'Name, Profile ID, Profile Name',
                 allowClear: true,
               }}
               label="Filter my trackings"
@@ -198,7 +203,7 @@ const ShopPage: FC = () => {
 
             <FilterItem
               innerProps={{
-                placeholder: 'Name, Profile ID, Profile Name',
+                placeholder: 'Keyword',
                 allowClear: true,
               }}
               label="Search"

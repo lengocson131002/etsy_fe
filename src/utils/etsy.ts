@@ -1,5 +1,5 @@
 export const EtsyUrlPrefixes = {
-  shops: "https://google.com",
-  listings: "https://facebook.com",
+  shops: "https://www.etsy.com/shop",
+  listings: "https://www.etsy.com/listing",
   orders: "https://youtube.com"
 }

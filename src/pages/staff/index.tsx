@@ -46,34 +46,40 @@ const StaffPage: FC = () => {
     loadRoleData();
   }, []);
 
-  const handleCreateStaff = async (staff: CreateStaffRequest) => {
+  const handleCreateStaff = async (staff: CreateStaffRequest): Promise<boolean> => {
     const { result, status } = await createStaff(staff);
 
     if (status && result?.status) {
       message.success('Create staff successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
-  const handleUpdateStaff = async (staff: UpdateStaffRequest) => {
+  const handleUpdateStaff = async (staff: UpdateStaffRequest) : Promise<boolean> => {
     const { result, status } = await updateStaff(staff);
 
     if (status && result?.status) {
       message.success('Update staff successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
-  const handleRemoveStaff = async (staffId: string | number) => {
+  const handleRemoveStaff = async (staffId: string | number) : Promise<boolean> => {
     const { result, status } = await removeStaff(staffId);
 
     if (status && result?.status) {
       message.success('Remove staff successfully');
       setOpened(false);
       resetTable();
+      return true;
     }
+    return false;
   };
 
   const onClose = () => {
@@ -140,6 +146,8 @@ const StaffPage: FC = () => {
             title: 'Created At',
             dataIndex: 'createdAt',
             key: 'createdAt',
+            align: 'center',
+            sorter: true,
             render: value => <span>{dateToStringWithFormat(value)}</span>,
           },
           {
@@ -165,6 +173,7 @@ const StaffPage: FC = () => {
             dataIndex: 'action',
             key: 'action',
             fixed: 'right',
+            align: 'center',
             render: (_, record) => {
               return (
                 <Button type="primary" onClick={() => onOpenDrawer(record.id)}>
@@ -178,7 +187,7 @@ const StaffPage: FC = () => {
           <>
             <FilterItem
               innerProps={{
-                placeholder: 'Name, Staff ID, Phone number, Email',
+                placeholder: 'Keyword',
                 allowClear: true,
               }}
               label="Search"

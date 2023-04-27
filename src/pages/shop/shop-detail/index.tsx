@@ -61,15 +61,21 @@ const ShopDetailPage: FC = () => {
                     <Text strong className="shop-detail-overview-item-title">
                       Etsy Shop ID :
                     </Text>
-                    <Text className="shop-detail-overview-item-info">
-                      <Link target='_blank' to={`${EtsyUrlPrefixes.listings}/${shopData.id}`}>{shopData.id}</Link>
-                    </Text>
+                    <Text className="shop-detail-overview-item-info">{shopData.id}</Text>
                   </div>
                   <div className="shop-detail-overview-item">
                     <Text strong className="shop-detail-overview-item-title">
                       Shop Name :
                     </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.name}</Text>
+                    <Text className="shop-detail-overview-item-info">
+                      <Link
+                        style={{ textDecoration: 'none' }}
+                        target="_blank"
+                        to={`${EtsyUrlPrefixes.listings}/${shopData.name}`}
+                      >
+                        {shopData.name}
+                      </Link>
+                    </Text>
                   </div>
                   <div className="shop-detail-overview-item">
                     <Text strong className="shop-detail-overview-item-title">
@@ -125,7 +131,7 @@ const ShopDetailPage: FC = () => {
                         Notes :
                       </Text>
                       <Text className="shop-detail-overview-item-info">
-                        <div dangerouslySetInnerHTML={{__html: shopData.profile.notes ?? ''}}/>
+                        <div dangerouslySetInnerHTML={{ __html: shopData.profile.notes ?? '' }} />
                       </Text>
                     </div>
                     <div className="shop-detail-overview-item">

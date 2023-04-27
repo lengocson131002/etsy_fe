@@ -22,12 +22,19 @@ interface ShopOrderProps {
 
 const columnOptions: MyTableOptions<Order> = [
   {
+    title: 'Shop',
+    dataIndex: 'shopName',
+    key: 'shopName',
+    render: (value, record) => (
+      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+        {value}
+      </Link>
+    ),
+  },
+  {
     title: 'Etsy Order ID',
     dataIndex: 'etsyOrderId',
-    key: 'etsyOrderId',
-    render: (value) => (
-      <Link target='_blank' to={`${EtsyUrlPrefixes.orders}/${value}`}>{value}</Link>
-    )
+    key: 'etsyOrderId'
   },
   {
     title: 'Progress step',
@@ -37,48 +44,52 @@ const columnOptions: MyTableOptions<Order> = [
     align: 'center',
   },
   {
+    title: 'Customer',
+    dataIndex: 'shippingCustomerName',
+    key: 'shippingCustomerName',
+  },
+  {
     title: 'Item count',
     dataIndex: 'itemCount',
     key: 'itemCount',
     align: 'right',
+    sorter: true,
     render: value => <span>{numberWithCommas(value)}</span>,
-  },
-  {
-    title: 'Customer',
-    dataIndex: 'shippingCustomerName',
-    key: 'shippingCustomerName',
   },
   {
     title: 'Order total',
     dataIndex: 'orderTotal',
     key: 'orderTotal',
     align: 'right',
-    render: value => <span>{numberWithCommas(value)}</span>,
+    sorter: true,
+    render: (value, record) => <span>{numberWithCommas(value)} {record.currencySymbol}</span>,
   },
   {
     title: 'Tax',
     dataIndex: 'tax',
     key: 'tax',
     align: 'right',
-    render: value => <span>{numberWithCommas(value)}</span>,
+    sorter: true,
+    render: (value, record) => <span>{numberWithCommas(value)} {record.currencySymbol}</span>,
   },
   {
     title: 'Tracking number',
     dataIndex: 'trackingNumber',
     key: 'trackingNumber',
-    width: 200,
+
+  },
+  {
+    title: 'Order time',
+    dataIndex: 'orderTime',
+    key: 'orderTime',
+    sorter: true,
+    render: value => <span>{dateToStringWithFormat(value)}</span>,
   },
   {
     title: 'Mark as gift?',
     dataIndex: 'markAsGift',
     key: 'markAsGift',
     render: value => (value ? <Tag color="green">Marked</Tag> : <Tag color="red">Unmarked</Tag>),
-  },
-  {
-    title: 'Order time',
-    dataIndex: 'orderTime',
-    key: 'orderTime',
-    render: value => <span>{dateToStringWithFormat(value)}</span>,
   },
   {
     title: 'Action',
@@ -132,7 +143,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
           <>
             <FilterItem
               innerProps={{
-                placeholder: 'Name, Profile ID, Profile Name',
+                placeholder: 'Keyword',
                 allowClear: true,
               }}
               label="Search"

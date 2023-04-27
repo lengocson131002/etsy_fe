@@ -10,6 +10,7 @@ import { getAllConversations } from '@/api/converation.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
+import { Conversation } from '@/interface/conversation';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -17,11 +18,16 @@ interface ShopOrderProps {
   shopId?: string | number;
 }
 
-const columnOptions: MyTableOptions<Order> = [
+const columnOptions: MyTableOptions<Conversation> = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
+    title: 'Shop',
+    dataIndex: 'shopName',
+    key: 'shopName',
+    render: (value, record) => (
+      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+        {value}
+      </Link>
+    ),
   },
   {
     title: 'Customer Name',
@@ -29,15 +35,19 @@ const columnOptions: MyTableOptions<Order> = [
     key: 'customerName',
   },
   {
-    title: 'Unread Count',
-    dataIndex: 'unreadCount',
-    key: 'unreadCount',
-  },
-  {
     title: 'Message Time',
     dataIndex: 'messageTime',
     key: 'messageTime',
+    align: 'center'
   },
+  {
+    title: 'Unread Count',
+    dataIndex: 'unreadCount',
+    key: 'unreadCount',
+    sorter: true,
+    align: 'right'
+  },
+
 ];
 
 const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {

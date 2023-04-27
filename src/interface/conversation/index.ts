@@ -3,4 +3,6 @@ export interface Conversation {
   customerName?: string;
   unreadCount?: number;
   messageTime?: string;
+  shopId: string;
+  shopName: string;
 }

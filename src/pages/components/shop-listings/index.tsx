@@ -20,48 +20,69 @@ interface ShopListingProps {
 
 const columnOptions: MyTableOptions<Listing> = [
   {
+    title: 'Shop',
+    dataIndex: 'shopName',
+    key: 'shopName',
+    render: (value, record) => (
+      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+        {value}
+      </Link>
+    ),
+  },
+  {
     title: 'Image',
     dataIndex: 'imageUrl',
     key: 'imageUrl',
     render: (image: string) => (
       <>
-        <Image width={90} height={90} style={{objectFit: 'contain'}} src={image} />
+        <Image width={90} height={90} style={{ objectFit: 'contain' }} src={image} />
       </>
     ),
-    fixed: 'left',
   },
   {
     title: 'Etsy Listing ID',
     dataIndex: 'etsyListingId',
     key: 'etsyListingId',
-    render: (value) => (
-      <Link target='_blank' to={`${EtsyUrlPrefixes.listings}/${value}`}>{value}</Link>
-    )
+    render: value => (
+      <Link style={{ textDecoration: 'none' }} target="_blank" to={`${EtsyUrlPrefixes.listings}/${value}`}>
+        {value}
+      </Link>
+    ),
   },
   {
     title: 'Title',
     dataIndex: 'title',
     key: 'title',
+    width: 400,
   },
   {
     title: 'Stock',
     dataIndex: 'stock',
     key: 'stock',
-    align: 'center',
+    align: 'right',
+    sorter: true,
   },
   {
     title: 'Price from',
     dataIndex: 'priceFrom',
     key: 'priceFrom',
-    render: priceFrom => <span>{numberWithCommas(priceFrom)}</span>,
     align: 'right',
+    render: (priceFrom, record) => (
+      <span>
+        {numberWithCommas(priceFrom)} {record.currencySymbol}
+      </span>
+    ),
   },
 
   {
     title: 'Price to',
     dataIndex: 'priceTo',
     key: 'priceTo',
-    render: price => <span>{numberWithCommas(price)}</span>,
+    render: (price, record) => (
+      <span>
+        {numberWithCommas(price) ? `${numberWithCommas(price)} ${record.currencySymbol}` : ''} {}
+      </span>
+    ),
     align: 'right',
   },
   {
@@ -75,21 +96,32 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Last 30 visits',
     dataIndex: 'last30Visits',
     key: 'last30Visits',
-    align: 'center',
+    align: 'right',
+    sorter: true,
     render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Last 30 Favourites',
     dataIndex: 'last30Favourites',
     key: 'last30Favourites',
-    align: 'center',
+    align: 'right',
+    sorter: true,
     render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
     title: 'Sales',
     dataIndex: 'allTimeSales',
     key: 'allTimeSales',
-    align: 'center',
+    align: 'right',
+    sorter: true,
+    render: value => <span>{numberWithCommas(value)}</span>,
+  },
+  {
+    title: 'Renewals',
+    sorter: true,
+    dataIndex: 'allTimeRenewals',
+    key: 'allTimeRenewals',
+    align: 'right',
     render: value => <span>{numberWithCommas(value)}</span>,
   },
   {
@@ -97,20 +129,16 @@ const columnOptions: MyTableOptions<Listing> = [
     dataIndex: 'allTimeRevenue',
     key: 'allTimeRevenue',
     align: 'right',
-    render: value => <span>{numberWithCommas(value)}</span>,
-  },
-  {
-    title: 'Renewals',
-    dataIndex: 'allTimeRenewals',
-    key: 'allTimeRenewals',
-    align: 'center',
-    render: value => <span>{numberWithCommas(value)}</span>,
-  },
+    render: (value, record) => (
+      <span>
+        {numberWithCommas(value)} {record.currencySymbol}
+      </span>
+    ),
+  }
 ];
 
 const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
-
-  const [statusOptions, setStatusOptions] = useState<{value: string, label: string}[]>([])
+  const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
 
   useEffect(() => {
     const loadStatusOptions = async () => {
