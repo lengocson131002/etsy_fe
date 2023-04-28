@@ -8,22 +8,24 @@ import './index.less';
 import { Button, Drawer, message, Tag } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getAllRoles } from '@/api/role.api';
 import { createStaff, getAllStaffs, getStaff, removeStaff, updateStaff } from '@/api/staff.api';
 import Table, { MyTableOptions } from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
+import StaffDetailForm from './staff-form/staff-detail';
+import AddStaffForm from './staff-form/add-staff';
 
-import StaffForm from '../components/staff-form';
+const STAFF_PATH = '/staff';
 
 const { Item: FilterItem } = Table.MyFilter;
 
 const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>();
-  const [staff, setStaff] = useState<Staff>();
-  const [opened, setOpened] = useState(false);
+  const { id } = useParams();
+  const [addFormOpen, setAddFormOpen] = useState(false);
 
   const tableRef = useRef<RefTableProps>(null);
 
@@ -34,7 +36,6 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   useEffect(() => {
     const loadRoleData = async () => {
       const { status, result } = await getAllRoles();
-
       if (status && result) {
         const roles = result.items;
 
@@ -43,60 +44,6 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
     };
 
     loadRoleData();
-  }, []);
-
-  const handleCreateStaff = async (staff: CreateStaffRequest): Promise<boolean> => {
-    const { result, status } = await createStaff(staff);
-
-    if (status && result?.status) {
-      message.success('Create staff successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const handleUpdateStaff = async (staff: UpdateStaffRequest): Promise<boolean> => {
-    const { result, status } = await updateStaff(staff);
-
-    if (status && result?.status) {
-      message.success('Update staff successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const handleRemoveStaff = async (staffId: string | number): Promise<boolean> => {
-    const { result, status } = await removeStaff(staffId);
-
-    if (status && result?.status) {
-      message.success('Remove staff successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const onClose = () => {
-    setOpened(false);
-  };
-
-  const onOpenDrawer = useCallback(async (id?: string | number) => {
-    if (id) {
-      const { result, status } = await getStaff(id);
-
-      if (status && result) {
-        setStaff(result);
-      }
-    } else {
-      setStaff(undefined);
-    }
-
-    setOpened(true);
   }, []);
 
   const getAllStaffAPI = useCallback(
@@ -109,10 +56,20 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
     [teamId],
   );
 
+  const onCloseDetailForm = () => {
+    navigate(STAFF_PATH);
+    resetTable();
+  };
+
+  const onCloseAddForm = () => {
+    setAddFormOpen(false);
+    resetTable();
+  }
+
   return (
     <div>
       {!teamId && (
-        <Button type="primary" style={{ margin: '20px 0' }} onClick={() => onOpenDrawer()}>
+        <Button type="primary" style={{ margin: '20px 0' }} onClick={() => setAddFormOpen(true)}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
             <AiOutlinePlusCircle /> Add staff
           </div>
@@ -197,9 +154,9 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             align: 'center',
             render: (_, record) => {
               return (
-                <Button type="primary" onClick={() => onOpenDrawer(record.id)}>
-                  Detail
-                </Button>
+                <Link to={`${STAFF_PATH}/${record.id}`}>
+                  <Button type="primary">Detail</Button>
+                </Link>
               );
             },
           },
@@ -237,20 +194,28 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
       />
 
       <Drawer
-        title={staff ? 'STAFF DETAIL' : 'ADD STAFF'}
+        title={'STAFF DETAIL'}
         placement="right"
-        width={600}
-        onClose={onClose}
-        open={opened}
+        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 100}
+        onClose={() => setAddFormOpen(false)}
+        open={addFormOpen}
         closable={true}
       >
-        <StaffForm
-          data={staff}
-          handleCreateStaff={handleCreateStaff}
-          handleUpdateStaff={handleUpdateStaff}
-          handleRemoveStaff={handleRemoveStaff}
-        />
+        <AddStaffForm closeForm={onCloseAddForm} />
       </Drawer>
+
+      {location.pathname.startsWith(STAFF_PATH) && id != undefined && (
+        <Drawer
+          title={'STAFF DETAIL'}
+          placement="right"
+          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 100}
+          onClose={() => navigate(STAFF_PATH)}
+          open={true}
+          closable={true}
+        >
+          <StaffDetailForm closeForm={onCloseDetailForm} />
+        </Drawer>
+      )}
     </div>
   );
 };

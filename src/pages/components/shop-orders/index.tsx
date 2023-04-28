@@ -2,15 +2,18 @@ import type { MyTableOptions } from '@/components/business/table';
 import type { Order } from '@/interface/order';
 import { FC, useEffect, useState } from 'react';
 
-import { Button, Image, Tag } from 'antd';
+import { Button, Drawer, Image, Tag } from 'antd';
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getOrderStatuses, getOrders } from '@/api/orders.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
+import OrderDetailPage from '@/pages/order/order-detail';
+
+const ORDER_PATH = '/order';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -33,7 +36,7 @@ const columnOptions: MyTableOptions<Order> = [
   {
     title: 'Etsy Order ID',
     dataIndex: 'etsyOrderId',
-    key: 'etsyOrderId'
+    key: 'etsyOrderId',
   },
   {
     title: 'Progress step',
@@ -61,7 +64,11 @@ const columnOptions: MyTableOptions<Order> = [
     key: 'orderTotal',
     align: 'right',
     sorter: true,
-    render: (value, record) => <span>{numberWithCommas(value)} {record.currencySymbol}</span>,
+    render: (value, record) => (
+      <span>
+        {numberWithCommas(value)} {record.currencySymbol}
+      </span>
+    ),
   },
   {
     title: 'Tax',
@@ -69,13 +76,16 @@ const columnOptions: MyTableOptions<Order> = [
     key: 'tax',
     align: 'right',
     sorter: true,
-    render: (value, record) => <span>{numberWithCommas(value)} {record.currencySymbol}</span>,
+    render: (value, record) => (
+      <span>
+        {numberWithCommas(value)} {record.currencySymbol}
+      </span>
+    ),
   },
   {
     title: 'Tracking number',
     dataIndex: 'trackingNumber',
     key: 'trackingNumber',
-
   },
   {
     title: 'Order time',
@@ -107,6 +117,8 @@ const columnOptions: MyTableOptions<Order> = [
 
 const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -163,6 +175,18 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
           </>
         }
       />
+
+      {location.pathname.startsWith(ORDER_PATH) && id !== undefined && (
+        <Drawer
+          onClose={() => navigate(ORDER_PATH)}
+          title={'ORDER DETAIL'}
+          open={true}
+          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+          closable={true}
+        >
+          <OrderDetailPage />
+        </Drawer>
+      )}
     </div>
   );
 };

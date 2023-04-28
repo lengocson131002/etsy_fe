@@ -8,7 +8,7 @@ export interface CreateProfile {
 }
 
 export interface Profile {
-  id: string | number;
+  id: number;
   goLoginProfileId: string;
   name: string;
   notes?: string;

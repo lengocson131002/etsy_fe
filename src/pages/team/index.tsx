@@ -4,7 +4,7 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 import { Button, Drawer } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import TeamDetailForm from '../components/team-form/team-detail-form';
 import AddTeamForm from '../components/team-form/add-team-form';
 
@@ -22,12 +22,12 @@ const TeamPage: FC = () => {
   const onCloseAddForm = () => {
     ref.current?.load();
     setAddFormOpen(false);
-  }
+  };
 
   const closeDetailForm = () => {
     navigate(TEAM_PATH);
     ref.current?.load();
-  }
+  };
 
   return (
     <div>
@@ -66,7 +66,7 @@ const TeamPage: FC = () => {
             title: 'Description',
             dataIndex: 'description',
             key: 'description',
-            width: 300
+            width: 300,
           },
           {
             title: 'Created at',
@@ -100,9 +100,9 @@ const TeamPage: FC = () => {
             key: 'action',
             fixed: 'right',
             render: (_, record) => (
-              <Button onClick={() => navigate(`/team/${record?.id}`)} type="primary">
-                Detail
-              </Button>
+              <Link to={`/team/${record.id}`}>
+                <Button type="primary">Detail</Button>
+              </Link>
             ),
           },
         ]}
@@ -131,16 +131,18 @@ const TeamPage: FC = () => {
         <AddTeamForm closeForm={onCloseAddForm} />
       </Drawer>
 
-      <Drawer
-        title={'TEAM DETAIL'}
-        placement="right"
-        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
-        onClose={() => navigate(TEAM_PATH)}
-        open={id !== undefined}
-        closable={true}
-      >
-        <TeamDetailForm closeForm={closeDetailForm} teamId={id ? Number.parseInt(id) : undefined} />
-      </Drawer>
+      {location.pathname.startsWith(TEAM_PATH) && id !== undefined && (
+        <Drawer
+          title={'TEAM DETAIL'}
+          placement="right"
+          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
+          onClose={() => navigate(TEAM_PATH)}
+          open={true}
+          closable={true}
+        >
+          <TeamDetailForm closeForm={closeDetailForm} />
+        </Drawer>
+      )}
     </div>
   );
 };

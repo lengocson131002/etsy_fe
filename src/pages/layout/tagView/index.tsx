@@ -51,7 +51,6 @@ const TagsView: FC = () => {
 
   useEffect(() => {
     navigate(activeTagId);
-    console.log("Active tag change to: ", activeTagId);
 
   }, [activeTagId]);
 
@@ -60,7 +59,6 @@ const TagsView: FC = () => {
       const menu = menuList.find(m => m.path === location.pathname);
 
       if (menu) {
-        console.log('Current path: ', menu.path);
         dispatch(
           addTag({
             ...menu,

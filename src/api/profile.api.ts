@@ -26,15 +26,15 @@ export const getProfile = (profileId: string | number) =>
     },
   );
 
-export const createProfile = (profile: CreateProfile) =>
+export const createProfile = (profile: any) =>
   request<StatusResponse>('post', '/api/v1/profiles', profile, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },
   });
 
-export const updateProfile = (profile: Profile) =>
-  request<StatusResponse>('put', `/api/v1/profiles/${profile.id}`, profile, {
+export const updateProfile = (profileId: number, data: any) =>
+  request<StatusResponse>('put', `/api/v1/profiles/${profileId}`, data, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },

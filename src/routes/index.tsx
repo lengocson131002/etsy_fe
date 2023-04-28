@@ -4,7 +4,7 @@ import type { RouteObject } from 'react-router';
 import { lazy, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
-import { useNavigate, useRoutes } from 'react-router-dom';
+import { useNavigate, useParams, useRoutes } from 'react-router-dom';
 
 import { apiAccount } from '@/api/user.api';
 import Dashboard from '@/pages/dashboard';
@@ -25,8 +25,6 @@ const ShopPage = lazy(() => import('@/pages/shop'));
 const ListingPage = lazy(() => import('@/pages/listing'));
 const OrderPage = lazy(() => import('@/pages/order'));
 const StaffPage = lazy(() => import('@/pages/staff'));
-const ShopDetail = lazy(() => import('@/pages/shop/shop-detail'));
-const OrderDetailPage = lazy(() => import('@/pages/order/order-detail'));
 const MessagePage = lazy(() => import('@/pages/conversation'));
 const TeamPage = lazy(() => import('@/pages/team'));
 const ProfilePage = lazy(() => import('@/pages/profile'));
@@ -58,7 +56,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'shop/:id',
-        element: <WrapperRouteComponent element={<ShopDetail />} titleId="title.shop.detail" />,
+        element: <WrapperRouteComponent element={<ShopPage />} titleId="title.shop" />,
       },
       {
         path: 'listing',
@@ -70,7 +68,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'order/:id',
-        element: <WrapperRouteComponent element={<OrderDetailPage />} titleId="title.order.detail" />,
+        element: <WrapperRouteComponent element={<OrderPage />} titleId="title.order.detail" />,
       },
       {
         path: 'message',
@@ -78,6 +76,10 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'staff',
+        element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
+      },
+      {
+        path: 'staff/:id',
         element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
       },
       {
@@ -90,6 +92,10 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'profile',
+        element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
+      },
+      {
+        path: 'profile/:id',
         element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
       },
       {
@@ -134,7 +140,6 @@ const RenderRouter: FC = () => {
     };
 
     loadProfileInfo(token);
-
   }, [logged]);
 
   const element = useRoutes(routeList);

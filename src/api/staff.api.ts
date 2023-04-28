@@ -14,15 +14,15 @@ export const getAllStaffs = (params: any) =>
     },
   });
 
-export const createStaff = (staff: CreateStaffRequest) =>
+export const createStaff = (staff: any) =>
   request<StatusResponse>('post', '/api/v1/staffs', staff, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },
   });
 
-export const updateStaff = (staff: UpdateStaffRequest) =>
-  request<StatusResponse>('put', `/api/v1/staffs/${staff.id}`, staff, {
+export const updateStaff = (staffId: number, data: any) =>
+  request<StatusResponse>('put', `/api/v1/staffs/${staffId}`, data, {
     headers: {
       Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },

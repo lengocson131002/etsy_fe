@@ -4,22 +4,27 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Drawer, message, Modal, Space } from 'antd';
-import { lazy, useCallback, useRef, useState } from 'react';
+import { Button, Drawer, message, Space } from 'antd';
+import { lazy, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { createProfile, getAllProfiles, getProfile, removeProfile, updateProfile } from '@/api/profile.api';
-import Table, { MyTableOptions } from '@/components/business/table';
+import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 
-import ProfileForm from '../components/profile-form';
+import ProfileDetailForm from './profile-detail';
+import AddProfileForm from './add-profile';
+
+const PROFILE_PATH = '/profile';
+const SHOP_PATH = '/shop';
 
 const { Item: FilterItem } = Table.MyFilter;
-
 const ProfilePage: FC = () => {
   const [opened, setOpened] = useState<boolean>(false);
   const [profile, setProfile] = useState<Profile>();
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   const tableRef = useRef<RefTableProps>(null);
 
@@ -27,67 +32,19 @@ const ProfilePage: FC = () => {
     tableRef.current?.load();
   };
 
-  const onClose = () => {
+  const onCloseAddProfileForm = () => {
     setOpened(false);
+    resetTable();
   };
 
-  const onAddProfile = () => {
-    setProfile(undefined);
-    setOpened(true);
+  const onCloseProfileDetail = () => {
+    navigate(PROFILE_PATH);
+    resetTable();
   };
-
-  const handleCreateProfile = async (profile: CreateProfile): Promise<boolean> => {
-    const { status, result } = await createProfile(profile);
-
-    if (status && result?.status) {
-      message.success('Create profile successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const handleUpdateProfile = async (profile: Profile): Promise<boolean> => {
-    const { status, result } = await updateProfile(profile);
-
-    if (status && result?.status) {
-      message.success('Update profile successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const handRemoveProfile = async (profileId: string | number): Promise<boolean> => {
-    const { status, result } = await removeProfile(profileId);
-
-    if (status && result?.status) {
-      message.success('Remove profile successfully');
-      setOpened(false);
-      resetTable();
-      return true;
-    }
-    return false;
-  };
-
-  const onProfileDetail = useCallback(async (id: string | number) => {
-    if (!id) {
-      return;
-    }
-
-    const { result, status } = await getProfile(id);
-
-    if (status && result) {
-      setProfile(result);
-      setOpened(true);
-    }
-  }, []);
 
   return (
     <div className="profile-list-container">
-      <Button type="primary" style={{ margin: '20px 0' }} onClick={onAddProfile}>
+      <Button type="primary" style={{ margin: '20px 0' }} onClick={() => setOpened(true)}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <AiOutlinePlusCircle /> Add Profile
         </div>
@@ -149,9 +106,9 @@ const ProfilePage: FC = () => {
             align: 'center',
             render: (_, record) => (
               <Space>
-                <Button type="primary" onClick={() => record.id && onProfileDetail(record.id)}>
-                  Detail
-                </Button>
+                <Link to={`${PROFILE_PATH}/${record.id}`}>
+                  <Button type="primary">Detail</Button>
+                </Link>
               </Space>
             ),
           },
@@ -170,28 +127,30 @@ const ProfilePage: FC = () => {
           </>
         }
       />
+
       <Drawer
-        title={profile ? 'PROFILE DETAIL' : 'ADD PROFILE'}
+        title={'ADD PROFILE'}
         placement="right"
-        width={500}
-        onClose={onClose}
+        width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+        onClose={() => setOpened(false)}
         open={opened}
-        closable={false}
-        extra={
-          profile?.shopId && (
-            <Link to={`/shop/${profile.shopId}`}>
-              <Button type="primary">View shop</Button>
-            </Link>
-          )
-        }
+        closable={true}
       >
-        <ProfileForm
-          data={profile}
-          handleCreateProfile={handleCreateProfile}
-          handleUpdateProfile={handleUpdateProfile}
-          handleRemoveProfile={handRemoveProfile}
-        />
+        <AddProfileForm closeForm={onCloseAddProfileForm} />
       </Drawer>
+
+      {location.pathname.startsWith(PROFILE_PATH) && id && (
+        <Drawer
+          title={'PROFILE DETAIL'}
+          placement="right"
+          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+          onClose={() => navigate(PROFILE_PATH)}
+          open={true}
+          closable={true}
+        >
+          <ProfileDetailForm closeForm={onCloseProfileDetail} />
+        </Drawer>
+      )}
     </div>
   );
 };

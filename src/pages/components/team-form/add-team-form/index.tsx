@@ -7,10 +7,9 @@ import { useForm } from 'antd/es/form/Form';
 import { FC, useEffect, useLayoutEffect, useState } from 'react';
 
 interface TeamFormProps {
-  teamId?: number;
   closeForm: () => void;
 }
-const AddTeamForm: FC<TeamFormProps> = ({ teamId, closeForm }) => {
+const AddTeamForm: FC<TeamFormProps> = ({ closeForm }) => {
   const [form] = useForm();
 
   const onFinish = async (values: any) => {

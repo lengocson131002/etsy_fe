@@ -4,10 +4,10 @@ import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, DropDownProps, Image, message, SelectProps, Space, Tag } from 'antd';
+import { Checkbox, Drawer, DropDownProps, Image, message, SelectProps, Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getAllShops, getShopStatuses } from '@/api/shop.api';
 import { addTracking, unTracking } from '@/api/tracking.api';
@@ -17,15 +17,19 @@ import { dateToStringWithFormat, GLOBAL_DATE_FORMAT } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
+import ShopDetailPage from './shop-detail';
+
+const SHOP_PATH = '/shop';
 
 const { Item: FilterItem } = Table.MyFilter;
 
-const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
+const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const ref = useRef<RefTableProps>(null);
-
+  const { id } = useParams();
   const { userId, username } = useSelector(state => state.user);
   const [myTrackings, setMyTrackings] = useState(false);
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -60,13 +64,16 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
     setMyTrackings(e.target.checked);
   };
 
-  const getAllShopsAPI = useCallback((params: any) => {
-    return getAllShops({
-      ...params,
-      teamId,
-      trackerId: myTrackings ? userId : null,
-    });
-  }, [teamId, myTrackings]);
+  const getAllShopsAPI = useCallback(
+    (params: any) => {
+      return getAllShops({
+        ...params,
+        teamId,
+        trackerId: myTrackings ? userId : null,
+      });
+    },
+    [teamId, myTrackings],
+  );
 
   return (
     <div className="shop-container">
@@ -83,9 +90,11 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            render: (value) => (
-              <Link style={{ textDecoration: 'none'}} target='_blank' to={`${EtsyUrlPrefixes.shops}/${value}`}>{value}</Link>
-            )
+            render: value => (
+              <Link style={{ textDecoration: 'none' }} target="_blank" to={`${EtsyUrlPrefixes.shops}/${value}`}>
+                {value}
+              </Link>
+            ),
           },
           {
             title: 'Status',
@@ -103,8 +112,10 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
             dataIndex: 'teamName',
             key: 'teamName',
             render: (value, record) => (
-              <Link style={{textDecoration: 'none'}} to={`/team/${record.teamId}`}>{value}</Link>
-            )
+              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
+                {value}
+              </Link>
+            ),
           },
           {
             title: 'Currency',
@@ -150,10 +161,7 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
             key: 'allTimeDashboardConversionRate',
             align: 'center',
             sorter: true,
-            render: value => (
-              <span>{value}%</span>
-            )
-
+            render: value => <span>{value}%</span>,
           },
           {
             title: 'Opened Date',
@@ -183,7 +191,7 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
             fixed: 'right',
             render: (_, record) => (
               <Space>
-                <Link to={`/shop/${record.id}`}>
+                <Link to={`${SHOP_PATH}/${record.id}`}>
                   <Button type="primary">Detail</Button>
                 </Link>
                 {record?.trackers?.find(tracker => tracker === username) ? (
@@ -233,6 +241,17 @@ const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
           </>
         }
       />
+      {location.pathname.startsWith(SHOP_PATH) && id != undefined && id.length > 0 && (
+        <Drawer
+          title={'SHOP DETAIL'}
+          open={true}
+          closable
+          onClose={() => navigate(SHOP_PATH)}
+          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+        >
+          <ShopDetailPage />
+        </Drawer>
+      )}
     </div>
   );
 };
