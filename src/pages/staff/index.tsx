@@ -15,12 +15,11 @@ import { createStaff, getAllStaffs, getStaff, removeStaff, updateStaff } from '@
 import Table, { MyTableOptions } from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 
-import ProfileForm from '../components/profile-form';
 import StaffForm from '../components/staff-form';
 
 const { Item: FilterItem } = Table.MyFilter;
 
-const StaffPage: FC = () => {
+const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const navigate = useNavigate();
   const [roles, setRoles] = useState<Role[]>();
   const [staff, setStaff] = useState<Staff>();
@@ -58,7 +57,7 @@ const StaffPage: FC = () => {
     return false;
   };
 
-  const handleUpdateStaff = async (staff: UpdateStaffRequest) : Promise<boolean> => {
+  const handleUpdateStaff = async (staff: UpdateStaffRequest): Promise<boolean> => {
     const { result, status } = await updateStaff(staff);
 
     if (status && result?.status) {
@@ -70,7 +69,7 @@ const StaffPage: FC = () => {
     return false;
   };
 
-  const handleRemoveStaff = async (staffId: string | number) : Promise<boolean> => {
+  const handleRemoveStaff = async (staffId: string | number): Promise<boolean> => {
     const { result, status } = await removeStaff(staffId);
 
     if (status && result?.status) {
@@ -100,16 +99,28 @@ const StaffPage: FC = () => {
     setOpened(true);
   }, []);
 
+  const getAllStaffAPI = useCallback(
+    (params: any) => {
+      return getAllStaffs({
+        ...params,
+        teamId,
+      });
+    },
+    [teamId],
+  );
+
   return (
     <div>
-      <Button type="primary" style={{ margin: '20px 0' }} onClick={() => onOpenDrawer()}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <AiOutlinePlusCircle /> Add staff
-        </div>
-      </Button>
+      {!teamId && (
+        <Button type="primary" style={{ margin: '20px 0' }} onClick={() => onOpenDrawer()}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <AiOutlinePlusCircle /> Add staff
+          </div>
+        </Button>
+      )}
       <Table
         ref={tableRef}
-        filterApi={getAllStaffs}
+        filterApi={getAllStaffAPI}
         tableOptions={[
           {
             title: 'Staff ID',
@@ -141,6 +152,16 @@ const StaffPage: FC = () => {
             title: 'Address',
             dataIndex: 'address',
             key: 'address',
+          },
+          {
+            title: 'Team',
+            dataIndex: 'teamName',
+            key: 'teamName',
+            render: (value, record) => (
+              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
+                {value}
+              </Link>
+            ),
           },
           {
             title: 'Created At',

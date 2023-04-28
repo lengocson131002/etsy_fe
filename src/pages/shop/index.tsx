@@ -1,11 +1,10 @@
 import type { RefTableProps } from '@/components/business/table';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
 import { Checkbox, DropDownProps, Image, message, SelectProps, Space, Tag } from 'antd';
-import useSelection from 'antd/es/table/hooks/useSelection';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -21,7 +20,7 @@ import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const { Item: FilterItem } = Table.MyFilter;
 
-const ShopPage: FC = () => {
+const ShopPage: FC<{teamId?: number}> = ({teamId}) => {
   const ref = useRef<RefTableProps>(null);
 
   const { userId, username } = useSelector(state => state.user);
@@ -61,12 +60,13 @@ const ShopPage: FC = () => {
     setMyTrackings(e.target.checked);
   };
 
-  const getAllShopsAPI = (params: any) => {
+  const getAllShopsAPI = useCallback((params: any) => {
     return getAllShops({
       ...params,
+      teamId,
       trackerId: myTrackings ? userId : null,
     });
-  };
+  }, [teamId, myTrackings]);
 
   return (
     <div className="shop-container">
@@ -97,6 +97,14 @@ const ShopPage: FC = () => {
               </Tag>
             ),
             align: 'center',
+          },
+          {
+            title: 'Team',
+            dataIndex: 'teamName',
+            key: 'teamName',
+            render: (value, record) => (
+              <Link style={{textDecoration: 'none'}} to={`/team/${record.teamId}`}>{value}</Link>
+            )
           },
           {
             title: 'Currency',
@@ -175,7 +183,7 @@ const ShopPage: FC = () => {
             fixed: 'right',
             render: (_, record) => (
               <Space>
-                <Link to={`${record.id}`}>
+                <Link to={`/shop/${record.id}`}>
                   <Button type="primary">Detail</Button>
                 </Link>
                 {record?.trackers?.find(tracker => tracker === username) ? (

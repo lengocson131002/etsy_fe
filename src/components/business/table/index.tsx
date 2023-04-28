@@ -46,6 +46,7 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
+
   const { filterApi, pageParams, filterRender, tableOptions, tableRender } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);

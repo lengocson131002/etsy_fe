@@ -11,7 +11,6 @@ import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
-import { EtsyUrlPrefixes } from '@/utils/etsy';
 
 const { Item: FilterItem } = Table.MyFilter;
 

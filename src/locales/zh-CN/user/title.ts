@@ -19,4 +19,5 @@ export const zhCN_title = {
   'title.staff.detail': 'Staff detail',
   'title.staff.add': 'Add Staff',
   'title.profile': 'Profile',
+  'title.team': 'Teams',
 };

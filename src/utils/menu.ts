@@ -11,6 +11,15 @@ const menuData: MenuList = [
     path: '/dashboard',
   },
   {
+    code: 'team',
+    label: {
+      zh_CN: 'Teams',
+      en_US: 'Teams',
+    },
+    icon: 'team',
+    path: '/team',
+  },
+  {
     code: 'staff',
     label: {
       zh_CN: '权限',

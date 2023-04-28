@@ -26,5 +26,9 @@ export const getShop = (id: string) =>
     },
   );
 
-
-  export const getShopStatuses = () => request<ListResponse<string>>('get', '/api/v1/shops/statuses');
+export const getShopStatuses = () =>
+  request<ListResponse<string>>('get', '/api/v1/shops/statuses', {}, {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+    },
+  });

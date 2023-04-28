@@ -17,6 +17,8 @@ export interface Staff {
   updatedAt?: Date;
   updatedBy?: string;
   trackings?: Shop[]
+  teamId?: number,
+  teamName?: string
 }
 
 export interface CreateStaffRequest {

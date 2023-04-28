@@ -43,8 +43,6 @@ const ShopDetailPage: FC = () => {
     }
   }, [id]);
 
-  const handleDateRangeChange = () => {};
-
   return (
     <div className="shop-detail-containier">
       {shopData && (

@@ -86,6 +86,7 @@ const StaffForm: FC<StaffFormProps> = ({ data, handleCreateStaff, handleUpdateSt
     };
 
     loadRoleData();
+
   }, []);
 
   return (

@@ -11,7 +11,6 @@ import Dashboard from '@/pages/dashboard';
 import LayoutPage from '@/pages/layout';
 import LoginPage from '@/pages/login';
 import { loadProfile } from '@/stores/user.action';
-import { setUserItem } from '@/stores/user.store';
 import { LocalStorageConstants } from '@/utils/constants';
 
 import WrapperRouteComponent from './config';
@@ -29,7 +28,7 @@ const StaffPage = lazy(() => import('@/pages/staff'));
 const ShopDetail = lazy(() => import('@/pages/shop/shop-detail'));
 const OrderDetailPage = lazy(() => import('@/pages/order/order-detail'));
 const MessagePage = lazy(() => import('@/pages/conversation'));
-const TaskPage = lazy(() => import('@/pages/task'));
+const TeamPage = lazy(() => import('@/pages/team'));
 const ProfilePage = lazy(() => import('@/pages/profile'));
 
 const routeList: RouteObject[] = [
@@ -82,6 +81,14 @@ const routeList: RouteObject[] = [
         element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
       },
       {
+        path: 'team',
+        element: <WrapperRouteComponent element={<TeamPage />} titleId="title.team" />,
+      },
+      {
+        path: 'team/:id',
+        element: <WrapperRouteComponent element={<TeamPage />} titleId="title.team" />,
+      },
+      {
         path: 'profile',
         element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
       },
@@ -112,7 +119,6 @@ const RenderRouter: FC = () => {
     }
 
     const token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
-    console.log('TOKEN', token);
 
     if (!token) {
       navigate('/login');

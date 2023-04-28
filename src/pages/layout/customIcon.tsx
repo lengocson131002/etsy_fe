@@ -11,6 +11,7 @@ import { ReactComponent as ProductSvg } from '@/assets/menu/product.svg';
 import { ReactComponent as ShopSvg } from '@/assets/menu/shop.svg';
 import { ReactComponent as StaffSvg } from '@/assets/menu/staff.svg';
 import { ReactComponent as TaskSvg } from '@/assets/menu/task.svg';
+import { ReactComponent as TeamSvg } from '@/assets/menu/team.svg';
 
 interface CustomIconProps {
   type: string;
@@ -30,20 +31,22 @@ export const CustomIcon: FC<CustomIconProps> = props => {
     com = <AccountSvg />;
   } else if (type === 'documentation') {
     com = <DocumentationSvg />;
-  } else if (type == 'shop') {
+  } else if (type === 'shop') {
     com = <ShopSvg />;
-  } else if (type == 'product') {
+  } else if (type === 'product') {
     com = <ProductSvg />;
-  } else if (type == 'order') {
+  } else if (type === 'order') {
     com = <OrderSvg />;
-  } else if (type == 'staff') {
+  } else if (type === 'staff') {
     com = <StaffSvg />;
-  } else if (type == 'message') {
+  } else if (type === 'message') {
     com = <MessageSvg />;
-  } else if (type == 'task') {
+  } else if (type === 'task') {
     com = <TaskSvg />;
-  } else if (type == 'profile') {
+  } else if (type === 'profile') {
     com = <ProfileSvg />;
+  } else if (type === 'team') {
+    com = <TeamSvg />;
   } else {
     com = <ProductSvg />;
   }
