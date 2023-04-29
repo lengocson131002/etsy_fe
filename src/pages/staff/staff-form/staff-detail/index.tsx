@@ -18,6 +18,7 @@ import MyTable from '@/components/core/table';
 import { normalizeString } from '@/utils/string';
 import { useSelector } from 'react-redux';
 import { getStaff, removeStaff, updateStaff } from '@/api/staff.api';
+import TeamSelect from '@/pages/components/team-select';
 
 interface StaffDetailFormProps {
   closeForm: () => void;
@@ -47,6 +48,7 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
       address: values['address'],
       description: values['description'],
       roles: values['roles'],
+      teamId: values['teamId'],
     };
 
     const { result, status } = await updateStaff(data.id, updatedData);
@@ -112,6 +114,9 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
               <MyForm.Item label="Staff ID" name="staffId" type="input" initialValue={data?.staffId} />
             </Col>
             <Col md={12} xs={24}>
+              <MyForm.Item label="Fullname" name="fullName" type="input" initialValue={data?.fullName} />
+            </Col>
+            <Col md={12} xs={24}>
               <MyForm.Item
                 label="Role"
                 innerProps={{
@@ -135,36 +140,44 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
                 initialValue={data?.roles?.map(role => role.code)}
               />
             </Col>
+            <Col md={12} xs={24}>
+              <MyForm.Item label="Team" name="teamId" initialValue={data?.teamId}>
+                <TeamSelect allowClear />
+              </MyForm.Item>
+            </Col>
+            <Col md={12} xs={24}>
+              <MyForm.Item
+                label="Username"
+                rules={[
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'app.validation.username.required' }),
+                  },
+                ]}
+                name="username"
+                type="input"
+                initialValue={data?.username}
+              />
+            </Col>
+            <Col md={12} xs={24}>
+              <MyForm.Item
+                rules={[
+                  {
+                    required: !data,
+                    message: formatMessage({ id: 'app.validation.password.required' }),
+                  },
+                  {
+                    min: 8,
+                    message: formatMessage({ id: 'app.validation.password.invalid' }),
+                  },
+                ]}
+                label="Password"
+                required
+                name="password"
+                type="input"
+              />
+            </Col>
           </Row>
-          <MyForm.Item
-            label="Username"
-            rules={[
-              {
-                required: true,
-                message: formatMessage({ id: 'app.validation.username.required' }),
-              },
-            ]}
-            name="username"
-            type="input"
-            initialValue={data?.username}
-          />
-          <MyForm.Item
-            rules={[
-              {
-                required: !data,
-                message: formatMessage({ id: 'app.validation.password.required' }),
-              },
-              {
-                min: 8,
-                message: formatMessage({ id: 'app.validation.password.invalid' }),
-              },
-            ]}
-            label="Password"
-            required
-            name="password"
-            type="input"
-          />
-          <MyForm.Item label="Fullname" name="fullName" type="input" initialValue={data?.fullName} />
           <MyForm.Item
             rules={[
               {
@@ -239,7 +252,7 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
           <Space style={{ marginTop: 20 }}>
             <MyForm.Item>
               <MyButton type="primary" htmlType="submit">
-                Submit
+                Update
               </MyButton>
               {data && data.id !== userId && (
                 <>

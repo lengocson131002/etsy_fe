@@ -17,8 +17,9 @@ export interface Shop {
   profile?: Profile;
   isTracked?: boolean;
   trackers?: string[];
-  teamId?: number,
-  teamName?: string
+  teamId?: number;
+  teamName?: string;
+  lastSyncAt?: string;
 }
 
 export interface ShopDetail {
@@ -36,6 +37,7 @@ export interface ShopDetail {
   profile?: Profile;
   dashboard?: ShopDashboard;
   trackers?: Staff[];
-  teamId?: number,
-  teamName?: string
+  teamId?: number;
+  teamName?: string;
+  lastSyncAt?: string;
 }

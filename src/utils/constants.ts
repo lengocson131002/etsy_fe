@@ -7,3 +7,4 @@ export const LocalStorageConstants = {
   LOCALE_KEY: 'locale',
   IS_NEW_USER_KEY: 'newUser',
 };
+

@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Card, Col, ColProps, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
+import { Button, Card, Col, ColProps, Empty, message, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -14,6 +14,13 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 
 import ShopOverview from './shop-overview';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
+import TeamSelect from '@/pages/components/team-select';
+import MyForm from '@/components/core/form';
+import { addShopToTeam, removeShopFromTeam } from '@/api/team.api';
+import { stat } from 'fs';
+import { useForm } from 'antd/es/form/Form';
+import { getStatusColor } from '@/utils/color';
+import { normalizeString } from '@/utils/string';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
@@ -21,35 +28,81 @@ const ShopOrders = lazy(() => import('../../components/shop-orders'));
 
 const { Title, Text } = Typography;
 
-const ShopDetailPage: FC = () => {
+const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   const { id } = useParams();
   const [shopData, setShopData] = useState<ShopDetail>();
-
-  const navigate = useNavigate();
+  const [changedTeam, setChangedTeam] = useState(false);
+  const [form] = useForm();
 
   useEffect(() => {
     if (id) {
       const loadShopData = async (id: string) => {
-        const response = await getShop(id);
-
-        if (!response || !response.status || !response.result) {
-          navigate('/notfound');
+        const { result, status } = await getShop(id);
+        if (result && status) {
+          setShopData(result);
         }
-
-        setShopData(response.result);
       };
 
       loadShopData(id);
     }
   }, [id]);
 
+  const handleUpdateTeam = async (values: any) => {
+    if (values.teamId && shopData) {
+      const { result, status } = await addShopToTeam(values.teamId, shopData.id);
+      if (result?.status && status) {
+        message.success('Update team successfully');
+        setShopData(prev => (prev ? { ...prev, teamId: values.teamId } : undefined));
+        setChangedTeam(false);
+        reload && reload();
+      }
+    }
+  };
+
+  const handleRemoveTeam = async () => {
+    if (shopData && shopData.teamId) {
+      const { result, status } = await removeShopFromTeam(shopData.teamId, shopData.id);
+      if (result?.status && status) {
+        message.success('Update team successfully');
+        setShopData(prev => (prev ? { ...prev, teamId: undefined } : undefined));
+        reload && reload();
+        form.resetFields();
+      }
+    }
+  };
+
   return (
     <div className="shop-detail-containier">
-      {shopData && (
+      {shopData ? (
         <>
-          <Title className="shop-detail-title" level={3}>
-            Shop: {shopData.name}
-          </Title>
+          <Card bordered={false} className="shop-detail-master">
+            <Title className="shop-detail-title" level={3}>
+              Shop: {shopData.name}
+            </Title>
+            <div>
+              <MyForm form={form} onFinish={handleUpdateTeam}>
+                <Row>
+                  <MyForm.Item style={{ width: 200, marginRight: 10 }} initialValue={shopData.teamId} name="teamId">
+                    <TeamSelect
+                      onChange={value => setChangedTeam(value != shopData.teamId)}
+                      placeholder="Select team"
+                    />
+                  </MyForm.Item>
+                  {changedTeam && (
+                    <Button type="primary" htmlType="submit">
+                      Update
+                    </Button>
+                  )}
+
+                  {shopData.teamId && (
+                    <Button danger onClick={handleRemoveTeam}>
+                      Remove
+                    </Button>
+                  )}
+                </Row>{' '}
+              </MyForm>
+            </div>
+          </Card>
           {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencyCode} />}
           <div className="shop-detail-overview">
             <Space direction="vertical" style={{ width: '100%' }} size="middle">
@@ -79,7 +132,7 @@ const ShopDetailPage: FC = () => {
                     <Text strong className="shop-detail-overview-item-title">
                       Status :
                     </Text>
-                    <Tag color="green">{shopData.status}</Tag>
+                    <Tag color={getStatusColor(shopData.status)}>{normalizeString(shopData.status)}</Tag>
                   </div>
                   <div className="shop-detail-overview-item">
                     <Text strong className="shop-detail-overview-item-title">
@@ -116,13 +169,13 @@ const ShopDetailPage: FC = () => {
                       <Text strong className="shop-detail-overview-item-title">
                         Profile ID :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.id}</Text>
+                      <Text className="shop-detail-overview-item-info">{shopData.profile.goLoginProfileId}</Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
                         Profile Name :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.name}</Text>
+                      <Link to={`/profile/${shopData.profile.id}`}>{shopData.profile.name}</Link>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
@@ -194,6 +247,8 @@ const ShopDetailPage: FC = () => {
             />
           </div>
         </>
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
     </div>
   );

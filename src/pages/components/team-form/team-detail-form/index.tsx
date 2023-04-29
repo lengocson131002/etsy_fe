@@ -125,7 +125,7 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm }) => {
             <Space>
               <MyForm.Item>
                 <MyButton type="primary" htmlType="submit">
-                  Submit
+                  Update
                 </MyButton>
                 {team && (
                   <>

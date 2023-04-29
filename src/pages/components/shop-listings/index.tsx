@@ -11,6 +11,7 @@ import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 import { Link } from 'react-router-dom';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
+import { getListingStatusColor } from '@/utils/color';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -89,7 +90,7 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: status => <Tag color="blue">{normalizeString(status)}</Tag>,
+    render: status => <Tag color={getListingStatusColor(status)}>{normalizeString(status)}</Tag>,
     align: 'center',
   },
   {

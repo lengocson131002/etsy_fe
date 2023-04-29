@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 import MyForm from '@/components/core/form';
 import { getProfile, removeProfile, updateProfile } from '@/api/profile.api';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 interface ProfileFormProps {
   data?: Profile;
@@ -155,7 +155,11 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
               <MyForm.Item
                 innerProps={{
                   disabled: true,
-                  suffix: <Button type="primary">Shop detail</Button>,
+                  suffix: (
+                    <Link to={`/shop/${data.shopId}`}>
+                      <Button type="primary">Shop detail</Button>
+                    </Link>
+                  ),
                 }}
                 label="Shop Name"
                 name="shopName"
@@ -166,7 +170,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
           )}
           <Space>
             <Button type="primary" htmlType="submit">
-              Submit
+              Update
             </Button>
             {data && !data.shopId && (
               <>

@@ -13,11 +13,13 @@ import { getAllShops, getShopStatuses } from '@/api/shop.api';
 import { addTracking, unTracking } from '@/api/tracking.api';
 import Button from '@/components/basic/button';
 import Table, { MyTableOptions } from '@/components/business/table';
-import { dateToStringWithFormat, GLOBAL_DATE_FORMAT } from '@/utils/datetime';
+import { dateToStringWithFormat, getLastTimestamp, GLOBAL_DATE_FORMAT } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
 import ShopDetailPage from './shop-detail';
+import TeamSelect from '../components/team-select';
+import { getStatusColor } from '@/utils/color';
 
 const SHOP_PATH = '/shop';
 
@@ -67,8 +69,8 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const getAllShopsAPI = useCallback(
     (params: any) => {
       return getAllShops({
-        ...params,
         teamId,
+        ...params,
         trackerId: myTrackings ? userId : null,
       });
     },
@@ -101,7 +103,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             dataIndex: 'status',
             key: 'status',
             render: status => (
-              <Tag color="blue" key={status + ''}>
+              <Tag color={getStatusColor(status)} key={status + ''}>
                 {normalizeString(status)}
               </Tag>
             ),
@@ -127,6 +129,14 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 {currency} ({record.currencySymbol})
               </span>
             ),
+          },
+          {
+            title: 'Last sync at',
+            dataIndex: 'lastSyncAt',
+            key: 'lastSyncAt',
+            align: 'center',
+            sorter: true,
+            render: (value, record) =>  value && <span>{getLastTimestamp(new Date(value))}</span>,
           },
           {
             title: 'Total orders',
@@ -238,6 +248,18 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
               type="select"
               options={statusOptions}
             />
+            {!teamId && (
+              <FilterItem
+                innerProps={{
+                  allowClear: true,
+                }}
+                style={{ width: 250 }}
+                label="Team"
+                name="teamId"
+              >
+                <TeamSelect allowClear />
+              </FilterItem>
+            )}
           </>
         }
       />
@@ -249,7 +271,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
           onClose={() => navigate(SHOP_PATH)}
           width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
         >
-          <ShopDetailPage />
+          <ShopDetailPage reload={() => ref.current?.load()} />
         </Drawer>
       )}
     </div>

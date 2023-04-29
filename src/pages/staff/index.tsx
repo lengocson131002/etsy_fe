@@ -16,6 +16,10 @@ import Table, { MyTableOptions } from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import StaffDetailForm from './staff-form/staff-detail';
 import AddStaffForm from './staff-form/add-staff';
+import InfiniteSelect from '@/components/core/infinite-select';
+import { getAllTeams } from '@/api/team.api';
+import { totalmem } from 'os';
+import TeamSelect from '../components/team-select';
 
 const STAFF_PATH = '/staff';
 
@@ -49,8 +53,8 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const getAllStaffAPI = useCallback(
     (params: any) => {
       return getAllStaffs({
-        ...params,
         teamId,
+        ...params,
       });
     },
     [teamId],
@@ -64,7 +68,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const onCloseAddForm = () => {
     setAddFormOpen(false);
     resetTable();
-  }
+  };
 
   return (
     <div>
@@ -189,6 +193,19 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 }))
               }
             />
+            {!teamId && (
+              <FilterItem
+                innerProps={{
+                  showSearch: true,
+                  allowClear: true,
+                }}
+                style={{ width: 250 }}
+                label="Team"
+                name="teamId"
+              >
+                <TeamSelect allowClear/>
+              </FilterItem>
+            )}
           </>
         }
       />

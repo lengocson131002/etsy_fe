@@ -14,6 +14,7 @@ import MyForm from '@/components/core/form';
 import { useLocale } from '@/locales';
 import { emailRegex, phoneNumberRegex } from '@/utils/regex';
 import { createStaff } from '@/api/staff.api';
+import TeamSelect from '@/pages/components/team-select';
 
 interface AddStaffFormProps {
   closeForm: () => void;
@@ -35,6 +36,7 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
       address: values['address'],
       description: values['description'],
       roles: values['roles'],
+      teamId: values['teamId'],
     };
 
     const { result, status } = await createStaff(staffData);
@@ -73,6 +75,14 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
             <MyForm.Item label="Staff ID" name="staffId" type="input" />
           </Col>
           <Col md={12} xs={24}>
+            <MyForm.Item label="Fullname" name="fullName" type="input" />
+          </Col>
+          <Col md={12} xs={24}>
+            <MyForm.Item label="Team" name="teamId">
+              <TeamSelect allowClear />
+            </MyForm.Item>
+          </Col>
+          <Col md={12} xs={24}>
             <MyForm.Item
               label="Role"
               innerProps={{
@@ -95,35 +105,38 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
               }
             />
           </Col>
+          <Col md={12} xs={24}>
+            <MyForm.Item
+              label="Username"
+              rules={[
+                {
+                  required: true,
+                  message: formatMessage({ id: 'app.validation.username.required' }),
+                },
+              ]}
+              name="username"
+              type="input"
+            />
+          </Col>
+          <Col md={12} xs={24}>
+            <MyForm.Item
+              rules={[
+                {
+                  required: true,
+                  message: formatMessage({ id: 'app.validation.password.required' }),
+                },
+                {
+                  min: 8,
+                  message: formatMessage({ id: 'app.validation.password.invalid' }),
+                },
+              ]}
+              label="Password"
+              required
+              name="password"
+              type="input"
+            />
+          </Col>
         </Row>
-        <MyForm.Item
-          label="Username"
-          rules={[
-            {
-              required: true,
-              message: formatMessage({ id: 'app.validation.username.required' }),
-            },
-          ]}
-          name="username"
-          type="input"
-        />
-        <MyForm.Item
-          rules={[
-            {
-              required: true,
-              message: formatMessage({ id: 'app.validation.password.required' }),
-            },
-            {
-              min: 8,
-              message: formatMessage({ id: 'app.validation.password.invalid' }),
-            },
-          ]}
-          label="Password"
-          required
-          name="password"
-          type="input"
-        />
-        <MyForm.Item label="Fullname" name="fullName" type="input" />
         <MyForm.Item
           rules={[
             {
@@ -166,7 +179,6 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
           </MyForm.Item>
         </Space>
       </MyForm>
-      )
     </div>
   );
 };

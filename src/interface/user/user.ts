@@ -31,6 +31,8 @@ export interface UserState {
 
   /** Is first time to view the site ? */
   newUser: boolean;
+
+  permission: Permission;
 }
 
 export interface Account {
@@ -47,4 +49,11 @@ export interface Account {
   createdBy?: string;
   updatedAt?: Date;
   updatedBy?: string;
+}
+
+export interface Permission {
+  isAdmin?: boolean;
+  isLeader?: boolean;
+  isCS?: boolean;
+  isSeller?: boolean;
 }

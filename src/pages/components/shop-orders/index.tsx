@@ -12,6 +12,7 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 import OrderDetailPage from '@/pages/order/order-detail';
+import { getOrderStatusColor } from '@/utils/color';
 
 const ORDER_PATH = '/order';
 
@@ -42,7 +43,7 @@ const columnOptions: MyTableOptions<Order> = [
     title: 'Progress step',
     dataIndex: 'progressStep',
     key: 'progressStep',
-    render: value => <Tag color="blue">{normalizeString(value)}</Tag>,
+    render: value => <Tag color={getOrderStatusColor(value)}>{normalizeString(value)}</Tag>,
     align: 'center',
   },
   {

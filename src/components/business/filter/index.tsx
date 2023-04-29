@@ -27,10 +27,10 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
 
   return (
     <div css={styles}>
-      <MyForm onChange={onChange} {...rest} form={form} layout="inline">
+      <MyForm onFinish={onSubmit} onChange={onChange} {...rest} form={form} layout="inline">
         {children}
         <MyForm.Item>
-          <MyButton disabled={disabled} type="primary" onClick={onSubmit}>
+          <MyButton disabled={disabled} type="primary" htmlType='submit'>
             {formatMessage({ id: 'component.search.request' })}
           </MyButton>
 

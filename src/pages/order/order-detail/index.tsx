@@ -14,6 +14,7 @@ import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 
 import OrderItemCard from './order-item/orderItem';
+import { getOrderStatusColor } from '@/utils/color';
 
 const { Text } = Typography;
 
@@ -97,7 +98,9 @@ const OrderDetailPage: FC = () => {
                   Progress step :
                 </Text>
                 <Text className="order-detail-info-content">
-                  <Tag color="blue">{normalizeString(orderData.progressStep)}</Tag>
+                  <Tag color={getOrderStatusColor(orderData.progressStep)}>
+                    {normalizeString(orderData.progressStep)}
+                  </Tag>
                 </Text>
               </div>
               <div className="order-detail-info">

@@ -1,5 +1,5 @@
 import type { DashboardItem, ShopDashboard } from '@/interface/dashboard';
-import type { ColProps } from 'antd';
+import { ColProps, Divider } from 'antd';
 import type { FC } from 'react';
 
 import { Card, Col, Row, Select, theme } from 'antd';
@@ -91,12 +91,14 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymb
       {activeDashboard && (
         <>
           <div className="shop-detail-date-range-select">
-            <Select
-              defaultValue={DateRanges[0].value}
-              style={{ width: 120 }}
-              onChange={handleDateRangeChange}
-              options={DateRanges}
-            />
+            <Divider orientation='left'>
+              <Select
+                defaultValue={DateRanges[0].value}
+                style={{ width: 120 }}
+                onChange={handleDateRangeChange}
+                options={DateRanges}
+              />
+            </Divider>
           </div>
           <Row gutter={[12, 12]}>
             <ColCard

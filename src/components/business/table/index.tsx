@@ -46,7 +46,6 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-
   const { filterApi, pageParams, filterRender, tableOptions, tableRender } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
@@ -105,7 +104,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
   const handleTableChange = (
     pagination: TablePaginationConfig,
     filters: Record<string, FilterValue | null>,
-    sorter: any
+    sorter: any,
   ) => {
     setFilterPagingData({
       ...filterPagingData,
@@ -131,6 +130,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
                 // height="100%"
                 dataSource={filterPagingData.data}
                 columns={tableOptions}
+                showHeader={filterPagingData?.data?.length > 0}
                 onChange={handleTableChange}
                 pagination={{
                   current: filterPagingData.pageNum,

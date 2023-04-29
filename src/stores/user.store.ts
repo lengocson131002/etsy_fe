@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { LocalStorageConstants } from '@/utils/constants';
 import { getGlobalState } from '@/utils/getGloabal';
+import { RoleCode } from '@/utils/roles';
 
 const initialState: UserState = {
   ...getGlobalState(),
@@ -16,6 +17,12 @@ const initialState: UserState = {
   username: undefined,
   userId: undefined,
   roles: [],
+  permission: {
+    isAdmin: false,
+    isLeader: false,
+    isCS: false,
+    isSeller: false,
+  },
 };
 
 const userSlice = createSlice({
@@ -23,6 +30,15 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserItem(state, action: PayloadAction<Partial<UserState>>) {
+      if (action.payload.roles) {
+        action.payload.permission = {
+          isAdmin: action.payload.roles.includes(RoleCode.ADMIN),
+          isLeader: action.payload.roles.includes(RoleCode.LEADER),
+          isCS: action.payload.roles.includes(RoleCode.CS),
+          isSeller: action.payload.roles.includes(RoleCode.SELLER),
+        };
+      }
+
       Object.assign(state, action.payload);
     },
   },

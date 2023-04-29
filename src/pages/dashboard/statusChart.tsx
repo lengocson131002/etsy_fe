@@ -20,7 +20,7 @@ import {
 
 import { useLocale } from '@/locales';
 import { normalizeString } from '@/utils/string';
-import { randomColor } from '@/utils/color';
+import { getStatusColor, randomColor } from '@/utils/color';
 
 const { Text } = Typography;
 
@@ -34,17 +34,6 @@ interface StatusChartProps {
   items: StatusChartItem[];
   loading: boolean;
 }
-const getStatusColor = (status: string): string => {
-  if (status === 'active') {
-    return '#37b24d';
-  } else if (status === 'vacation') {
-    return '#fcc419';
-  } else if (status === 'suspended') {
-    return '#e03131';
-  } else {
-    return randomColor();
-  }
-};
 
 const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
   const { token } = useToken();
