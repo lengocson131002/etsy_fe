@@ -64,7 +64,6 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label, unit })
 };
 
 const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> = ({ loading, data }) => {
-  const [colors, setColors] = useState<string[]>([]);
   const [revenueData, setRevenueData] = useState<RevenueChartItem[]>([]);
   const [sort, setSort] = useState<SortType>('asc');
   const { token } = useToken();
@@ -77,8 +76,6 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
           ...item,
           label: `${numberWithCommas(item.value)}${item.currencySymbol}`
         }))
-        .sort((val1, val2) => (sort === 'asc' ? val1.value - val2.value : val2.value - val1.value));
-
     setRevenueData(newData);
   }, [sort, data]);
 
@@ -88,10 +85,6 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
       title={formatMessage({ id: 'app.dashboard.revenueStatistic' })}
       loading={loading}
     >
-      <Radio.Group defaultValue={sort} buttonStyle="solid" onChange={e => setSort(e.target.value)}>
-        <Radio.Button value="asc">Ascending</Radio.Button>
-        <Radio.Button value="desc">Descending</Radio.Button>
-      </Radio.Group>
       <Row gutter={20} className="revenue-statistic-wrapper">
         {data.length > 0 ? (
           <>

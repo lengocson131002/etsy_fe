@@ -4,44 +4,46 @@ export const randomColor = () => {
 
 export const getStatusColor = (status?: string): string => {
   if (status?.toLowerCase() === 'active') {
-    return '#37b24d';
+    return 'green';
   } else if (status?.toLowerCase() === 'vacation') {
-    return '#fcc419';
+    return 'gold';
   } else if (status?.toLowerCase() === 'suspended') {
-    return '#e03131';
+    return 'red';
   } else {
-    return randomColor();
+    return 'purple';
   }
 };
 
 export const getOrderStatusColor = (status?: string): string => {
   if (status?.toLowerCase() === 'new') {
-    return '#4dabf7';
+    return 'blue';
   } else if (status?.toLowerCase() === 'fulfill') {
-    return '#fcc419';
+    return 'orange';
   } else if (status?.toLowerCase() === 'completed') {
-    return '#37b24d';
+    return 'green';
+  } else if (status?.toLowerCase() === 'trello') {
+    return 'cyan';
   } else {
-    return '#d6336c';
+    return 'purple';
   }
 };
 
 export const getListingStatusColor = (status?: string): string => {
   if (status?.toLowerCase() === 'draft') {
-    return '#495057';
+    return 'lime';
   } else if (status?.toLowerCase() === 'active') {
-    return '#37b24d';
+    return 'green';
   } else if (status?.toLowerCase() === 'sold_out') {
-    return '#e03131';
+    return 'red';
   } else if (status?.toLowerCase() === 'vacation') {
-    return '#fab005';
+    return 'orange';
   } else if (status?.toLowerCase() === 'frozen') {
-    return '#1c7ed6';
+    return 'blue';
   } else if (status?.toLowerCase() === 'edit') {
-    return '#ffd43b';
+    return 'gold';
   } else if (status?.toLowerCase() === 'expired') {
-    return '#f76707';
+    return 'magenta';
   } else {
-    return '#d6336c';
+    return 'purple';
   }
 };

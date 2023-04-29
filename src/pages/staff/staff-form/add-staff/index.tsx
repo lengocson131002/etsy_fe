@@ -174,7 +174,7 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
         <Space style={{ marginTop: 20 }}>
           <MyForm.Item>
             <MyButton type="primary" htmlType="submit">
-              Submit
+              Add
             </MyButton>
           </MyForm.Item>
         </Space>

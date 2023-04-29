@@ -90,20 +90,20 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                   </MyForm.Item>
                   {changedTeam && (
                     <Button type="primary" htmlType="submit">
-                      Update
+                      Change
                     </Button>
                   )}
 
                   {shopData.teamId && (
                     <Button danger onClick={handleRemoveTeam}>
-                      Remove
+                      Discard
                     </Button>
                   )}
                 </Row>{' '}
               </MyForm>
             </div>
           </Card>
-          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencyCode} />}
+          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencySymbol} />}
           <div className="shop-detail-overview">
             <Space direction="vertical" style={{ width: '100%' }} size="middle">
               <Card bordered={false}>

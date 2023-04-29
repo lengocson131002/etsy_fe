@@ -78,6 +78,7 @@ const styles = css`
   }
 
   .ant-table-cell {
+    padding: 0 20px;
     min-width: 120px;
     max-width: 300px;
   }

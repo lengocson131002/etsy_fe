@@ -44,12 +44,13 @@ const TeamPage: FC = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
+            sorter: true
           },
-          {
-            title: 'Code',
-            dataIndex: 'code',
-            key: 'code',
-          },
+          // {
+          //   title: 'Code',
+          //   dataIndex: 'code',
+          //   key: 'code',
+          // },
           {
             title: 'Shop count',
             dataIndex: 'shopCount',
@@ -76,23 +77,23 @@ const TeamPage: FC = () => {
             align: 'center',
             render: value => <span>{dateToStringWithFormat(value)}</span>,
           },
-          {
-            title: 'Created by',
-            dataIndex: 'createdBy',
-            key: 'createdBy',
-          },
-          {
-            title: 'Updated at',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt',
-            sorter: true,
-            render: value => <span>{dateToStringWithFormat(value)}</span>,
-          },
-          {
-            title: 'Updated by',
-            dataIndex: 'updatedBy',
-            key: 'updatedBy',
-          },
+          // {
+          //   title: 'Created by',
+          //   dataIndex: 'createdBy',
+          //   key: 'createdBy',
+          // },
+          // {
+          //   title: 'Updated at',
+          //   dataIndex: 'updatedAt',
+          //   key: 'updatedAt',
+          //   sorter: true,
+          //   render: value => <span>{dateToStringWithFormat(value)}</span>,
+          // },
+          // {
+          //   title: 'Updated by',
+          //   dataIndex: 'updatedBy',
+          //   key: 'updatedBy',
+          // },
           {
             title: 'Action',
             dataIndex: 'action',

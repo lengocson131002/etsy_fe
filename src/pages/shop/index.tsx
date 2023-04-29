@@ -20,6 +20,9 @@ import { EtsyUrlPrefixes } from '@/utils/etsy';
 import ShopDetailPage from './shop-detail';
 import TeamSelect from '../components/team-select';
 import { getStatusColor } from '@/utils/color';
+import { Typography } from 'antd';
+
+const { Text } = Typography;
 
 const SHOP_PATH = '/shop';
 
@@ -93,7 +96,11 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             dataIndex: 'name',
             key: 'name',
             render: value => (
-              <Link style={{ textDecoration: 'none' }} target="_blank" to={`${EtsyUrlPrefixes.shops}/${value}`}>
+              <Link
+                style={{ textDecoration: 'none', transition: '0.2' }}
+                target="_blank"
+                to={`${EtsyUrlPrefixes.shops}/${value}`}
+              >
                 {value}
               </Link>
             ),
@@ -110,46 +117,9 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             align: 'center',
           },
           {
-            title: 'Team',
-            dataIndex: 'teamName',
-            key: 'teamName',
-            render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
-                {value}
-              </Link>
-            ),
-          },
-          {
-            title: 'Currency',
-            dataIndex: 'currencyCode',
-            key: 'currencyCode',
-            align: 'center',
-            render: (currency, record) => (
-              <span>
-                {currency} ({record.currencySymbol})
-              </span>
-            ),
-          },
-          {
-            title: 'Last sync at',
-            dataIndex: 'lastSyncAt',
-            key: 'lastSyncAt',
-            align: 'center',
-            sorter: true,
-            render: (value, record) =>  value && <span>{getLastTimestamp(new Date(value))}</span>,
-          },
-          {
             title: 'Total orders',
             dataIndex: 'orderCount',
             key: 'allTimeDashboardOrders',
-            align: 'right',
-            sorter: true,
-            render: value => <strong>{numberWithCommas(value)}</strong>,
-          },
-          {
-            title: 'Total visit',
-            dataIndex: 'visitCount',
-            key: 'allTimeDashboardVisits',
             align: 'right',
             sorter: true,
             render: value => <strong>{numberWithCommas(value)}</strong>,
@@ -166,10 +136,19 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             ),
           },
           {
+            title: 'Total visits',
+            dataIndex: 'visitCount',
+            key: 'allTimeDashboardVisits',
+            align: 'right',
+            sorter: true,
+            render: value => <strong>{numberWithCommas(value)}</strong>,
+          },
+          {
             title: 'Conversion Rate',
             dataIndex: 'conversionRate',
             key: 'allTimeDashboardConversionRate',
             align: 'center',
+            width: 150,
             sorter: true,
             render: value => <span>{value}%</span>,
           },
@@ -182,6 +161,16 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
           },
           {
+            title: 'Team',
+            dataIndex: 'teamName',
+            key: 'teamName',
+            render: (value, record) => (
+              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
+                {value}
+              </Link>
+            ),
+          },
+          {
             title: 'Trackers',
             dataIndex: 'trackers',
             key: 'trackers',
@@ -192,6 +181,14 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 ))}
               </>
             ),
+          },
+          {
+            title: 'Last sync at',
+            dataIndex: 'lastSyncAt',
+            key: 'lastSyncAt',
+            align: 'center',
+            sorter: true,
+            render: (value, record) => value && <span>{getLastTimestamp(new Date(value))}</span>,
           },
           {
             title: 'Action',
@@ -217,16 +214,6 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
         ]}
         filterRender={
           <>
-            <FilterItem
-              innerProps={{
-                allowClear: true,
-              }}
-              label="Filter my trackings"
-              type="checkbox"
-            >
-              <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
-            </FilterItem>
-
             <FilterItem
               innerProps={{
                 placeholder: 'Keyword',
@@ -260,10 +247,19 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 <TeamSelect allowClear />
               </FilterItem>
             )}
+            <FilterItem
+              innerProps={{
+                allowClear: true,
+              }}
+              label="Filter my trackings"
+              type="checkbox"
+            >
+              <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
+            </FilterItem>
           </>
         }
       />
-      {location.pathname.startsWith(SHOP_PATH) && id != undefined && id.length > 0 && (
+      {/* {location.pathname.startsWith(SHOP_PATH) && id != undefined && id.length > 0 && (
         <Drawer
           title={'SHOP DETAIL'}
           open={true}
@@ -273,7 +269,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
         >
           <ShopDetailPage reload={() => ref.current?.load()} />
         </Drawer>
-      )}
+      )} */}
     </div>
   );
 };

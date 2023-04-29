@@ -252,7 +252,7 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
           <Space style={{ marginTop: 20 }}>
             <MyForm.Item>
               <MyButton type="primary" htmlType="submit">
-                Update
+                Save
               </MyButton>
               {data && data.id !== userId && (
                 <>

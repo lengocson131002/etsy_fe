@@ -25,6 +25,12 @@ interface ShopOrderProps {
 
 const columnOptions: MyTableOptions<Order> = [
   {
+    title: 'Image',
+    dataIndex: 'image',
+    key: 'image',
+    render: (value, record) => <Image src={value} width={100} height={100} style={{objectFit: 'contain'}} />
+  },
+  {
     title: 'Shop',
     dataIndex: 'shopName',
     key: 'shopName',
@@ -47,9 +53,14 @@ const columnOptions: MyTableOptions<Order> = [
     align: 'center',
   },
   {
-    title: 'Customer',
-    dataIndex: 'shippingCustomerName',
-    key: 'shippingCustomerName',
+    title: 'Buyer name',
+    dataIndex: 'orderName',
+    key: 'orderName',
+  },
+  {
+    title: 'Buyer email',
+    dataIndex: 'orderEmail',
+    key: 'orderEmail',
   },
   {
     title: 'Item count',
@@ -99,6 +110,7 @@ const columnOptions: MyTableOptions<Order> = [
     title: 'Mark as gift?',
     dataIndex: 'markAsGift',
     key: 'markAsGift',
+    align: 'center',
     render: value => (value ? <Tag color="green">Marked</Tag> : <Tag color="red">Unmarked</Tag>),
   },
   {

@@ -98,7 +98,7 @@ const AddProfileForm: FC<ProfileFormProps> = ({ closeForm }) => {
         />
         <Space>
           <Button type="primary" htmlType="submit">
-            Submit
+            Add
           </Button>
         </Space>
       </MyForm>

@@ -90,7 +90,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
               })}
             </span>
           </Tooltip>
-          <Dropdown
+          {/* <Dropdown
             menu={{
               onClick: info => selectLocale(info),
               items: [
@@ -112,7 +112,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
             <span>
               <LanguageSvg id="language-change" />
             </span>
-          </Dropdown>
+          </Dropdown> */}
 
           {logged ? (
             <Dropdown

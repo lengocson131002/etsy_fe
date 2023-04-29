@@ -14,6 +14,7 @@ import { loadProfile } from '@/stores/user.action';
 import { LocalStorageConstants } from '@/utils/constants';
 
 import WrapperRouteComponent from './config';
+import ShopDetailPage from '@/pages/shop/shop-detail';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -56,7 +57,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'shop/:id',
-        element: <WrapperRouteComponent element={<ShopPage />} titleId="title.shop" />,
+        element: <WrapperRouteComponent element={<ShopDetailPage />} titleId="title.shop" />,
       },
       {
         path: 'listing',

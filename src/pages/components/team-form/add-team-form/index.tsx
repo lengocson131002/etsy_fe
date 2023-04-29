@@ -16,12 +16,12 @@ const AddTeamForm: FC<TeamFormProps> = ({ closeForm }) => {
     const data = {
       name: values?.name,
       code: values?.code,
-      description: values?.description
-    }
+      description: values?.description,
+    };
 
-    const {result, status} = await createTeam(data);
+    const { result, status } = await createTeam(data);
     if (result && status) {
-      message.success("Create team succesfully");
+      message.success('Create team succesfully');
       closeForm();
       form.resetFields();
     }
@@ -35,19 +35,17 @@ const AddTeamForm: FC<TeamFormProps> = ({ closeForm }) => {
         layout="vertical"
         style={{ maxWidth: 1000, margin: 'auto', width: '90%' }}
       >
-        <Row gutter={[12, 0]}>
-          <Col md={16} xs={24}>
-            <MyForm.Item rules={[
-              {
-                required: true,
-                message: 'Team name is required'
-              }
-            ]} label="Name" name="name" type="input"/>
-          </Col>
-          <Col md={8} xs={24}>
-            <MyForm.Item label="Code" name="code" type="input" />
-          </Col>
-        </Row>
+        <MyForm.Item
+          rules={[
+            {
+              required: true,
+              message: 'Team name is required',
+            },
+          ]}
+          label="Name"
+          name="name"
+          type="input"
+        />
         <MyForm.Item
           innerProps={{
             rows: 4,
@@ -59,7 +57,7 @@ const AddTeamForm: FC<TeamFormProps> = ({ closeForm }) => {
         <Space>
           <MyForm.Item>
             <MyButton type="primary" htmlType="submit">
-              Submit
+              Add
             </MyButton>
           </MyForm.Item>
         </Space>

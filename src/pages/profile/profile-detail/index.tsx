@@ -170,7 +170,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
           )}
           <Space>
             <Button type="primary" htmlType="submit">
-              Update
+              Save
             </Button>
             {data && !data.shopId && (
               <>

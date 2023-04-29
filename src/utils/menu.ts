@@ -29,15 +29,6 @@ const menuData: MenuList = [
     path: '/staff',
   },
   {
-    code: 'shop',
-    label: {
-      zh_CN: 'Shops',
-      en_US: 'Shops',
-    },
-    icon: 'shop',
-    path: '/shop',
-  },
-  {
     code: 'profile',
     label: {
       zh_CN: 'Profiles',
@@ -45,6 +36,15 @@ const menuData: MenuList = [
     },
     icon: 'profile',
     path: '/profile',
+  },
+  {
+    code: 'shop',
+    label: {
+      zh_CN: 'Shops',
+      en_US: 'Shops',
+    },
+    icon: 'shop',
+    path: '/shop',
   },
   {
     code: 'listings',

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { history, HistoryRouter } from '@/routes/history';
 
-import { apiAccount } from './api/user.api';
 import { localeConfig, LocaleFormatter } from './locales';
 import RenderRouter from './routes';
 import { setGlobalState } from './stores/global.store';
@@ -72,7 +71,7 @@ const App: React.FC = () => {
     <ConfigProvider
       locale={getAntdLocale()}
       componentSize="middle"
-      theme={{ token: { colorPrimary: '#13c2c2' }, algorithm: theme === 'dark' ? a.darkAlgorithm : a.defaultAlgorithm }}
+      theme={{ token: { colorPrimary: '#0E9749' }, algorithm: theme === 'dark' ? a.darkAlgorithm : a.defaultAlgorithm }}
     >
       <IntlProvider locale={locale.split('_')[0]} messages={localeConfig[locale]}>
         <HistoryRouter history={history}>

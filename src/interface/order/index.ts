@@ -21,6 +21,7 @@ export interface OrderItem {
 
 export interface Order {
   id?: number;
+  image?: string;
   etsyOrderId?: string;
   progressStep?: string;
   itemCount?: number;
@@ -33,6 +34,7 @@ export interface Order {
   adjustedTotal?: number;
   tax?: number;
   orderName?: string;
+  orderEmail?: string;
   orderTime?: string;
   shippingCustomerName?: string;
   shippingPrice?: number;

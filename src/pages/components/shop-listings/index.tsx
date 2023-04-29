@@ -21,16 +21,6 @@ interface ShopListingProps {
 
 const columnOptions: MyTableOptions<Listing> = [
   {
-    title: 'Shop',
-    dataIndex: 'shopName',
-    key: 'shopName',
-    render: (value, record) => (
-      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
-        {value}
-      </Link>
-    ),
-  },
-  {
     title: 'Image',
     dataIndex: 'imageUrl',
     key: 'imageUrl',
@@ -40,6 +30,7 @@ const columnOptions: MyTableOptions<Listing> = [
       </>
     ),
   },
+
   {
     title: 'Etsy Listing ID',
     dataIndex: 'etsyListingId',
@@ -55,6 +46,13 @@ const columnOptions: MyTableOptions<Listing> = [
     dataIndex: 'title',
     key: 'title',
     width: 400,
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    render: status => <Tag color={getListingStatusColor(status)}>{normalizeString(status)}</Tag>,
+    align: 'center',
   },
   {
     title: 'Stock',
@@ -85,13 +83,6 @@ const columnOptions: MyTableOptions<Listing> = [
       </span>
     ),
     align: 'right',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: status => <Tag color={getListingStatusColor(status)}>{normalizeString(status)}</Tag>,
-    align: 'center',
   },
   {
     title: 'Last 30 visits',
@@ -135,7 +126,17 @@ const columnOptions: MyTableOptions<Listing> = [
         {numberWithCommas(value)} {record.currencySymbol}
       </span>
     ),
-  }
+  },
+  {
+    title: 'Shop',
+    dataIndex: 'shopName',
+    key: 'shopName',
+    render: (value, record) => (
+      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+        {value}
+      </Link>
+    ),
+  },
 ];
 
 const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {

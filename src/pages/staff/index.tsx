@@ -20,6 +20,9 @@ import InfiniteSelect from '@/components/core/infinite-select';
 import { getAllTeams } from '@/api/team.api';
 import { totalmem } from 'os';
 import TeamSelect from '../components/team-select';
+import {Typography} from 'antd';
+
+const {Text} = Typography;
 
 const STAFF_PATH = '/staff';
 
@@ -123,20 +126,6 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 {value}
               </Link>
             ),
-          },
-          {
-            title: 'Created At',
-            dataIndex: 'createdAt',
-            key: 'createdAt',
-            align: 'center',
-            sorter: true,
-            render: value => <span>{dateToStringWithFormat(value)}</span>,
-          },
-          {
-            title: 'Created By',
-            dataIndex: 'createdBy',
-            key: 'createdBy',
-            width: 100,
           },
           {
             title: 'Roles',

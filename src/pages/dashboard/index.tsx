@@ -57,18 +57,18 @@ const DashBoardPage: FC = () => {
       </div>
       {dashboard && (
         <>
-          <RevenueStatistic data={dashboard.revenues ?? []} loading={loading}/>
           <Row gutter={[12, 12]}>
             <Col lg={9} xs={24}>
               <StatusChart
                 loading={loading}
-                items={dashboard.statusCount?.map(item => ({...item, label: `${item.count} ${item.status}`}))}
+                items={dashboard.statusCount?.map(item => ({ ...item, label: `${item.count} ${item.status}` }))}
               />
             </Col>
             <Col lg={15} xs={24}>
               <Overview overview={dashboard} loading={loading} />
             </Col>
           </Row>
+          <RevenueStatistic data={dashboard.revenues ?? []} loading={loading} />
         </>
       )}
     </div>

@@ -19,12 +19,18 @@ type ParseDataType<S> = S extends (params?: any) => MyResponse<PageData<infer T>
 
 export type MyTableOptions<S> = ColumnsType<S>;
 
+interface Extra {
+  extra?: React.ReactNode;
+  extraAction?: () => void;
+}
+
 export interface TableProps<S> {
   filterRender?: React.ReactNode;
   filterApi?: S;
   pageParams?: object;
   tableOptions?: MyTableOptions<ParseDataType<S>>;
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
+  extras?: Extra[]
 }
 
 export interface RefTableProps {
