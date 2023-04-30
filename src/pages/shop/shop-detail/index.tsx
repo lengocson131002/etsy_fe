@@ -21,6 +21,8 @@ import { stat } from 'fs';
 import { useForm } from 'antd/es/form/Form';
 import { getStatusColor } from '@/utils/color';
 import { normalizeString } from '@/utils/string';
+import { useSelector } from 'react-redux';
+import { RoleCode } from '@/interface/permission/role.interface';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
@@ -33,6 +35,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   const [shopData, setShopData] = useState<ShopDetail>();
   const [changedTeam, setChangedTeam] = useState(false);
   const [form] = useForm();
+  const { roles } = useSelector(state => state.user);
 
   useEffect(() => {
     if (id) {
@@ -79,137 +82,148 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
             <Title className="shop-detail-title" level={3}>
               Shop: {shopData.name}
             </Title>
-            <div>
-              <MyForm form={form} onFinish={handleUpdateTeam}>
-                <Row>
-                  <MyForm.Item style={{ width: 200, marginRight: 10 }} initialValue={shopData.teamId} name="teamId">
-                    <TeamSelect
-                      onChange={value => setChangedTeam(value != shopData.teamId)}
-                      placeholder="Select team"
-                    />
-                  </MyForm.Item>
-                  {changedTeam && (
-                    <Button type="primary" htmlType="submit">
-                      Change
-                    </Button>
-                  )}
+            {roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
+              <div>
+                <MyForm form={form} onFinish={handleUpdateTeam}>
+                  <Row>
+                    <MyForm.Item style={{ width: 200, marginRight: 10 }} initialValue={shopData.teamId} name="teamId">
+                      <TeamSelect
+                        onChange={value => setChangedTeam(value != shopData.teamId)}
+                        placeholder="Select team"
+                      />
+                    </MyForm.Item>
+                    {changedTeam && (
+                      <Button type="primary" htmlType="submit">
+                        Change
+                      </Button>
+                    )}
 
-                  {shopData.teamId && (
-                    <Button danger onClick={handleRemoveTeam}>
-                      Discard
-                    </Button>
-                  )}
-                </Row>{' '}
-              </MyForm>
-            </div>
+                    {shopData.teamId && (
+                      <Button danger onClick={handleRemoveTeam}>
+                        Discard
+                      </Button>
+                    )}
+                  </Row>{' '}
+                </MyForm>
+              </div>
+            )}
           </Card>
-          {shopData.dashboard && <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencySymbol} />}
+
+          {shopData.dashboard &&
+            roles.some(role => role === ('ROLE_ADMIN' as RoleCode) || role === ('ROLE_LEADER' as RoleCode)) && (
+              <ShopOverview dashboard={shopData.dashboard} currency={shopData.currencySymbol} />
+            )}
+
           <div className="shop-detail-overview">
-            <Space direction="vertical" style={{ width: '100%' }} size="middle">
-              <Card bordered={false}>
-                <Space direction="vertical">
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Etsy Shop ID :
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.id}</Text>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Shop Name :
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">
-                      <Link
-                        style={{ textDecoration: 'none' }}
-                        target="_blank"
-                        to={`${EtsyUrlPrefixes.shops}/${shopData.name}`}
-                      >
-                        {shopData.name}
-                      </Link>
-                    </Text>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Status :
-                    </Text>
-                    <Tag color={getStatusColor(shopData.status)}>{normalizeString(shopData.status)}</Tag>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Currency :
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.currencyCode}</Text>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Currency symbol:
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.currencySymbol}</Text>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Opened date :
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">
-                      {shopData.openedDate && dateToStringWithFormat(new Date(shopData.openedDate))}
-                    </Text>
-                  </div>
-                  <div className="shop-detail-overview-item">
-                    <Text strong className="shop-detail-overview-item-title">
-                      Description :
-                    </Text>
-                    <Text className="shop-detail-overview-item-info">{shopData.description}</Text>
-                  </div>
-                </Space>
-              </Card>
-              {shopData.profile && (
-                <Card bordered={false}>
+            <Row gutter={[12, 12]} >
+              <Col xl={12} sm={24}>
+                <Card className='shop-detail-overview-card' bordered={false}>
                   <Space direction="vertical">
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
-                        Profile ID :
+                        Etsy Shop ID :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.goLoginProfileId}</Text>
+                      <Text className="shop-detail-overview-item-info">{shopData.id}</Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
-                        Profile Name :
-                      </Text>
-                      <Link to={`/profile/${shopData.profile.id}`}>{shopData.profile.name}</Link>
-                    </div>
-                    <div className="shop-detail-overview-item">
-                      <Text strong className="shop-detail-overview-item-title">
-                        Notes :
+                        Shop Name :
                       </Text>
                       <Text className="shop-detail-overview-item-info">
-                        <div dangerouslySetInnerHTML={{ __html: shopData.profile.notes ?? '' }} />
+                        <Link
+                          style={{ textDecoration: 'none' }}
+                          target="_blank"
+                          to={`${EtsyUrlPrefixes.shops}/${shopData.name}`}
+                        >
+                          {shopData.name}
+                        </Link>
                       </Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
-                        Proxy :
+                        Status :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.proxy}</Text>
+                      <Tag color={getStatusColor(shopData.status)}>{normalizeString(shopData.status)}</Tag>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
-                        Created Date :
+                        Currency :
+                      </Text>
+                      <Text className="shop-detail-overview-item-info">{shopData.currencyCode}</Text>
+                    </div>
+                    <div className="shop-detail-overview-item">
+                      <Text strong className="shop-detail-overview-item-title">
+                        Currency symbol:
+                      </Text>
+                      <Text className="shop-detail-overview-item-info">{shopData.currencySymbol}</Text>
+                    </div>
+                    <div className="shop-detail-overview-item">
+                      <Text strong className="shop-detail-overview-item-title">
+                        Opened date :
                       </Text>
                       <Text className="shop-detail-overview-item-info">
-                        {shopData.profile?.createdDate &&
-                          dateToStringWithFormat(new Date(shopData.profile.createdDate))}
+                        {shopData.openedDate && dateToStringWithFormat(new Date(shopData.openedDate))}
                       </Text>
                     </div>
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
-                        Folder Name :
+                        Description :
                       </Text>
-                      <Text className="shop-detail-overview-item-info">{shopData.profile.folderName}</Text>
+                      <Text className="shop-detail-overview-item-info">{shopData.description}</Text>
                     </div>
                   </Space>
                 </Card>
-              )}
-            </Space>
+              </Col>
+              <Col xl={12} sm={24}>
+                {shopData.profile && (
+                  <Card className='shop-detail-overview-card' bordered={false}>
+                    <Space direction="vertical">
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Profile ID :
+                        </Text>
+                        <Text className="shop-detail-overview-item-info">{shopData.profile.goLoginProfileId}</Text>
+                      </div>
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Profile Name :
+                        </Text>
+                        <Link to={`/profile/${shopData.profile.id}`}>{shopData.profile.name}</Link>
+                      </div>
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Notes :
+                        </Text>
+                        <Text className="shop-detail-overview-item-info">
+                          <div dangerouslySetInnerHTML={{ __html: shopData.profile.notes ?? '' }} />
+                        </Text>
+                      </div>
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Proxy :
+                        </Text>
+                        <Text className="shop-detail-overview-item-info">{shopData.profile.proxy}</Text>
+                      </div>
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Created Date :
+                        </Text>
+                        <Text className="shop-detail-overview-item-info">
+                          {shopData.profile?.createdDate &&
+                            dateToStringWithFormat(new Date(shopData.profile.createdDate))}
+                        </Text>
+                      </div>
+                      <div className="shop-detail-overview-item">
+                        <Text strong className="shop-detail-overview-item-title">
+                          Folder Name :
+                        </Text>
+                        <Text className="shop-detail-overview-item-info">{shopData.profile.folderName}</Text>
+                      </div>
+                    </Space>
+                  </Card>
+                )}
+              </Col>
+            </Row>
           </div>
           <div className="shop-detail-tabs">
             <MyTabs

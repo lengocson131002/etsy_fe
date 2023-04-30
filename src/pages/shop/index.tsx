@@ -122,7 +122,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'allTimeDashboardOrders',
             align: 'right',
             sorter: true,
-            render: value => <strong>{numberWithCommas(value)}</strong>,
+            render: value => <span>{numberWithCommas(value)}</span>,
           },
           {
             title: 'Total revenue',
@@ -130,9 +130,9 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'allTimeDashboardRevenue',
             align: 'right',
             render: (value, record) => (
-              <strong>
+              <span>
                 {numberWithCommas(value)} {record.currencySymbol}
-              </strong>
+              </span>
             ),
           },
           {
@@ -141,7 +141,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'allTimeDashboardVisits',
             align: 'right',
             sorter: true,
-            render: value => <strong>{numberWithCommas(value)}</strong>,
+            render: value => <span>{numberWithCommas(value)}</span>,
           },
           {
             title: 'Conversion Rate',
@@ -199,7 +199,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: (_, record) => (
               <Space>
                 <Link to={`${SHOP_PATH}/${record.id}`}>
-                  <Button type="primary">Detail</Button>
+                  <Button>Detail</Button>
                 </Link>
                 {record?.trackers?.find(tracker => tracker === username) ? (
                   <Button danger onClick={() => onUnTrack(record.id)}>

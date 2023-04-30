@@ -122,7 +122,7 @@ const columnOptions: MyTableOptions<Order> = [
     dataIndex: 'action',
     render: (_, record) => (
       <Link to={`/order/${record.id}`}>
-        <Button type="primary">Detail</Button>
+        <Button>Detail</Button>
       </Link>
     ),
   },

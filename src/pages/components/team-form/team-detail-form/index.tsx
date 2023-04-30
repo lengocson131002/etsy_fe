@@ -99,13 +99,6 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm }) => {
             layout="vertical"
             style={{ maxWidth: 1000, margin: 'auto', width: '90%' }}
           >
-            {/* <Row gutter={[12, 0]}>
-              <Col md={16} xs={24}>
-              </Col> */}
-            {/* <Col md={8} xs={24}>
-                <MyForm.Item label="Code" name="code" type="input" initialValue={team?.code} />
-              </Col> */}
-            {/* </Row> */}
             <MyForm.Item rules={[{ required: true }]} label="Name" name="name" type="input" initialValue={team?.name} />
             <MyForm.Item
               innerProps={{

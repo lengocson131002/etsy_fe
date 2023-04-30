@@ -91,7 +91,7 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymb
       {activeDashboard && (
         <>
           <div className="shop-detail-date-range-select">
-            <Divider orientation='left'>
+            <Divider orientation='left' orientationMargin="0">
               <Select
                 defaultValue={DateRanges[0].value}
                 style={{ width: 120 }}

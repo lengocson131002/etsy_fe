@@ -1,3 +1,5 @@
+import { RoleCode } from '../permission/role.interface';
+
 interface MenuItem {
   /** menu item code */
   code: string;
@@ -15,6 +17,8 @@ interface MenuItem {
   path: string;
   /** 子菜单 */
   children?: MenuItem[];
+
+  allowedRoles?: RoleCode[];
 }
 
 export type MenuChild = Omit<MenuItem, 'children'>;

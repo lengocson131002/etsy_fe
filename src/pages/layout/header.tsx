@@ -17,6 +17,7 @@ import Logo from '@/assets/logo/logo.png';
 import { LocaleFormatter, useLocale } from '@/locales';
 import { setGlobalState } from '@/stores/global.store';
 import { setUserItem } from '@/stores/user.store';
+import { removeAllTag } from '@/stores/tags-view.store';
 
 const { Header } = Layout;
 
@@ -26,7 +27,7 @@ interface HeaderProps {
 }
 
 const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
-  const { logged, locale, device } = useSelector(state => state.user);
+  const { logged, locale, device, username } = useSelector(state => state.user);
   const { theme } = useSelector(state => state.global);
   const navigate = useNavigate();
   const token = antTheme.useToken();
@@ -41,8 +42,11 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
         userId: undefined,
         username: undefined,
         roles: [],
+        permission: undefined,
       }),
     );
+
+    dispatch(removeAllTag());
 
     navigate('/login');
   };
@@ -118,6 +122,15 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
             <Dropdown
               menu={{
                 items: [
+                  {
+                    key: '0',
+                    icon: <UserOutlined />,
+                    label: (
+                      <span>
+                        {username}
+                      </span>
+                    ),
+                  },
                   {
                     key: '1',
                     icon: <LogoutOutlined />,

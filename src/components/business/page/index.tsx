@@ -196,7 +196,7 @@ const styles = css`
     overflow: hidden;
   }
   .search {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
   }
 
   .aside-main {

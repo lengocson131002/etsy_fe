@@ -31,12 +31,14 @@ const TeamPage: FC = () => {
 
   return (
     <div>
-      <Button type="primary" style={{ margin: '20px 0' }} onClick={() => setAddFormOpen(true)}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <AiOutlinePlusCircle /> Add team
-        </div>
-      </Button>
       <Table
+        extras={[
+          <Button type='primary' onClick={() => setAddFormOpen(true)}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <AiOutlinePlusCircle /> Add team
+            </div>
+          </Button>,
+        ]}
         ref={ref}
         filterApi={getAllTeams}
         tableOptions={[
@@ -44,7 +46,7 @@ const TeamPage: FC = () => {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
-            sorter: true
+            sorter: true,
           },
           // {
           //   title: 'Code',
@@ -102,7 +104,7 @@ const TeamPage: FC = () => {
             fixed: 'right',
             render: (_, record) => (
               <Link to={`/team/${record.id}`}>
-                <Button type="primary">Detail</Button>
+                <Button>Detail</Button>
               </Link>
             ),
           },

@@ -15,6 +15,7 @@ import { LocalStorageConstants } from '@/utils/constants';
 
 import WrapperRouteComponent from './config';
 import ShopDetailPage from '@/pages/shop/shop-detail';
+import HomePage from '@/pages/home';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -41,67 +42,119 @@ const routeList: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="dashboard" />,
+        element: <Navigate to={'/home'} />,
+      },
+      {
+        path: 'home',
+        element: <WrapperRouteComponent element={<HomePage />} titleId="title.home" />,
       },
       {
         path: 'dashboard',
-        element: <WrapperRouteComponent element={<Dashboard />} titleId="title.dashboard" />,
-      },
-      {
-        path: 'documentation',
-        element: <WrapperRouteComponent element={<Documentation />} titleId="title.documentation" />,
-      },
-      {
-        path: 'shop',
-        element: <WrapperRouteComponent element={<ShopPage />} titleId="title.shop" />,
-      },
-      {
-        path: 'shop/:id',
-        element: <WrapperRouteComponent element={<ShopDetailPage />} titleId="title.shop" />,
-      },
-      {
-        path: 'listing',
-        element: <WrapperRouteComponent element={<ListingPage />} titleId="title.listings" />,
-      },
-      {
-        path: 'order',
-        element: <WrapperRouteComponent element={<OrderPage />} titleId="title.order" />,
-      },
-      {
-        path: 'order/:id',
-        element: <WrapperRouteComponent element={<OrderPage />} titleId="title.order.detail" />,
-      },
-      {
-        path: 'message',
-        element: <WrapperRouteComponent element={<MessagePage />} titleId="title.message" />,
-      },
-      {
-        path: 'staff',
-        element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
-      },
-      {
-        path: 'staff/:id',
-        element: <WrapperRouteComponent element={<StaffPage />} titleId="title.staff" />,
+        element: (
+          <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<Dashboard />} titleId="title.dashboard" />
+        ),
       },
       {
         path: 'team',
-        element: <WrapperRouteComponent element={<TeamPage />} titleId="title.team" />,
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamPage />} titleId="title.team" />,
       },
       {
         path: 'team/:id',
-        element: <WrapperRouteComponent element={<TeamPage />} titleId="title.team" />,
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamPage />} titleId="title.team" />,
+      },
+      {
+        path: 'staff',
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffPage />} titleId="title.staff" />,
+      },
+      {
+        path: 'staff/:id',
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffPage />} titleId="title.staff" />,
       },
       {
         path: 'profile',
-        element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
+            element={<ProfilePage />}
+            titleId="title.profile"
+          />
+        ),
       },
       {
         path: 'profile/:id',
-        element: <WrapperRouteComponent element={<ProfilePage />} titleId="title.profile" />,
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
+            element={<ProfilePage />}
+            titleId="title.profile"
+          />
+        ),
+      },
+      {
+        path: 'shop',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
+            element={<ShopPage />}
+            titleId="title.shop"
+          />
+        ),
+      },
+      {
+        path: 'shop/:id',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
+            element={<ShopDetailPage />}
+            titleId="title.shop"
+          />
+        ),
+      },
+      {
+        path: 'listing',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
+            element={<ListingPage />}
+            titleId="title.listings"
+          />
+        ),
+      },
+      {
+        path: 'order',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
+            element={<OrderPage />}
+            titleId="title.order"
+          />
+        ),
+      },
+      {
+        path: 'order/:id',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
+            element={<OrderPage />}
+            titleId="title.order.detail"
+          />
+        ),
+      },
+      {
+        path: 'message',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
+            element={<MessagePage />}
+            titleId="title.message"
+          />
+        ),
       },
       {
         path: 'permission/route',
-        element: <WrapperRouteComponent element={<RoutePermission />} titleId="title.permission.route" auth />,
+        element: (
+          <WrapperRouteComponent allowedRoles={[]} element={<RoutePermission />} titleId="title.permission.route" />
+        ),
       },
       {
         path: '*',

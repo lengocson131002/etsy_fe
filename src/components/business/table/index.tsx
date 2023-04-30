@@ -3,7 +3,6 @@ import type { PageData, SortDirection } from '@/interface';
 import type { ColumnsType, FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
-import initCollapseMotion from 'antd/es/_util/motion';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import MyTable from '@/components/core/table';
@@ -19,18 +18,13 @@ type ParseDataType<S> = S extends (params?: any) => MyResponse<PageData<infer T>
 
 export type MyTableOptions<S> = ColumnsType<S>;
 
-interface Extra {
-  extra?: React.ReactNode;
-  extraAction?: () => void;
-}
-
 export interface TableProps<S> {
   filterRender?: React.ReactNode;
   filterApi?: S;
   pageParams?: object;
   tableOptions?: MyTableOptions<ParseDataType<S>>;
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
-  extras?: Extra[]
+  extras?: React.ReactNode[];
 }
 
 export interface RefTableProps {
@@ -52,7 +46,7 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-  const { filterApi, pageParams, filterRender, tableOptions, tableRender } = props;
+  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
 
@@ -125,11 +119,14 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     <div css={styles}>
       <div className="tabs-main">
         <div className="aside-main">
-          {filterRender && (
-            <MyFilter className="search" onFilter={onFilter}>
-              {filterRender}
-            </MyFilter>
-          )}
+          <div  css={filterStyles}>
+            {filterRender && (
+              <MyFilter className="search" onFilter={onFilter}>
+                {filterRender}
+              </MyFilter>
+            )}
+            <div>{extras}</div>
+          </div>
           {tableOptions && (
             <div className="table">
               <MyTable
@@ -181,7 +178,7 @@ const styles = css`
     overflow: hidden;
   }
   .search {
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
   }
 
   .aside-main {
@@ -203,3 +200,11 @@ const styles = css`
     }
   }
 `;
+
+
+const filterStyles = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0;
+`

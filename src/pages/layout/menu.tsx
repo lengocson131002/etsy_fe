@@ -19,7 +19,7 @@ interface MenuProps {
 
 const MenuComponent: FC<MenuProps> = props => {
   const { menuList, openKey, onChangeOpenKey, selectedKey, onChangeSelectedKey } = props;
-  const { device, locale } = useSelector(state => state.user);
+  const { device, locale, roles } = useSelector(state => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -55,7 +55,7 @@ const MenuComponent: FC<MenuProps> = props => {
       onOpenChange={onOpenChange}
       onSelect={k => onMenuClick(k.key)}
       className="layout-page-sider-menu text-2"
-      items={menuList.map(menu => {
+      items={menuList.filter(menu => !menu.allowedRoles || menu.allowedRoles?.some(role => roles.includes(role))).map(menu => {
         return menu.children
           ? {
               key: menu.code,

@@ -2,21 +2,17 @@ import type { FC } from 'react';
 import type { RouteProps } from 'react-router';
 
 import { Button, Result } from 'antd';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
 import { useLocale } from '@/locales';
 
 const PrivateRoute: FC<RouteProps> = props => {
-  const { logged } = useSelector(state => state.user);
   const navigate = useNavigate();
   const { formatMessage } = useLocale();
   const location = useLocation();
 
-  return logged ? (
-    (props.element as React.ReactElement)
-  ) : (
+  return (
     <Result
       status="403"
       title="403"
@@ -24,9 +20,9 @@ const PrivateRoute: FC<RouteProps> = props => {
       extra={
         <Button
           type="primary"
-          onClick={() => navigate(`/login${'?from=' + encodeURIComponent(location.pathname)}`, { replace: true })}
+          onClick={() => navigate("/")}
         >
-          {formatMessage({ id: 'gloabal.tips.goToLogin' })}
+          {formatMessage({ id: 'gloabal.tips.goToHome' })}
         </Button>
       }
     />

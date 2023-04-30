@@ -2,6 +2,15 @@ import type { MenuList } from '@/interface/layout/menu.interface';
 
 const menuData: MenuList = [
   {
+    code: 'home',
+    label: {
+      zh_CN: '首页',
+      en_US: 'Home',
+    },
+    icon: 'home',
+    path: '/home',
+  },
+  {
     code: 'dashboard',
     label: {
       zh_CN: '首页',
@@ -9,6 +18,7 @@ const menuData: MenuList = [
     },
     icon: 'dashboard',
     path: '/dashboard',
+    allowedRoles: ['ROLE_ADMIN'],
   },
   {
     code: 'team',
@@ -18,6 +28,7 @@ const menuData: MenuList = [
     },
     icon: 'team',
     path: '/team',
+    allowedRoles: ['ROLE_ADMIN'],
   },
   {
     code: 'staff',
@@ -27,6 +38,7 @@ const menuData: MenuList = [
     },
     icon: 'staff',
     path: '/staff',
+    allowedRoles: ['ROLE_ADMIN'],
   },
   {
     code: 'profile',
@@ -36,6 +48,7 @@ const menuData: MenuList = [
     },
     icon: 'profile',
     path: '/profile',
+    allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
     code: 'shop',
@@ -45,6 +58,7 @@ const menuData: MenuList = [
     },
     icon: 'shop',
     path: '/shop',
+    allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
     code: 'listings',
@@ -54,6 +68,7 @@ const menuData: MenuList = [
     },
     icon: 'product',
     path: '/listing',
+    allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
     code: 'order',
@@ -63,6 +78,7 @@ const menuData: MenuList = [
     },
     icon: 'order',
     path: '/order',
+    allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS'],
   },
   {
     code: 'message',
@@ -72,6 +88,7 @@ const menuData: MenuList = [
     },
     icon: 'message',
     path: '/message',
+    allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS'],
   },
 ];
 

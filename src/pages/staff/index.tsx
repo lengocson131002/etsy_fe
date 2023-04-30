@@ -20,9 +20,9 @@ import InfiniteSelect from '@/components/core/infinite-select';
 import { getAllTeams } from '@/api/team.api';
 import { totalmem } from 'os';
 import TeamSelect from '../components/team-select';
-import {Typography} from 'antd';
+import { Typography } from 'antd';
 
-const {Text} = Typography;
+const { Text } = Typography;
 
 const STAFF_PATH = '/staff';
 
@@ -75,14 +75,18 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
 
   return (
     <div>
-      {!teamId && (
-        <Button type="primary" style={{ margin: '20px 0' }} onClick={() => setAddFormOpen(true)}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <AiOutlinePlusCircle /> Add staff
-          </div>
-        </Button>
-      )}
       <Table
+        extras={
+          !teamId
+            ? [
+                <Button type="primary" onClick={() => setAddFormOpen(true)}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <AiOutlinePlusCircle /> Add staff
+                  </div>
+                </Button>,
+              ]
+            : []
+        }
         ref={tableRef}
         filterApi={getAllStaffAPI}
         tableOptions={[
@@ -148,7 +152,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: (_, record) => {
               return (
                 <Link to={`${STAFF_PATH}/${record.id}`}>
-                  <Button type="primary">Detail</Button>
+                  <Button>Detail</Button>
                 </Link>
               );
             },
@@ -192,7 +196,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 label="Team"
                 name="teamId"
               >
-                <TeamSelect allowClear/>
+                <TeamSelect allowClear />
               </FilterItem>
             )}
           </>

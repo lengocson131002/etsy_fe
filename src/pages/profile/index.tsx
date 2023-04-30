@@ -44,13 +44,14 @@ const ProfilePage: FC = () => {
 
   return (
     <div className="profile-list-container">
-      <Button type="primary" style={{ margin: '20px 0' }} onClick={() => setOpened(true)}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <AiOutlinePlusCircle /> Add Profile
-        </div>
-      </Button>
-
       <Table
+        extras={[
+          <Button type="primary" onClick={() => setOpened(true)}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <AiOutlinePlusCircle /> Add profile
+            </div>
+          </Button>,
+        ]}
         ref={tableRef}
         filterApi={getAllProfiles}
         tableOptions={[
@@ -107,7 +108,7 @@ const ProfilePage: FC = () => {
             render: (_, record) => (
               <Space>
                 <Link to={`${PROFILE_PATH}/${record.id}`}>
-                  <Button type="primary">Detail</Button>
+                  <Button>Detail</Button>
                 </Link>
               </Space>
             ),

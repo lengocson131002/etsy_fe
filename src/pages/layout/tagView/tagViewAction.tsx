@@ -30,15 +30,6 @@ const TagsViewAction: FC = () => {
             onClick: () => dispatch(removeAllTag()),
             label: <LocaleFormatter id="tagsView.operation.closeAll" />,
           },
-          {
-            key: '3',
-            type: 'divider',
-          },
-          {
-            key: '4',
-            onClick: () => dispatch(removeOtherTag()),
-            label: <LocaleFormatter id="tagsView.operation.dashboard" />,
-          },
         ],
       }}
     >

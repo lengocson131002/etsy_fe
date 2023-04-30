@@ -10,6 +10,7 @@ import { addTag, removeTag, setActiveTag } from '@/stores/tags-view.store';
 import { normalize } from '@/utils/text';
 
 import TagsViewAction from './tagViewAction';
+import { normalizeString } from '@/utils/string';
 
 const TagsView: FC = () => {
   const { tags, activeTagId } = useSelector(state => state.tagsView);
@@ -51,18 +52,24 @@ const TagsView: FC = () => {
 
   useEffect(() => {
     navigate(activeTagId);
-
   }, [activeTagId]);
 
   useEffect(() => {
     if (menuList.length) {
-      const menu = menuList.find(m => m.path === location.pathname);
+      const existedTag = tags.find(m => location.pathname.startsWith(m.path))?.path;
+      if (existedTag) {
+        dispatch(setActiveTag(existedTag));
+        return;
+      }
+
+      const menu = menuList.find(m => location.pathname.startsWith(m.path));
 
       if (menu) {
         dispatch(
           addTag({
             ...menu,
-            closable: menu.code !== 'dashboard',
+            path: location.pathname,
+            closable: menu.code !== 'home',
           }),
         );
       }

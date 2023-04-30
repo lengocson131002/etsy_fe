@@ -12,6 +12,7 @@ import { ReactComponent as ShopSvg } from '@/assets/menu/shop.svg';
 import { ReactComponent as StaffSvg } from '@/assets/menu/staff.svg';
 import { ReactComponent as TaskSvg } from '@/assets/menu/task.svg';
 import { ReactComponent as TeamSvg } from '@/assets/menu/team.svg';
+import { ReactComponent as HomeSvg } from '@/assets/menu/home.svg';
 
 interface CustomIconProps {
   type: string;
@@ -47,7 +48,9 @@ export const CustomIcon: FC<CustomIconProps> = props => {
     com = <ProfileSvg />;
   } else if (type === 'team') {
     com = <TeamSvg />;
-  } else {
+  } else if (type === 'home') {
+    com = <HomeSvg />;
+  }else {
     com = <ProductSvg />;
   }
 
