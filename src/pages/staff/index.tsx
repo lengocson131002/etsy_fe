@@ -204,7 +204,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
       />
 
       <Drawer
-        title={'STAFF DETAIL'}
+        title={'ADD STAFF'}
         placement="right"
         width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 100}
         onClose={() => setAddFormOpen(false)}
