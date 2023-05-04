@@ -126,7 +126,7 @@ const TeamPage: FC = () => {
       <Drawer
         title={'ADD TEAM'}
         placement="right"
-        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
+        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
         onClose={() => setAddFormOpen(false)}
         open={addFormOpen}
         closable={true}
@@ -138,7 +138,7 @@ const TeamPage: FC = () => {
         <Drawer
           title={'TEAM DETAIL'}
           placement="right"
-          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
+          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
           onClose={() => navigate(TEAM_PATH)}
           open={true}
           closable={true}

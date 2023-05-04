@@ -91,7 +91,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
             <Col {...wrapperCol}>
               <ResponsiveContainer height={320}>
                 <BarChart
-                  margin={{ top: 40, right: 20, bottom: 20, left: 30 }}
+                  margin={{ top: 50, right: 20, bottom: 20, left: 30 }}
                   className="revenue-chart"
                   data={revenueData}
                 >
@@ -100,7 +100,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
                   <YAxis />
                   <Tooltip content={<CustomTooltip active={''} payload={''} label={''} />} />
                   <Bar dataKey="value" barSize={40} fill={token.colorPrimary} name="Status">
-                    <LabelList angle={-45} dataKey="label" position="top" style={{color: token.colorPrimary}}/>
+                    <LabelList angle={-50} dataKey="label" position="top" style={{color: token.colorPrimary}}/>
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

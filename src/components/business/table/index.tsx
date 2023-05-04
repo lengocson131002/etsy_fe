@@ -125,7 +125,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
                 {filterRender}
               </MyFilter>
             )}
-            <div>{extras}</div>
+            <div className='extra'>{extras}</div>
           </div>
           {tableOptions && (
             <div className="table">
@@ -204,7 +204,16 @@ const styles = css`
 
 const filterStyles = css`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
-  margin: 30px 0;
+  align-items: start;
+  margin: 20px 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+
+    .extra {
+      padding: 20px 0;
+    }
+  }
 `

@@ -132,7 +132,7 @@ const ProfilePage: FC = () => {
       <Drawer
         title={'ADD PROFILE'}
         placement="right"
-        width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+        width={window.innerWidth > 1000 ? 1000 : window.innerWidth}
         onClose={() => setOpened(false)}
         open={opened}
         closable={true}
@@ -144,7 +144,7 @@ const ProfilePage: FC = () => {
         <Drawer
           title={'PROFILE DETAIL'}
           placement="right"
-          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+          width={window.innerWidth > 1000 ? 1000 : window.innerWidth}
           onClose={() => navigate(PROFILE_PATH)}
           open={true}
           closable={true}

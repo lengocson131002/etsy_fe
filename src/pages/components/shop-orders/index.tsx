@@ -194,7 +194,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
           onClose={() => navigate(ORDER_PATH)}
           title={'ORDER DETAIL'}
           open={true}
-          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
+          width={window.innerWidth > 1000 ? 1000 : window.innerWidth}
           closable={true}
         >
           <OrderDetailPage />

@@ -103,20 +103,20 @@ const ShopOverview: FC<ShopOverviewProps> = ({ dashboard, currency, currencySymb
           <Row gutter={[12, 12]}>
             <ColCard
               metaName="Total Orders"
-              metaCount={activeDashboard.orders ?? numberWithCommas(activeDashboard.orders)}
+              metaCount={activeDashboard.orders && numberWithCommas(activeDashboard.orders)}
             />
             <ColCard
               metaName="Total Visits"
-              metaCount={activeDashboard.visits ?? numberWithCommas(activeDashboard.visits)}
+              metaCount={activeDashboard.visits && numberWithCommas(activeDashboard.visits)}
             />
             <ColCard
               metaName="Total Revenue"
-              metaCount={activeDashboard.revenue ?? numberWithCommas(activeDashboard.revenue)}
+              metaCount={activeDashboard.revenue && numberWithCommas(activeDashboard.revenue)}
               unit={currency}
             />
             <ColCard
               metaName="Conversion rate"
-              metaCount={activeDashboard.conversionRate ?? numberWithCommas(activeDashboard.conversionRate)}
+              metaCount={activeDashboard.conversionRate && numberWithCommas(activeDashboard.conversionRate)}
               unit="%"
             />
           </Row>

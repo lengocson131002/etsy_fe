@@ -194,7 +194,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            align: 'center',
+            align: 'left',
             fixed: 'right',
             render: (_, record) => (
               <Space>
@@ -248,9 +248,6 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
               </FilterItem>
             )}
             <FilterItem
-              innerProps={{
-                allowClear: true,
-              }}
               label="Filter my trackings"
               type="checkbox"
             >

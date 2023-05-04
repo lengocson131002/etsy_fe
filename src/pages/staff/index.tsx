@@ -206,7 +206,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
       <Drawer
         title={'ADD STAFF'}
         placement="right"
-        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 100}
+        width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
         onClose={() => setAddFormOpen(false)}
         open={addFormOpen}
         closable={true}
@@ -218,7 +218,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
         <Drawer
           title={'STAFF DETAIL'}
           placement="right"
-          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 100}
+          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
           onClose={() => navigate(STAFF_PATH)}
           open={true}
           closable={true}

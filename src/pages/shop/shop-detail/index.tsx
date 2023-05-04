@@ -7,7 +7,7 @@ import { Button, Card, Col, ColProps, Empty, message, Row, Select, Space, Tag, t
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getShop } from '@/api/shop.api';
+import { getShop, deactivateShop, activateShop } from '@/api/shop.api';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
 import { Shop } from '@/interface/shop/shop.interface';
 import { dateToStringWithFormat } from '@/utils/datetime';
@@ -37,15 +37,15 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   const [form] = useForm();
   const { roles } = useSelector(state => state.user);
 
+  const loadShopData = async (id: string) => {
+    const { result, status } = await getShop(id);
+    if (result && status) {
+      setShopData(result);
+    }
+  };
+
   useEffect(() => {
     if (id) {
-      const loadShopData = async (id: string) => {
-        const { result, status } = await getShop(id);
-        if (result && status) {
-          setShopData(result);
-        }
-      };
-
       loadShopData(id);
     }
   }, [id]);
@@ -55,7 +55,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
       const { result, status } = await addShopToTeam(values.teamId, shopData.id);
       if (result?.status && status) {
         message.success('Update team successfully');
-        setShopData(prev => (prev ? { ...prev, teamId: values.teamId } : undefined));
+        await loadShopData(shopData.id);
         setChangedTeam(false);
         reload && reload();
       }
@@ -67,11 +67,37 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
       const { result, status } = await removeShopFromTeam(shopData.teamId, shopData.id);
       if (result?.status && status) {
         message.success('Update team successfully');
-        setShopData(prev => (prev ? { ...prev, teamId: undefined } : undefined));
+        await loadShopData(shopData.id);
         reload && reload();
         form.resetFields();
       }
     }
+  };
+
+  const handleDeactivate = async () => {
+    if (!shopData) {
+      return;
+    }
+
+    const { result, status } = await deactivateShop(shopData.id);
+    if (result?.status && status) {
+      message.success('Deactivate shop successfully');
+      await loadShopData(shopData.id);
+    }
+
+  };
+
+  const handleActivate = async () => {
+    if (!shopData) {
+      return;
+    }
+
+    const { result, status } = await activateShop(shopData.id);
+    if (result?.status && status) {
+      message.success('Activate shop successfully');
+      await loadShopData(shopData.id);
+    }
+
   };
 
   return (
@@ -107,6 +133,14 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                 </MyForm>
               </div>
             )}
+
+            {shopData?.status !== 'inactive' ? (
+              <Button onClick={handleDeactivate} danger>
+                Deactivate shop
+              </Button>
+            ) : (
+              <Button onClick={handleActivate}>Activate shop</Button>
+            )}
           </Card>
 
           {shopData.dashboard &&
@@ -115,9 +149,9 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
             )}
 
           <div className="shop-detail-overview">
-            <Row gutter={[12, 12]} >
+            <Row gutter={[12, 12]}>
               <Col xl={12} sm={24}>
-                <Card className='shop-detail-overview-card' bordered={false}>
+                <Card className="shop-detail-overview-card" bordered={false}>
                   <Space direction="vertical">
                     <div className="shop-detail-overview-item">
                       <Text strong className="shop-detail-overview-item-title">
@@ -176,7 +210,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
               </Col>
               <Col xl={12} sm={24}>
                 {shopData.profile && (
-                  <Card className='shop-detail-overview-card' bordered={false}>
+                  <Card className="shop-detail-overview-card" bordered={false}>
                     <Space direction="vertical">
                       <div className="shop-detail-overview-item">
                         <Text strong className="shop-detail-overview-item-title">

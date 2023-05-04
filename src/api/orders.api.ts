@@ -1,8 +1,6 @@
 import type { ListResponse, PageData } from '@/interface';
 import type { Order, OrderDetail } from '@/interface/order';
 
-import { AxiosRequestConfig } from 'axios';
-
 import { LocalStorageConstants } from '@/utils/constants';
 
 import { request } from './request';
