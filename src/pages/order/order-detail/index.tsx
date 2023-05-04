@@ -141,7 +141,7 @@ const OrderDetailPage: FC = () => {
                 <Text strong className="order-detail-info-title">
                   Shipping address :
                 </Text>
-                <Text className="order-detail-info-content">{orderData.shippingAddress}</Text>
+                <Text className="order-detail-info-content">{orderData.shippingAddress?.replace(/(\n){2,}/g, "\n",)}</Text>
               </div>
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">

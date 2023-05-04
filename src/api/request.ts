@@ -86,7 +86,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(config);
       }
 
-    } else if (error.status === 401) {
+    } else if (error?.status === 401) {
       $message.error('Session expired. Login again');
       window.location.href = '/login';
       return Promise.reject(error);

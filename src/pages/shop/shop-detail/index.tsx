@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Card, Col, ColProps, Empty, message, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
+import { Button, Card, Col, ColProps, Empty, message, Modal, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -36,6 +36,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   const [changedTeam, setChangedTeam] = useState(false);
   const [form] = useForm();
   const { roles } = useSelector(state => state.user);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const loadShopData = async (id: string) => {
     const { result, status } = await getShop(id);
@@ -85,6 +86,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
       await loadShopData(shopData.id);
     }
 
+    setModalOpen(false);
   };
 
   const handleActivate = async () => {
@@ -98,6 +100,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
       await loadShopData(shopData.id);
     }
 
+    setModalOpen(false);
   };
 
   return (
@@ -135,12 +138,22 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
             )}
 
             {shopData?.status !== 'inactive' ? (
-              <Button onClick={handleDeactivate} danger>
+              <Button onClick={() => setModalOpen(true)} danger>
                 Deactivate shop
               </Button>
             ) : (
-              <Button onClick={handleActivate}>Activate shop</Button>
+              <Button onClick={() => setModalOpen(true)}>Activate shop</Button>
             )}
+
+            <Modal
+              title={shopData?.status !== 'inactive' ?  'Deactivate shop' : 'Activate shop'}
+              open={modalOpen}
+              onOk={shopData?.status !== 'inactive' ? handleDeactivate : handleActivate}
+              onCancel={() => setModalOpen(false)}
+            >
+              <p>{shopData?.status !== 'inactive' ?  'Do you want to deactivate this shop?' : 'Do you want to activate this shop?'}</p>
+            </Modal>
+
           </Card>
 
           {shopData.dashboard &&
