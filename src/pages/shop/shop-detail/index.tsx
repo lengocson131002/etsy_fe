@@ -75,34 +75,6 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
     }
   };
 
-  const handleDeactivate = async () => {
-    if (!shopData) {
-      return;
-    }
-
-    const { result, status } = await deactivateShop(shopData.id);
-    if (result?.status && status) {
-      message.success('Deactivate shop successfully');
-      await loadShopData(shopData.id);
-    }
-
-    setModalOpen(false);
-  };
-
-  const handleActivate = async () => {
-    if (!shopData) {
-      return;
-    }
-
-    const { result, status } = await activateShop(shopData.id);
-    if (result?.status && status) {
-      message.success('Activate shop successfully');
-      await loadShopData(shopData.id);
-    }
-
-    setModalOpen(false);
-  };
-
   return (
     <div className="shop-detail-containier">
       {shopData ? (
@@ -136,23 +108,6 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                 </MyForm>
               </div>
             )}
-
-            {shopData?.status !== 'inactive' ? (
-              <Button onClick={() => setModalOpen(true)} danger>
-                Deactivate shop
-              </Button>
-            ) : (
-              <Button onClick={() => setModalOpen(true)}>Activate shop</Button>
-            )}
-
-            <Modal
-              title={shopData?.status !== 'inactive' ?  'Deactivate shop' : 'Activate shop'}
-              open={modalOpen}
-              onOk={shopData?.status !== 'inactive' ? handleDeactivate : handleActivate}
-              onCancel={() => setModalOpen(false)}
-            >
-              <p>{shopData?.status !== 'inactive' ?  'Do you want to deactivate this shop?' : 'Do you want to activate this shop?'}</p>
-            </Modal>
 
           </Card>
 

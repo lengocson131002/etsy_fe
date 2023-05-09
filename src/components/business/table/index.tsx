@@ -25,6 +25,7 @@ export interface TableProps<S> {
   tableOptions?: MyTableOptions<ParseDataType<S>>;
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
   extras?: React.ReactNode[];
+  onFilterReset?: () => void
 }
 
 export interface RefTableProps {
@@ -46,7 +47,7 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras } = props;
+  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras, onFilterReset } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
 
@@ -121,7 +122,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
         <div className="aside-main">
           <div  css={filterStyles}>
             {filterRender && (
-              <MyFilter className="search" onFilter={onFilter}>
+              <MyFilter className="search" onFilter={onFilter} onReset={onFilterReset}>
                 {filterRender}
               </MyFilter>
             )}

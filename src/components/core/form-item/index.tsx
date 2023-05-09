@@ -5,6 +5,8 @@ import { Checkbox, DatePicker, Form, Input, InputNumber, Radio, Select, Switch }
 import TextArea from 'antd/es/input/TextArea';
 import React, { useMemo } from 'react';
 
+const { RangePicker } = DatePicker;
+
 export type ControlTypes =
   | 'input'
   | 'input-number'
@@ -13,7 +15,8 @@ export type ControlTypes =
   | 'checkbox'
   | 'radio'
   | 'select'
-  | 'text-area';
+  | 'text-area'
+  | 'range-picker';
 
 type GetRCPropsType<T> = T extends (props: infer R) => any ? R : T extends React.ComponentClass<infer R> ? R : any;
 
@@ -26,6 +29,7 @@ type InnerProps = {
   radio: GetRCPropsType<typeof Radio>;
   select: GetRCPropsType<typeof Select>;
   'text-area': GetRCPropsType<typeof TextArea>;
+  'range-picker': GetRCPropsType<typeof RangePicker>
 };
 
 export interface MyFormItemProps<T extends ControlTypes = ControlTypes> extends Omit<FormItemProps, 'required'> {
@@ -86,6 +90,10 @@ export class ControlMap {
 
   'text-area'() {
     return <TextArea {...this.innerProps} />;
+  }
+
+  'range-picker'() {
+    return <RangePicker {...this.innerProps} />;
   }
 }
 

@@ -13,6 +13,8 @@ import { numberWithCommas } from '@/utils/number';
 import { normalizeString } from '@/utils/string';
 import OrderDetailPage from '@/pages/order/order-detail';
 import { getOrderStatusColor } from '@/utils/color';
+import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 const ORDER_PATH = '/order';
 
@@ -28,7 +30,7 @@ const columnOptions: MyTableOptions<Order> = [
     title: 'Image',
     dataIndex: 'image',
     key: 'image',
-    render: (value, record) => <Image src={value} width={100} height={100} style={{objectFit: 'contain'}} />
+    render: (value, record) => <Image src={value} width={100} height={100} style={{ objectFit: 'contain' }} />,
   },
   {
     title: 'Shop',
@@ -44,6 +46,13 @@ const columnOptions: MyTableOptions<Order> = [
     title: 'Etsy Order ID',
     dataIndex: 'etsyOrderId',
     key: 'etsyOrderId',
+  },
+  {
+    title: 'Order time',
+    dataIndex: 'orderTime',
+    key: 'orderTime',
+    sorter: true,
+    render: value => <span>{dateToStringWithFormat(value)}</span>,
   },
   {
     title: 'Progress step',
@@ -99,13 +108,7 @@ const columnOptions: MyTableOptions<Order> = [
     dataIndex: 'trackingNumber',
     key: 'trackingNumber',
   },
-  {
-    title: 'Order time',
-    dataIndex: 'orderTime',
-    key: 'orderTime',
-    sorter: true,
-    render: value => <span>{dateToStringWithFormat(value)}</span>,
-  },
+
   {
     title: 'Mark as gift?',
     dataIndex: 'markAsGift',
@@ -128,10 +131,16 @@ const columnOptions: MyTableOptions<Order> = [
   },
 ];
 
+interface DateRangeProps {
+  from?: Dayjs;
+  to?: Dayjs;
+}
+
 const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
   const { id } = useParams();
   const navigate = useNavigate();
+  const [range, setRange] = useState<DateRangeProps>();
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -143,24 +152,48 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
 
     loadStatusOptions();
   }, []);
+  console.log(range);
 
   const getShopOrderAPI = useCallback(
     (params: any) => {
-      if (shopId) {
-        params = {
-          ...params,
-          shopId,
-        };
-      }
+      params = {
+        ...params,
+        shopId,
+        from: range?.from?.toISOString(),
+        to: range?.to?.toISOString(),
+      };
 
       return getOrders(params);
     },
-    [shopId],
+    [shopId, range?.from, range?.to],
   );
+
+  const rangePresets: {
+    label: string;
+    value: [Dayjs, Dayjs];
+  }[] = [
+    { label: 'Today', value: [dayjs(), dayjs()] },
+    { label: 'Yesterday', value: [dayjs().add(-1, 'd'), dayjs().add(-1, 'd')] },
+    { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
+    { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
+    { label: 'Last 60 Days', value: [dayjs().add(-60, 'd'), dayjs()] },
+  ];
+
+  const onRangeChange = (dates: null | (Dayjs | null)[], dateStrings: string[]) => {
+    if (dates) {
+      setRange({
+        from: dates[0]?.startOf('date'),
+        to: dates[1]?.endOf('date'),
+      });
+    } else {
+      setRange(undefined);
+    }
+  };
 
   return (
     <div>
       <Table
+        onFilterReset={() => setRange(undefined)}
         tableOptions={columnOptions}
         filterApi={getShopOrderAPI}
         filterRender={
@@ -184,6 +217,17 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
               name="status"
               type="select"
               options={statusOptions}
+            />
+
+            <FilterItem
+              label="Date range:"
+              innerProps={{
+                presets: rangePresets,
+                format: 'DD/MM/YYYY',
+                onChange: onRangeChange,
+                value: range && range.from && range.to ? [range?.from, range?.to] : null,
+              }}
+              type="range-picker"
             />
           </>
         }

@@ -11,10 +11,11 @@ interface FilterProps<T> extends MyFormProps<T> {
   onFilter: (values: T) => void;
   disabled?: boolean;
   onChange?: () => void;
+  onReset?: () => void
 }
 
 const BaseFilter = <T extends object>(props: FilterProps<T>) => {
-  const { children, onFilter, disabled, onChange, ...rest } = props;
+  const { children, onFilter, disabled, onChange, onReset, ...rest } = props;
   const [form] = MyForm.useForm<T>();
   const { formatMessage } = useLocale();
 
@@ -22,10 +23,16 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
     const values = await form.validateFields();
     if (values) {
       onFilter(values);
+      console.log(values);
+
     }
   }
 
-  const onReset = () => {
+  const handleReset = () => {
+    if (onReset) {
+      onReset();
+    }
+
     form.resetFields();
     onValuesChange();
   }
@@ -41,7 +48,7 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
         layout="inline">
         {children}
         <MyForm.Item>
-          <MyButton danger onClick={onReset}>{formatMessage({ id: 'component.search.reset' })}</MyButton>
+          <MyButton danger onClick={handleReset}>{formatMessage({ id: 'component.search.reset' })}</MyButton>
         </MyForm.Item>
       </MyForm>
     </div>

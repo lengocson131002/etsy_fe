@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, Drawer, DropDownProps, Image, message, SelectProps, Space, Tag } from 'antd';
+import { Checkbox, Drawer, Dropdown, DropDownProps, Image, message, Modal, SelectProps, Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -35,6 +35,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const [myTrackings, setMyTrackings] = useState(false);
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
   const navigate = useNavigate();
+  const [changeStatuModalOpen, setChangeStatusModalOpen] = useState(false);
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -79,6 +80,34 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
     },
     [teamId, myTrackings],
   );
+
+  const handleDeactivate = async () => {
+    if (!shopData) {
+      return;
+    }
+
+    const { result, status } = await deactivateShop(shopData.id);
+    if (result?.status && status) {
+      message.success('Deactivate shop successfully');
+      await loadShopData(shopData.id);
+    }
+
+    setModalOpen(false);
+  };
+
+  const handleActivate = async () => {
+    if (!shopData) {
+      return;
+    }
+
+    const { result, status } = await activateShop(shopData.id);
+    if (result?.status && status) {
+      message.success('Activate shop successfully');
+      await loadShopData(shopData.id);
+    }
+
+    setModalOpen(false);
+  };
 
   return (
     <div className="shop-container">
@@ -195,20 +224,61 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'action',
             dataIndex: 'action',
             align: 'left',
-            fixed: 'right',
             render: (_, record) => (
-              <Space>
-                <Link to={`${SHOP_PATH}/${record.id}`}>
-                  <Button>Detail</Button>
-                </Link>
-                {record?.trackers?.find(tracker => tracker === username) ? (
-                  <Button danger onClick={() => onUnTrack(record.id)}>
-                    Untrack
-                  </Button>
-                ) : (
-                  <Button onClick={() => onTracking(record.id)}>Tracking</Button>
-                )}
-              </Space>
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: '1',
+                      label: (
+                        <Link to={`${SHOP_PATH}/${record.id}`}>
+                          // <Button>Detail</Button>
+                          //{' '}
+                        </Link>
+                      ),
+                    },
+                  ],
+                  selectable: true,
+                  defaultSelectedKeys: ['3'],
+                }}
+              >
+                <Typography.Link>
+                  <Space>Actions</Space>
+                </Typography.Link>
+              </Dropdown>
+              // <Space>
+              //   <Link to={`${SHOP_PATH}/${record.id}`}>
+              //     <Button>Detail</Button>
+              //   </Link>
+              //   {record?.trackers?.find(tracker => tracker === username) ? (
+              //     <Button danger onClick={() => onUnTrack(record.id)}>
+              //       Untrack
+              //     </Button>
+              //   ) : (
+              //     <Button onClick={() => onTracking(record.id)}>Tracking</Button>
+              //   )}
+
+              //   {record?.status !== 'inactive' ? (
+              //     <Button onClick={() => setChangeStatusModalOpen(true)} danger>
+              //       Deactivate shop
+              //     </Button>
+              //   ) : (
+              //     <Button onClick={() => setChangeStatusModalOpen(true)}>Activate shop</Button>
+              //   )}
+
+              //   <Modal
+              //     title={record?.status !== 'inactive' ? 'Deactivate shop' : 'Activate shop'}
+              //     open={changeStatuModalOpen}
+              //     onOk={record?.status !== 'inactive' ? handleDeactivate : handleActivate}
+              //     onCancel={() => setChangeStatusModalOpen(false)}
+              //   >
+              //     <p>
+              //       {record?.status !== 'inactive'
+              //         ? 'Do you want to deactivate this shop?'
+              //         : 'Do you want to activate this shop?'}
+              //     </p>
+              //   </Modal>
+              // </Space>
             ),
           },
         ]}
@@ -247,10 +317,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 <TeamSelect allowClear />
               </FilterItem>
             )}
-            <FilterItem
-              label="Filter my trackings"
-              type="checkbox"
-            >
+            <FilterItem label="Filter my trackings" type="checkbox">
               <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
             </FilterItem>
           </>
