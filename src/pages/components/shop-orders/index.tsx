@@ -175,7 +175,10 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
     { label: 'Yesterday', value: [dayjs().add(-1, 'd'), dayjs().add(-1, 'd')] },
     { label: 'Last 7 Days', value: [dayjs().add(-7, 'd'), dayjs()] },
     { label: 'Last 30 Days', value: [dayjs().add(-30, 'd'), dayjs()] },
-    { label: 'Last 60 Days', value: [dayjs().add(-60, 'd'), dayjs()] },
+    { label: 'This month', value: [dayjs().startOf('month'), dayjs()] },
+    { label: 'This year', value: [dayjs().startOf('year'), dayjs()] },
+    { label: 'Last year', value: [dayjs().add(-1, 'y').startOf('year'), dayjs().add(-1, 'y').endOf('year')] },
+
   ];
 
   const onRangeChange = (dates: null | (Dayjs | null)[], dateStrings: string[]) => {
