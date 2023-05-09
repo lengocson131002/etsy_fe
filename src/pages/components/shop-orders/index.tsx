@@ -15,7 +15,7 @@ import OrderDetailPage from '@/pages/order/order-detail';
 import { getOrderStatusColor } from '@/utils/color';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
-
+import './index.less'
 const ORDER_PATH = '/order';
 
 const { Item: FilterItem } = Table.MyFilter;

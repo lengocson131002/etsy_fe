@@ -71,6 +71,11 @@ const styles = css`
 
       & .ant-form-item-control {
         margin-left: auto;
+        width: 100%;
+      }
+
+      & .ant-form-item-label {
+        width: 100%;
       }
     }
 
