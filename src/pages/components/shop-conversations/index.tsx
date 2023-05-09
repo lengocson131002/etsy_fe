@@ -2,18 +2,20 @@ import type { MyTableOptions } from '@/components/business/table';
 import type { Order } from '@/interface/order';
 import type { FC } from 'react';
 
-import { Button, Image, Tag } from 'antd';
+import { Button, Drawer, Image, Tag } from 'antd';
 import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { getAllConversations } from '@/api/converation.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { Conversation } from '@/interface/conversation';
+import ConversateDetail from '@/pages/conversation/conversation-detail';
 
 const { Item: FilterItem } = Table.MyFilter;
 
+const MESSAGE_PATH = '/message';
 interface ShopOrderProps {
   shopId?: string | number;
 }
@@ -38,19 +40,33 @@ const columnOptions: MyTableOptions<Conversation> = [
     title: 'Message Time',
     dataIndex: 'messageTime',
     key: 'messageTime',
-    align: 'center'
+    align: 'center',
   },
   {
     title: 'Unread Count',
     dataIndex: 'unreadCount',
     key: 'unreadCount',
     sorter: true,
-    align: 'right'
+    align: 'right',
   },
-
+  {
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action',
+    align: 'center',
+    render: (_, record) => (
+      <Link to={`${MESSAGE_PATH}/${record.id}`}>
+        <Button> Detail </Button>
+      </Link>
+    ),
+  },
 ];
 
 const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+
   const getShopConversationAPI = useCallback(
     (params: any) => {
       if (shopId) {
@@ -84,6 +100,19 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
           </>
         }
       />
+
+      {location.pathname.startsWith(MESSAGE_PATH) && id && (
+        <Drawer
+          bodyStyle={{ padding: 0 }}
+          placement="right"
+          width={window.innerWidth > 600 ? 600 : window.innerWidth}
+          onClose={() => navigate(MESSAGE_PATH)}
+          open={true}
+          closable={true}
+        >
+          <ConversateDetail />
+        </Drawer>
+      )}
     </div>
   );
 };

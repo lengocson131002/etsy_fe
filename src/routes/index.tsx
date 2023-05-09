@@ -151,6 +151,16 @@ const routeList: RouteObject[] = [
         ),
       },
       {
+        path: 'message/:id',
+        element: (
+          <WrapperRouteComponent
+            allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
+            element={<MessagePage />}
+            titleId="title.message"
+          />
+        ),
+      },
+      {
         path: 'permission/route',
         element: (
           <WrapperRouteComponent allowedRoles={[]} element={<RoutePermission />} titleId="title.permission.route" />

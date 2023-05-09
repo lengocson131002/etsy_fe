@@ -1,0 +1,71 @@
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+
+  &-image {
+    & img {
+      border-radius: 50%;
+      width: 70px !important;
+      height: 70px !important;
+      object-fit: cover;
+      margin-right: 10px;
+      background-color: #ffff;
+    }
+  }
+
+  &-meta {
+    margin-right: auto;
+
+    &-name {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    &-time,
+    &-unread {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-style: italic;
+    }
+
+    &-unread {
+      color: red;
+    }
+  }
+
+  &-shop-name {
+    display: flex;
+    align-items: centert;
+    gap: 5px;
+    font-size: 16px;
+
+    & .shop-name-icon {
+      opacity: 0;
+      transform: translateX(5px);
+      transition: 0.2s;
+    }
+
+    &:hover {
+      & .shop-name-icon {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    & * {
+      line-height: 0.8;
+    }
+  }
+}
+
+.conversation-content {
+  background: none;
+  padding: 20px;
+  height: calc(100vh - 190px);
+  overflow-y: scroll;
+}
