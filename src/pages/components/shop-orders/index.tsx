@@ -152,7 +152,6 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
 
     loadStatusOptions();
   }, []);
-  console.log(range);
 
   const getShopOrderAPI = useCallback(
     (params: any) => {

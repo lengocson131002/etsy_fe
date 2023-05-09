@@ -4,12 +4,12 @@ import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, Drawer, Dropdown, DropDownProps, Image, message, Modal, SelectProps, Space, Tag } from 'antd';
+import { Checkbox, Drawer, DropDownProps, Image, message, Modal, SelectProps, Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getAllShops, getShopStatuses } from '@/api/shop.api';
+import { activateShop, deactivateShop, getAllShops, getShopStatuses } from '@/api/shop.api';
 import { addTracking, unTracking } from '@/api/tracking.api';
 import Button from '@/components/basic/button';
 import Table, { MyTableOptions } from '@/components/business/table';
@@ -34,8 +34,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const { userId, username } = useSelector(state => state.user);
   const [myTrackings, setMyTrackings] = useState(false);
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
-  const navigate = useNavigate();
-  const [changeStatuModalOpen, setChangeStatusModalOpen] = useState(false);
+  const [selectedShopId, setSelectedShopId] = useState<string>();
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -82,31 +81,30 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   );
 
   const handleDeactivate = async () => {
-    if (!shopData) {
+    if (!selectedShopId) {
       return;
     }
 
-    const { result, status } = await deactivateShop(shopData.id);
+    const { result, status } = await deactivateShop(selectedShopId);
     if (result?.status && status) {
       message.success('Deactivate shop successfully');
-      await loadShopData(shopData.id);
+      ref.current?.load();
     }
-
-    setModalOpen(false);
+    setSelectedShopId(undefined);
   };
 
   const handleActivate = async () => {
-    if (!shopData) {
+    if (!selectedShopId) {
       return;
     }
 
-    const { result, status } = await activateShop(shopData.id);
+    const { result, status } = await activateShop(selectedShopId);
+
     if (result?.status && status) {
       message.success('Activate shop successfully');
-      await loadShopData(shopData.id);
+      ref.current?.load();
     }
-
-    setModalOpen(false);
+    setSelectedShopId(undefined);
   };
 
   return (
@@ -224,61 +222,59 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'action',
             dataIndex: 'action',
             align: 'left',
+            fixed: 'right',
             render: (_, record) => (
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      key: '1',
-                      label: (
-                        <Link to={`${SHOP_PATH}/${record.id}`}>
-                          // <Button>Detail</Button>
-                          //{' '}
-                        </Link>
-                      ),
-                    },
-                  ],
-                  selectable: true,
-                  defaultSelectedKeys: ['3'],
-                }}
-              >
-                <Typography.Link>
-                  <Space>Actions</Space>
-                </Typography.Link>
-              </Dropdown>
-              // <Space>
-              //   <Link to={`${SHOP_PATH}/${record.id}`}>
-              //     <Button>Detail</Button>
-              //   </Link>
-              //   {record?.trackers?.find(tracker => tracker === username) ? (
-              //     <Button danger onClick={() => onUnTrack(record.id)}>
-              //       Untrack
-              //     </Button>
-              //   ) : (
-              //     <Button onClick={() => onTracking(record.id)}>Tracking</Button>
-              //   )}
+              <Space>
+                <Link to={`${SHOP_PATH}/${record.id}`}>
+                  <Button>Detail</Button>
+                </Link>
+                {record?.trackers?.find(tracker => tracker === username) ? (
+                  <Button danger onClick={() => onUnTrack(record.id)}>
+                    Untrack
+                  </Button>
+                ) : (
+                  <Button onClick={() => onTracking(record.id)}>Tracking</Button>
+                )}
 
-              //   {record?.status !== 'inactive' ? (
-              //     <Button onClick={() => setChangeStatusModalOpen(true)} danger>
-              //       Deactivate shop
-              //     </Button>
-              //   ) : (
-              //     <Button onClick={() => setChangeStatusModalOpen(true)}>Activate shop</Button>
-              //   )}
-
-              //   <Modal
-              //     title={record?.status !== 'inactive' ? 'Deactivate shop' : 'Activate shop'}
-              //     open={changeStatuModalOpen}
-              //     onOk={record?.status !== 'inactive' ? handleDeactivate : handleActivate}
-              //     onCancel={() => setChangeStatusModalOpen(false)}
-              //   >
-              //     <p>
-              //       {record?.status !== 'inactive'
-              //         ? 'Do you want to deactivate this shop?'
-              //         : 'Do you want to activate this shop?'}
-              //     </p>
-              //   </Modal>
-              // </Space>
+                {record?.status !== 'inactive' ? (
+                  <>
+                    <Button
+                      onClick={() => {
+                        setSelectedShopId(record.id);
+                      }}
+                      danger
+                    >
+                      Deactivate
+                    </Button>
+                    <Modal
+                      title={'Deactivate shop'}
+                      open={record.id === selectedShopId}
+                      onOk={handleDeactivate}
+                      onCancel={() => setSelectedShopId(undefined)}
+                    >
+                      <p>Do you want to deactivate this shop?</p>
+                    </Modal>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => {
+                        setSelectedShopId(record.id);
+                      }}
+                    >
+                      Activate
+                    </Button>
+                    <Modal
+                      title={'Activate shop'}
+                      open={record.id === selectedShopId}
+                      onOk={handleActivate}
+                      onCancel={() => setSelectedShopId(undefined)}
+                    >
+                      <p>Do you want to activate this shop?</p>
+                    </Modal>
+                  </>
+                )}
+              </Space>
             ),
           },
         ]}

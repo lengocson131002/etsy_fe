@@ -36,7 +36,6 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   const [changedTeam, setChangedTeam] = useState(false);
   const [form] = useForm();
   const { roles } = useSelector(state => state.user);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const loadShopData = async (id: string) => {
     const { result, status } = await getShop(id);
