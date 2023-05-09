@@ -105,7 +105,7 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         <Drawer
           bodyStyle={{ padding: 0 }}
           placement="right"
-          width={window.innerWidth > 600 ? 600 : window.innerWidth}
+          width={window.innerWidth > 500 ? 500 : window.innerWidth}
           onClose={() => navigate(MESSAGE_PATH)}
           open={true}
           closable={true}
