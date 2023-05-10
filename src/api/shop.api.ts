@@ -1,4 +1,4 @@
-import type { ListResponse, PageData, StatusResponse } from '@/interface';
+import type { ListResponse, PageData, StatusCount, StatusResponse } from '@/interface';
 import type { Shop, ShopDetail } from '@/interface/shop/shop.interface';
 
 import { AxiosRequestConfig } from 'axios';
@@ -27,7 +27,7 @@ export const getShop = (id: string) =>
   );
 
 export const getShopStatuses = () =>
-  request<ListResponse<string>>(
+  request<ListResponse<StatusCount>>(
     'get',
     '/api/v1/shops/statuses',
     {},

@@ -1,4 +1,4 @@
-import type { ListResponse, PageData } from '@/interface';
+import type { ListResponse, PageData, StatusCount } from '@/interface';
 import type { Listing } from '@/interface/listing';
 
 import { AxiosRequestConfig } from 'axios';
@@ -14,8 +14,14 @@ export const getListings = (params?: any) =>
     },
   });
 
-export const getListingStatuses = () => request<ListResponse<string>>('get', '/api/v1/listings/statuses', {}, {
-  headers: {
-    Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
-  },
-});
+export const getListingStatuses = (shopId?: string) =>
+  request<ListResponse<StatusCount>>(
+    'get',
+    '/api/v1/listings/statuses',
+    { shopId },
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );

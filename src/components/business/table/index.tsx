@@ -137,9 +137,14 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
                 showHeader={filterPagingData?.data?.length > 0}
                 onChange={handleTableChange}
                 pagination={{
+                  showTotal: (total) => (<>
+                  Total: <strong>{total}</strong> items
+                  </> ),
+                  showSizeChanger: true,
                   current: filterPagingData.pageNum,
                   pageSize: filterPagingData.pageSize,
                   total: filterPagingData.total,
+                  pageSizeOptions: ['10', '20', '30', '50', '100']
                 }}
               >
                 {tableRender?.(filterPagingData.data)}

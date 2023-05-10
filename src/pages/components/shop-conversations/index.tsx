@@ -17,7 +17,7 @@ const { Item: FilterItem } = Table.MyFilter;
 
 const MESSAGE_PATH = '/message';
 interface ShopOrderProps {
-  shopId?: string | number;
+  shopId?: string;
 }
 
 const columnOptions: MyTableOptions<Conversation> = [
@@ -37,10 +37,12 @@ const columnOptions: MyTableOptions<Conversation> = [
     key: 'customerName',
   },
   {
-    title: 'Message Time',
-    dataIndex: 'messageTime',
-    key: 'messageTime',
+    title: 'Last Message Time',
+    dataIndex: 'lastMessageTime',
+    key: 'lastMessageTime',
+    sorter: true,
     align: 'center',
+    render: value => value && <span>{dateToStringWithFormat(new Date(value))}</span>
   },
   {
     title: 'Unread Count',
@@ -54,6 +56,7 @@ const columnOptions: MyTableOptions<Conversation> = [
     dataIndex: 'action',
     key: 'action',
     align: 'center',
+    fixed: 'right',
     render: (_, record) => (
       <Link to={`${MESSAGE_PATH}/${record.id}`}>
         <Button> Detail </Button>

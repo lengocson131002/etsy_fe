@@ -40,7 +40,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
     const loadStatusOptions = async () => {
       const { result, status } = await getShopStatuses();
       if (status && result?.items) {
-        setStatusOptions([...result.items.map(item => ({ value: item, label: normalizeString(item) }))]);
+        setStatusOptions([...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})` }))]);
       }
     };
 
@@ -113,6 +113,16 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
         ref={ref}
         filterApi={getAllShopsAPI}
         tableOptions={[
+          {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            key: 'imageUrl',
+            render: (image: string) => (
+              <>
+                <Image width={90} height={90} style={{ objectFit: 'contain' }} src={image} />
+              </>
+            ),
+          },
           {
             title: 'Etsy Shop ID',
             dataIndex: 'id',

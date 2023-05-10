@@ -24,3 +24,9 @@ export interface StatusResponse {
 export interface ListResponse<T> {
   items: T[];
 }
+
+
+export interface StatusCount {
+  status: string;
+  count: number;
+}

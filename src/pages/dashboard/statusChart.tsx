@@ -70,7 +70,7 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
                 strokeOpacity={1}
                 data={items}
                 innerRadius={0}
-                outerRadius={70}
+                outerRadius={60}
                 paddingAngle={0}
                 dataKey="count"
                 label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}

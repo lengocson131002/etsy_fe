@@ -34,11 +34,9 @@ const ColCard: FC<ColCardProps> = ({ metaName, metaCount, body, footer, loading 
       <Card loading={loading} className="overview" bordered={false}>
         <div className="overview-header">
           {metaName && <div className="overview-header-meta">{metaName}</div>}
-          {metaCount && (
-            <div className="overview-header-count" style={{ color: token.colorPrimary }}>
-              {metaCount}
-            </div>
-          )}
+          <div className="overview-header-count" style={{ color: token.colorPrimary }}>
+            {metaCount}
+          </div>
         </div>
         {body && <div className="overview-body">{body}</div>}
         {footer && <div className="overview-footer">{footer}</div>}

@@ -1,4 +1,4 @@
-import type { ListResponse, PageData } from '@/interface';
+import type { ListResponse, PageData, StatusCount } from '@/interface';
 import type { Order, OrderDetail } from '@/interface/order';
 
 import { LocalStorageConstants } from '@/utils/constants';
@@ -24,8 +24,14 @@ export const getOrderDetail = (orderId: number) =>
     },
   );
 
-export const getOrderStatuses = () => request<ListResponse<string>>('get', '/api/v1/orders/statuses', {}, {
-  headers: {
-    Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
-  },
-});
+export const getOrderStatuses = (shopId?: string) =>
+  request<ListResponse<StatusCount>>(
+    'get',
+    '/api/v1/orders/statuses',
+    { shopId },
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );

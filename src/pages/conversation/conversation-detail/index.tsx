@@ -9,8 +9,10 @@ import { Typography } from 'antd';
 import { AiOutlineExclamation, AiOutlineHistory, AiOutlineRight, AiOutlineStop } from 'react-icons/ai';
 import MessageItem from './message';
 import UserIcon from '@/assets/user.png';
+import { getLastTimestamp } from '@/utils/datetime';
 
 const { useToken } = theme;
+
 const { Text } = Typography;
 
 const ConversateDetail: FC = () => {
@@ -47,7 +49,7 @@ const ConversateDetail: FC = () => {
           </Text>
           <Text className="conversation-header-meta-time">
             <AiOutlineHistory />
-            {conversation.messageTime}
+            {conversation.lastMessageTime && getLastTimestamp(new Date(conversation.lastMessageTime))}
           </Text>
         </div>
         <div className="conversation-header-shop">

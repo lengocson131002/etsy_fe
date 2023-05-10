@@ -6,6 +6,7 @@ export interface Conversation {
   messageTime?: string;
   shopId: string;
   shopName: string;
+  lastMessageTime?: string
 }
 
 export interface Message {
@@ -13,6 +14,7 @@ export interface Message {
   content: string;
   time: string;
   isAdmin: boolean;
+  images: string[]
 }
 
 export interface ConversationDetail extends Conversation {

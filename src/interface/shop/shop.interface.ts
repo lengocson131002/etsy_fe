@@ -20,6 +20,8 @@ export interface Shop {
   teamId?: number;
   teamName?: string;
   lastSyncAt?: string;
+  banner?: string;
+  avatar?: string;
 }
 
 export interface ShopDetail {
@@ -40,4 +42,6 @@ export interface ShopDetail {
   teamId?: number;
   teamName?: string;
   lastSyncAt?: string;
+  banner?: string;
+  avatar?: string;
 }

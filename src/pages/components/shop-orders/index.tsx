@@ -21,7 +21,7 @@ const ORDER_PATH = '/order';
 const { Item: FilterItem } = Table.MyFilter;
 
 interface ShopOrderProps {
-  shopId?: string | number;
+  shopId?: string;
   curency?: string;
 }
 
@@ -144,9 +144,9 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
 
   useEffect(() => {
     const loadStatusOptions = async () => {
-      const { result, status } = await getOrderStatuses();
+      const { result, status } = await getOrderStatuses(shopId);
       if (status && result?.items) {
-        setStatusOptions([...result.items.map(item => ({ value: item, label: normalizeString(item) }))]);
+        setStatusOptions([...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})`}))]);
       }
     };
 

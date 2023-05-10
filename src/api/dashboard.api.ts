@@ -7,11 +7,11 @@ import { LocalStorageConstants } from '@/utils/constants';
 
 import { request } from './request';
 
-export const getDashboard = (dateRange: string) =>
+export const getDashboard = (dateRange?: string, status?: string) =>
   request<DashboardOVerview>(
     'get',
     '/api/v1/dashboard',
-    { dateRange },
+    { dateRange, status },
     {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),

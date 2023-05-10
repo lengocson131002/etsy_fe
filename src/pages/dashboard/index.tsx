@@ -1,5 +1,5 @@
 import type { DashboardOVerview, DateRange } from '@/interface/dashboard';
-import type { ColProps } from 'antd';
+import { ColProps, Space } from 'antd';
 import type { FC } from 'react';
 
 import './index.less';
@@ -14,6 +14,8 @@ import { DateRanges, RevenueStatisticItem } from '@/interface/dashboard';
 import Overview from './overview';
 import RevenueStatistic from './revenues';
 import StatusChart from './statusChart';
+import { getShopStatuses } from '@/api/shop.api';
+import { normalizeString } from '@/utils/string';
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -26,34 +28,59 @@ const wrapperCol: ColProps = {
 
 const DashBoardPage: FC = () => {
   const { loading } = useSelector(state => state.global);
-  const [dateRange, setDateRange] = useState<DateRange>(DateRanges[0].value);
   const [dashboard, setDashboard] = useState<DashboardOVerview>();
+  const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+  const [filter, setFilter] = useState({
+    dateRange: DateRanges[0].value,
+    status: undefined
+  });
 
   useEffect(() => {
-    const getDashboarData = async (dateRange: string) => {
-      const { result, status } = await getDashboard(dateRange);
+    const getDashboarData = async (dateRange?: string, shopStatus?: string) => {
+      const { result, status } = await getDashboard(dateRange, shopStatus);
 
       if (status || result) {
         setDashboard(result);
       }
     };
 
-    getDashboarData(dateRange.toUpperCase());
-  }, [dateRange]);
+    getDashboarData(filter.dateRange?.toUpperCase(), filter.status);
+  }, [filter]);
 
-  const handleDateRangeChange = (value: any) => {
-    setDateRange(value);
-  };
+  useEffect(() => {
+    const loadStatusOptions = async () => {
+      const { result, status } = await getShopStatuses();
+      if (status && result?.items) {
+        setStatusOptions([
+          ...result.items.map(item => ({
+            value: item.status,
+            label: `${normalizeString(item.status)} (${item.count})`,
+          })),
+        ]);
+      }
+    };
+
+    loadStatusOptions();
+  }, []);
 
   return (
     <div>
       <div className="dashboard-select">
-        <Select
-          defaultValue={DateRanges[0].value}
-          style={{ width: 120 }}
-          onChange={handleDateRangeChange}
-          options={DateRanges}
-        />
+        <Space direction="horizontal">
+          <Select
+            defaultValue={filter.dateRange}
+            style={{ width: 150 }}
+            onChange={value => setFilter(prev => ({...prev, dateRange: value}))}
+            options={DateRanges}
+          />
+          <Select
+            allowClear
+            placeholder="Shop status"
+            style={{ width: 150 }}
+            onChange={value => setFilter(prev => ({...prev, status: value}))}
+            options={statusOptions}
+          />
+        </Space>
       </div>
       {dashboard && (
         <>
