@@ -1,4 +1,5 @@
 import type { TagItem, TagState } from '@/interface/layout/tagsView.interface';
+import { Pathnames } from '@/utils/paths';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { createSlice } from '@reduxjs/toolkit';
@@ -7,7 +8,7 @@ const initialState: TagState = {
   activeTagId: location.pathname,
   tags: [
     {
-      code: 'home',
+      code: Pathnames.HOME,
 
       label: {
         zh_CN: 'Home',
@@ -15,7 +16,7 @@ const initialState: TagState = {
       },
 
       /** tag's route path */
-      path: '/home',
+      path: Pathnames.HOME,
 
       /** can be closed ? */
       closable: false,

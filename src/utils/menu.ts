@@ -1,93 +1,94 @@
 import type { MenuList } from '@/interface/layout/menu.interface';
+import { Pathnames } from './paths';
 
 const menuData: MenuList = [
   {
-    code: 'home',
+    code: Pathnames.HOME,
     label: {
       zh_CN: '首页',
       en_US: 'Home',
     },
     icon: 'home',
-    path: '/home',
+    path: Pathnames.HOME,
   },
   {
-    code: 'dashboard',
+    code: Pathnames.DASHBOARD,
     label: {
       zh_CN: '首页',
       en_US: 'Dashboard',
     },
     icon: 'dashboard',
-    path: '/dashboard',
+    path: Pathnames.DASHBOARD,
     allowedRoles: ['ROLE_ADMIN'],
   },
   {
-    code: 'team',
+    code: Pathnames.TEAMS,
     label: {
       zh_CN: 'Teams',
       en_US: 'Teams',
     },
     icon: 'team',
-    path: '/team',
+    path: Pathnames.TEAMS,
     allowedRoles: ['ROLE_ADMIN'],
   },
   {
-    code: 'staff',
+    code: Pathnames.STAFFS,
     label: {
       zh_CN: '权限',
       en_US: 'Staffs',
     },
     icon: 'staff',
-    path: '/staff',
+    path: Pathnames.STAFFS,
     allowedRoles: ['ROLE_ADMIN'],
   },
   {
-    code: 'profile',
+    code: Pathnames.PROFILES,
     label: {
       zh_CN: 'Profiles',
       en_US: 'Profiles',
     },
     icon: 'profile',
-    path: '/profile',
+    path: Pathnames.PROFILES,
     allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
-    code: 'shop',
+    code: Pathnames.SHOPS,
     label: {
       zh_CN: 'Shops',
       en_US: 'Shops',
     },
     icon: 'shop',
-    path: '/shop',
+    path: Pathnames.SHOPS,
     allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
-    code: 'listings',
+    code: Pathnames.LISTINGS,
     label: {
       zh_CN: '引导',
       en_US: 'Listings',
     },
     icon: 'product',
-    path: '/listing',
+    path: Pathnames.LISTINGS,
     allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER'],
   },
   {
-    code: 'order',
+    code: Pathnames.ORDERS,
     label: {
       zh_CN: '权限',
       en_US: 'Orders',
     },
     icon: 'order',
-    path: '/order',
+    path: Pathnames.ORDERS,
     allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS'],
   },
   {
-    code: 'message',
+    code: Pathnames.MESSAGES,
     label: {
       zh_CN: '权限',
       en_US: 'Messages',
     },
     icon: 'message',
-    path: '/message',
+    path: Pathnames.MESSAGES,
     allowedRoles: ['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS'],
   },
 ];

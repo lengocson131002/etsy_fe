@@ -12,10 +12,10 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
 import { Conversation } from '@/interface/conversation';
 import ConversateDetail from '@/pages/conversation/conversation-detail';
+import { Pathnames } from '@/utils/paths';
 
 const { Item: FilterItem } = Table.MyFilter;
 
-const MESSAGE_PATH = '/message';
 interface ShopOrderProps {
   shopId?: string;
 }
@@ -26,7 +26,7 @@ const columnOptions: MyTableOptions<Conversation> = [
     dataIndex: 'shopName',
     key: 'shopName',
     render: (value, record) => (
-      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+      <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${record.shopId}`}>
         {value}
       </Link>
     ),
@@ -58,7 +58,7 @@ const columnOptions: MyTableOptions<Conversation> = [
     align: 'center',
     fixed: 'right',
     render: (_, record) => (
-      <Link to={`${MESSAGE_PATH}/${record.id}`}>
+      <Link to={`${Pathnames.MESSAGES}/${record.id}`}>
         <Button> Detail </Button>
       </Link>
     ),
@@ -104,12 +104,12 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         }
       />
 
-      {location.pathname.startsWith(MESSAGE_PATH) && id && (
+      {location.pathname.startsWith(Pathnames.MESSAGES) && id && (
         <Drawer
           bodyStyle={{ padding: 0 }}
           placement="right"
           width={window.innerWidth > 500 ? 500 : window.innerWidth}
-          onClose={() => navigate(MESSAGE_PATH)}
+          onClose={() => navigate(Pathnames.MESSAGES)}
           open={true}
           closable={true}
         >

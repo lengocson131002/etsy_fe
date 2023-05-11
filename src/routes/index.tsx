@@ -41,11 +41,11 @@ const routeList: RouteObject[] = [
     element: <WrapperRouteComponent element={<LayoutPage />} titleId="" />,
     children: [
       {
-        path: '',
-        element: <Navigate to={'/home'} />,
+        path: 'home',
+        element: <Navigate to={'/'} />,
       },
       {
-        path: 'home',
+        path: '',
         element: <WrapperRouteComponent element={<HomePage />} titleId="title.home" />,
       },
       {
@@ -55,23 +55,23 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'team',
+        path: 'teams',
         element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamPage />} titleId="title.team" />,
       },
       {
-        path: 'team/:id',
+        path: 'teams/:id',
         element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamPage />} titleId="title.team" />,
       },
       {
-        path: 'staff',
+        path: 'staffs',
         element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffPage />} titleId="title.staff" />,
       },
       {
-        path: 'staff/:id',
+        path: 'staffs/:id',
         element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffPage />} titleId="title.staff" />,
       },
       {
-        path: 'profile',
+        path: 'profiles',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
@@ -81,7 +81,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'profile/:id',
+        path: 'profiles/:id',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
@@ -91,7 +91,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'shop',
+        path: 'shops',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
@@ -101,7 +101,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'shop/:id',
+        path: 'shops/:id',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
@@ -111,7 +111,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'listing',
+        path: 'listings',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
@@ -121,7 +121,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'order',
+        path: 'orders',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
@@ -131,7 +131,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'order/:id',
+        path: 'orders/:id',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
@@ -141,7 +141,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'message',
+        path: 'messages',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
@@ -151,7 +151,7 @@ const routeList: RouteObject[] = [
         ),
       },
       {
-        path: 'message/:id',
+        path: 'messages/:id',
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}

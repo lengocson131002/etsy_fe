@@ -7,14 +7,19 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import TeamDetailForm from '../components/team-form/team-detail-form';
 import AddTeamForm from '../components/team-form/add-team-form';
+import { useSearchParams } from 'react-router-dom';
+import { Pathnames } from '@/utils/paths';
 
 
 const { Item: FilterItem } = Table.MyFilter;
 
-const TEAM_PATH = '/team';
-
 const TeamPage: FC = () => {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  console.log(searchParams);
+
+
   const [addFormOpen, setAddFormOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -26,7 +31,7 @@ const TeamPage: FC = () => {
   };
 
   const closeDetailForm = () => {
-    navigate(TEAM_PATH);
+    navigate(Pathnames.TEAMS);
     ref.current?.load();
   };
 
@@ -104,7 +109,7 @@ const TeamPage: FC = () => {
             key: 'action',
             fixed: 'right',
             render: (_, record) => (
-              <Link to={`/team/${record.id}`}>
+              <Link to={`${Pathnames.TEAMS}/${record.id}`}>
                 <Button>Detail</Button>
               </Link>
             ),
@@ -135,12 +140,12 @@ const TeamPage: FC = () => {
         <AddTeamForm closeForm={onCloseAddForm} />
       </Drawer>
 
-      {location.pathname.startsWith(TEAM_PATH) && id !== undefined && (
+      {location.pathname.startsWith(Pathnames.TEAMS) && id !== undefined && (
         <Drawer
           title={'TEAM DETAIL'}
           placement="right"
           width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
-          onClose={() => navigate(TEAM_PATH)}
+          onClose={() => navigate(Pathnames.TEAMS)}
           open={true}
           closable={true}
         >

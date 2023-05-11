@@ -19,6 +19,7 @@ import { normalizeString } from '@/utils/string';
 import { useSelector } from 'react-redux';
 import { getStaff, removeStaff, updateStaff } from '@/api/staff.api';
 import TeamSelect from '@/pages/components/team-select';
+import { Pathnames } from '@/utils/paths';
 
 interface StaffDetailFormProps {
   closeForm: () => void;
@@ -231,7 +232,7 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
                     title: 'Name',
                     dataIndex: 'name',
                     key: 'name',
-                    render: (value, record) => <Link to={`/shop/${record.id}`}>{value}</Link>,
+                    render: (value, record) => <Link to={`${Pathnames.SHOPS}/${record.id}`}>{value}</Link>,
                   },
                   {
                     title: 'Status',

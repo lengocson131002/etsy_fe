@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Drawer, Layout, theme as antTheme } from 'antd';
+import { Divider, Drawer, Layout, theme as antTheme } from 'antd';
 import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation } from 'react-router';
@@ -16,6 +16,7 @@ import menuData from '@/utils/menu';
 import HeaderComponent from './header';
 import MenuComponent from './menu';
 import TagsView from './tagView';
+import BreadCrumbsComponent from './breadcrumb';
 
 const { Sider, Content } = Layout;
 const WIDTH = 992;
@@ -131,7 +132,8 @@ const LayoutPage: FC = () => {
           </Drawer>
         )}
         <Content className="layout-page-content">
-          <TagsView />
+          {/* <TagsView /> */}
+          <BreadCrumbsComponent />
           <Suspense fallback={null}>
             <Outlet />
           </Suspense>

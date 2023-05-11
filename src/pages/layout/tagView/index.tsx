@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Tabs } from 'antd';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { addTag, removeTag, setActiveTag } from '@/stores/tags-view.store';
 import { normalize } from '@/utils/text';
@@ -15,6 +15,8 @@ import { normalizeString } from '@/utils/string';
 const TagsView: FC = () => {
   const { tags, activeTagId } = useSelector(state => state.tagsView);
   const { menuList, locale } = useSelector(state => state.user);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,28 +53,28 @@ const TagsView: FC = () => {
   );
 
   useEffect(() => {
-    navigate(activeTagId);
+    navigate({
+      pathname: activeTagId,
+    });
   }, [activeTagId]);
 
   useEffect(() => {
     if (menuList.length) {
-      const existedTag = tags.find(m => location.pathname.startsWith(m.path))?.path;
-      if (existedTag) {
-        dispatch(setActiveTag(existedTag));
-        return;
-      }
 
-      const menu = menuList.find(m => location.pathname.startsWith(m.path));
+      const pathname = location.pathname;
+
+      const menu = menuList.find(m => pathname === m.path);
 
       if (menu) {
         dispatch(
           addTag({
             ...menu,
             path: location.pathname,
-            closable: menu.code !== 'home',
+            closable: menu.code !== '/',
           }),
         );
       }
+
     }
   }, [dispatch, location.pathname, menuList]);
 

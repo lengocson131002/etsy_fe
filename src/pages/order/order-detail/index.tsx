@@ -15,6 +15,7 @@ import { normalizeString } from '@/utils/string';
 
 import OrderItemCard from './order-item/orderItem';
 import { getOrderStatusColor } from '@/utils/color';
+import { Pathnames } from '@/utils/paths';
 
 const { Text } = Typography;
 
@@ -83,7 +84,7 @@ const OrderDetailPage: FC = () => {
                 <Text strong className="order-detail-info-title">
                   Shop :
                 </Text>
-                <Link style={{ textDecoration: 'none' }} to={`/shop/${orderData.shopId}`}>
+                <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${orderData.shopId}`}>
                   {orderData.shopName}
                 </Link>
               </div>

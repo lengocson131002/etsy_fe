@@ -16,7 +16,7 @@ import { getOrderStatusColor } from '@/utils/color';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import './index.less'
-const ORDER_PATH = '/order';
+import { Pathnames } from '@/utils/paths';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -37,7 +37,7 @@ const columnOptions: MyTableOptions<Order> = [
     dataIndex: 'shopName',
     key: 'shopName',
     render: (value, record) => (
-      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+      <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${record.shopId}`}>
         {value}
       </Link>
     ),
@@ -124,7 +124,7 @@ const columnOptions: MyTableOptions<Order> = [
     width: 100,
     dataIndex: 'action',
     render: (_, record) => (
-      <Link to={`/order/${record.id}`}>
+      <Link to={`${Pathnames.ORDERS}/${record.id}`}>
         <Button>Detail</Button>
       </Link>
     ),
@@ -235,9 +235,9 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         }
       />
 
-      {location.pathname.startsWith(ORDER_PATH) && id !== undefined && (
+      {location.pathname.startsWith(Pathnames.ORDERS) && id !== undefined && (
         <Drawer
-          onClose={() => navigate(ORDER_PATH)}
+          onClose={() => navigate(Pathnames.ORDERS)}
           title={'ORDER DETAIL'}
           open={true}
           width={window.innerWidth > 1000 ? 1000 : window.innerWidth}

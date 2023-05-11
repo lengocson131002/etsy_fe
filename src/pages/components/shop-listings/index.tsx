@@ -12,6 +12,7 @@ import { normalizeString } from '@/utils/string';
 import { Link } from 'react-router-dom';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
 import { getListingStatusColor } from '@/utils/color';
+import { Pathnames } from '@/utils/paths';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -132,7 +133,7 @@ const columnOptions: MyTableOptions<Listing> = [
     dataIndex: 'shopName',
     key: 'shopName',
     render: (value, record) => (
-      <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+      <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${record.shopId}`}>
         {value}
       </Link>
     ),

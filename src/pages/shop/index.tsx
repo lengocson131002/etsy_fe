@@ -21,10 +21,9 @@ import ShopDetailPage from './shop-detail';
 import TeamSelect from '../components/team-select';
 import { getStatusColor } from '@/utils/color';
 import { Typography } from 'antd';
+import { Pathnames } from '@/utils/paths';
 
 const { Text } = Typography;
-
-const SHOP_PATH = '/shop';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -235,7 +234,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             fixed: 'right',
             render: (_, record) => (
               <Space>
-                <Link to={`${SHOP_PATH}/${record.id}`}>
+                <Link to={`${Pathnames.SHOPS}/${record.id}`}>
                   <Button>Detail</Button>
                 </Link>
                 {record?.trackers?.find(tracker => tracker === username) ? (

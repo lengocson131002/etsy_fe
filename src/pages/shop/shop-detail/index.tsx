@@ -23,6 +23,7 @@ import { getStatusColor } from '@/utils/color';
 import { normalizeString } from '@/utils/string';
 import { useSelector } from 'react-redux';
 import { RoleCode } from '@/interface/permission/role.interface';
+import { Pathnames } from '@/utils/paths';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
@@ -189,7 +190,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                         <Text strong className="shop-detail-overview-item-title">
                           Profile Name :
                         </Text>
-                        <Link to={`/profile/${shopData.profile.id}`}>{shopData.profile.name}</Link>
+                        <Link to={`${Pathnames.PROFILES}/${shopData.profile.id}`}>{shopData.profile.name}</Link>
                       </div>
                       <div className="shop-detail-overview-item">
                         <Text strong className="shop-detail-overview-item-title">

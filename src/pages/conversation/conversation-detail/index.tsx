@@ -10,6 +10,7 @@ import { AiOutlineExclamation, AiOutlineHistory, AiOutlineRight, AiOutlineStop }
 import MessageItem from './message';
 import UserIcon from '@/assets/user.png';
 import { getLastTimestamp } from '@/utils/datetime';
+import { Pathnames } from '@/utils/paths';
 
 const { useToken } = theme;
 
@@ -53,7 +54,7 @@ const ConversateDetail: FC = () => {
           </Text>
         </div>
         <div className="conversation-header-shop">
-          <Link className="conversation-header-shop-name" to={`/shop/${conversation.shopId}`}>
+          <Link className="conversation-header-shop-name" to={`${Pathnames.SHOPS}/${conversation.shopId}`}>
             <span>{conversation.shopName}</span>
             <span className="shop-name-icon">
               <AiOutlineRight />

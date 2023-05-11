@@ -15,9 +15,7 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 
 import ProfileDetailForm from './profile-detail';
 import AddProfileForm from './add-profile';
-
-const PROFILE_PATH = '/profile';
-const SHOP_PATH = '/shop';
+import { Pathnames } from '@/utils/paths';
 
 const { Item: FilterItem } = Table.MyFilter;
 const ProfilePage: FC = () => {
@@ -38,7 +36,7 @@ const ProfilePage: FC = () => {
   };
 
   const onCloseProfileDetail = () => {
-    navigate(PROFILE_PATH);
+    navigate(Pathnames.PROFILES);
     resetTable();
   };
 
@@ -60,7 +58,7 @@ const ProfilePage: FC = () => {
             dataIndex: 'shopName',
             key: 'shopName',
             render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`/shop/${record.shopId}`}>
+              <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${record.shopId}`}>
                 {value}
               </Link>
             ),
@@ -107,7 +105,7 @@ const ProfilePage: FC = () => {
             align: 'center',
             render: (_, record) => (
               <Space>
-                <Link to={`${PROFILE_PATH}/${record.id}`}>
+                <Link to={`${Pathnames.PROFILES}/${record.id}`}>
                   <Button>Detail</Button>
                 </Link>
               </Space>
@@ -140,12 +138,12 @@ const ProfilePage: FC = () => {
         <AddProfileForm closeForm={onCloseAddProfileForm} />
       </Drawer>
 
-      {location.pathname.startsWith(PROFILE_PATH) && id && (
+      {location.pathname.startsWith(Pathnames.PROFILES) && id && (
         <Drawer
           title={'PROFILE DETAIL'}
           placement="right"
           width={window.innerWidth > 1000 ? 1000 : window.innerWidth}
-          onClose={() => navigate(PROFILE_PATH)}
+          onClose={() => navigate(Pathnames.PROFILES)}
           open={true}
           closable={true}
         >

@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import MyForm from '@/components/core/form';
 import { getProfile, removeProfile, updateProfile } from '@/api/profile.api';
 import { Link, useParams } from 'react-router-dom';
+import { Pathnames } from '@/utils/paths';
 
 interface ProfileFormProps {
   data?: Profile;
@@ -156,7 +157,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
                 innerProps={{
                   disabled: true,
                   suffix: (
-                    <Link to={`/shop/${data.shopId}`}>
+                    <Link to={`${Pathnames.SHOPS}/${data.shopId}`}>
                       <Button type="primary">Shop detail</Button>
                     </Link>
                   ),

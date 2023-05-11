@@ -21,10 +21,9 @@ import { getAllTeams } from '@/api/team.api';
 import { totalmem } from 'os';
 import TeamSelect from '../components/team-select';
 import { Typography } from 'antd';
+import { Pathnames } from '@/utils/paths';
 
 const { Text } = Typography;
-
-const STAFF_PATH = '/staff';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -64,7 +63,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
   );
 
   const onCloseDetailForm = () => {
-    navigate(STAFF_PATH);
+    navigate(Pathnames.STAFFS);
     resetTable();
   };
 
@@ -126,7 +125,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             dataIndex: 'teamName',
             key: 'teamName',
             render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
+              <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${record.teamId}`}>
                 {value}
               </Link>
             ),
@@ -151,7 +150,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             align: 'center',
             render: (_, record) => {
               return (
-                <Link to={`${STAFF_PATH}/${record.id}`}>
+                <Link to={`${Pathnames.STAFFS}/${record.id}`}>
                   <Button>Detail</Button>
                 </Link>
               );
@@ -214,12 +213,12 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
         <AddStaffForm closeForm={onCloseAddForm} />
       </Drawer>
 
-      {location.pathname.startsWith(STAFF_PATH) && id != undefined && (
+      {location.pathname.startsWith(Pathnames.STAFFS) && id != undefined && (
         <Drawer
           title={'STAFF DETAIL'}
           placement="right"
           width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
-          onClose={() => navigate(STAFF_PATH)}
+          onClose={() => navigate(Pathnames.STAFFS)}
           open={true}
           closable={true}
         >
