@@ -1,23 +1,35 @@
 import { FC } from 'react';
 import './index.less';
-import { Link, useLocation } from 'react-router-dom';
-import { Breadcrumb, Card, Divider } from 'antd';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Breadcrumb, Button, Card, Divider } from 'antd';
 import BreadcrumbItem from 'antd/es/breadcrumb/BreadcrumbItem';
 import { normalizeString } from '@/utils/string';
-import { AiOutlineHome } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai';
 
 const BreadCrumbsComponent: FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const { pathname } = location;
   const pathnames = pathname.split('/').filter(item => item);
 
+  const onBack = () => {
+    navigate(-1);
+  };
+
+  const onForward = () => {
+    navigate(1);
+  };
+
   return (
     <div>
-      {pathnames?.length > 0 && (
-        <>
-          <Card className="breadcrumb-wrapper" bordered={false}>
-            <Breadcrumb>
+      <>
+        <Card className="breadcrumb-wrapper-card" bordered={false}>
+          <div className="breadcrumb-wrapper">
+            <span className="back-button-icon" onClick={onBack}>
+              <AiOutlineLeft />
+            </span>
+            <Breadcrumb className="breadcrumb">
               <Breadcrumb.Item>
                 <Link to={'/'}>Home</Link>
               </Breadcrumb.Item>
@@ -34,9 +46,12 @@ const BreadCrumbsComponent: FC = () => {
                 );
               })}
             </Breadcrumb>
-          </Card>
-        </>
-      )}
+            <span className="back-button-icon" onClick={onForward}>
+              <AiOutlineRight />
+            </span>
+          </div>
+        </Card>
+      </>
     </div>
   );
 };
