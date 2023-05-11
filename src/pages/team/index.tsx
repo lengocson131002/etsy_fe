@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import TeamDetailForm from '../components/team-form/team-detail-form';
 import AddTeamForm from '../components/team-form/add-team-form';
 
+
 const { Item: FilterItem } = Table.MyFilter;
 
 const TEAM_PATH = '/team';

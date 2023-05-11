@@ -1,5 +1,5 @@
 import type { DashboardOVerview, DateRange } from '@/interface/dashboard';
-import { ColProps, Space } from 'antd';
+import { Button, ColProps, Space } from 'antd';
 import type { FC } from 'react';
 
 import './index.less';
@@ -68,18 +68,25 @@ const DashBoardPage: FC = () => {
       <div className="dashboard-select">
         <Space direction="horizontal">
           <Select
-            defaultValue={filter.dateRange}
-            style={{ width: 150 }}
+            value={filter.dateRange}
+            style={{ width: 120 }}
             onChange={value => setFilter(prev => ({...prev, dateRange: value}))}
             options={DateRanges}
           />
           <Select
+            value={filter.status}
             allowClear
             placeholder="Shop status"
-            style={{ width: 150 }}
+            style={{ width: 120 }}
             onChange={value => setFilter(prev => ({...prev, status: value}))}
             options={statusOptions}
           />
+          <Button danger onClick={() => setFilter(prev => ({
+            dateRange: DateRanges[0].value,
+            status: undefined
+          }))}>
+            Reset
+          </Button>
         </Space>
       </div>
       {dashboard && (
