@@ -43,7 +43,7 @@ const BreadCrumbsComponent: FC = () => {
                   <Breadcrumb.Item>
                     <Link to={route}>{normalizeString(item)}</Link>
                   </Breadcrumb.Item>
-                );
+                )
               })}
             </Breadcrumb>
             <span className="back-button-icon" onClick={onForward}>

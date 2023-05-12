@@ -77,7 +77,7 @@ const DashBoardPage: FC = () => {
             value={filter.status}
             allowClear
             placeholder="Shop status"
-            style={{ width: 120 }}
+            style={{ width: 140 }}
             onChange={value => setFilter(prev => ({...prev, status: value}))}
             options={statusOptions}
           />

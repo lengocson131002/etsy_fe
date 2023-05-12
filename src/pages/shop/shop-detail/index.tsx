@@ -118,7 +118,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
 
           <div className="shop-detail-overview">
             <Row gutter={[12, 12]}>
-              <Col xl={12} sm={24}>
+              <Col xl={12} sm={24} xs={24}>
                 <Card className="shop-detail-overview-card" bordered={false}>
                   <Space direction="vertical">
                     <div className="shop-detail-overview-item">
@@ -176,7 +176,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                   </Space>
                 </Card>
               </Col>
-              <Col xl={12} sm={24}>
+              <Col xl={12} sm={24} xs={24}>
                 {shopData.profile && (
                   <Card className="shop-detail-overview-card" bordered={false}>
                     <Space direction="vertical">
