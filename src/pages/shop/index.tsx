@@ -35,14 +35,16 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
   const [selectedShopId, setSelectedShopId] = useState<string>();
 
-  useEffect(() => {
-    const loadStatusOptions = async () => {
-      const { result, status } = await getShopStatuses();
-      if (status && result?.items) {
-        setStatusOptions([...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})` }))]);
-      }
-    };
+  const loadStatusOptions = async () => {
+    const { result, status } = await getShopStatuses();
+    if (status && result?.items) {
+      setStatusOptions([
+        ...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})` })),
+      ]);
+    }
+  };
 
+  useEffect(() => {
     loadStatusOptions();
   }, []);
 
@@ -90,6 +92,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
       ref.current?.load();
     }
     setSelectedShopId(undefined);
+    loadStatusOptions();
   };
 
   const handleActivate = async () => {
@@ -102,6 +105,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
     if (result?.status && status) {
       message.success('Activate shop successfully');
       ref.current?.load();
+      loadStatusOptions();
     }
     setSelectedShopId(undefined);
   };

@@ -10,7 +10,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getShop, deactivateShop, activateShop } from '@/api/shop.api';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
 import { Shop } from '@/interface/shop/shop.interface';
-import { dateToStringWithFormat } from '@/utils/datetime';
+import { dateToStringWithFormat, GLOBAL_DATE_FORMAT, GLOBAL_DATETIME_FORMAT } from '@/utils/datetime';
 
 import ShopOverview from './shop-overview';
 import { EtsyUrlPrefixes } from '@/utils/etsy';
@@ -164,7 +164,7 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                         Opened date :
                       </Text>
                       <Text className="shop-detail-overview-item-info">
-                        {shopData.openedDate && dateToStringWithFormat(new Date(shopData.openedDate))}
+                        {shopData.openedDate && dateToStringWithFormat(new Date(shopData.openedDate), GLOBAL_DATE_FORMAT)}
                       </Text>
                     </div>
                     <div className="shop-detail-overview-item">
