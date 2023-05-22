@@ -2,7 +2,7 @@ import type { MyTableOptions } from '@/components/business/table';
 import type { Listing } from '@/interface/listing';
 import { FC, useEffect, useState } from 'react';
 
-import { Image, Tag } from 'antd';
+import { Col, Image, Row, Tag } from 'antd';
 import { useCallback } from 'react';
 
 import { getListingStatuses, getListings } from '@/api/listing.api';
@@ -147,7 +147,12 @@ const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
     const loadStatusOptions = async () => {
       const { result, status } = await getListingStatuses(shopId);
       if (status && result?.items) {
-        setStatusOptions([...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})` }))]);
+        setStatusOptions([
+          ...result.items.map(item => ({
+            value: item.status,
+            label: `${normalizeString(item.status)} (${item.count})`,
+          })),
+        ]);
       }
     };
 
@@ -174,27 +179,30 @@ const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
         filterApi={getShopProductsAPI}
         tableOptions={columnOptions}
         filterRender={
-          <>
-            <FilterItem
-              innerProps={{
-                placeholder: 'Name',
-                allowClear: true,
-              }}
-              label="Search"
-              name="query"
-              type="input"
-            />
-            <FilterItem
-              innerProps={{
-                allowClear: true,
-              }}
-              style={{ width: 200 }}
-              label="Status"
-              name="status"
-              type="select"
-              options={statusOptions}
-            />
-          </>
+          <Row gutter={[12, 0]}>
+            <Col xs={24} sm={12} lg={6} xl={4}>
+              <FilterItem
+                innerProps={{
+                  placeholder: 'Name',
+                  allowClear: true,
+                }}
+                label="Search"
+                name="query"
+                type="input"
+              />
+            </Col>
+            <Col xs={24} sm={12} lg={6} xl={4}>
+              <FilterItem
+                innerProps={{
+                  allowClear: true,
+                }}
+                label="Status"
+                name="status"
+                type="select"
+                options={statusOptions}
+              />
+            </Col>
+          </Row>
         }
       />
     </div>

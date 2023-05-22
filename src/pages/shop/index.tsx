@@ -4,7 +4,7 @@ import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, Drawer, DropDownProps, Image, message, Modal, SelectProps, Space, Tag } from 'antd';
+import { Checkbox, Col, Drawer, DropDownProps, Image, message, Modal, Row, SelectProps, Space, Tag } from 'antd';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -292,44 +292,51 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
           },
         ]}
         filterRender={
-          <>
-            <FilterItem
-              innerProps={{
-                placeholder: 'Keyword',
-                allowClear: true,
-              }}
-              label="Search"
-              name="query"
-              type="input"
-            />
-
-            <FilterItem
-              innerProps={{
-                showSearch: true,
-                allowClear: true,
-              }}
-              style={{ width: 200 }}
-              label="Status"
-              name="status"
-              type="select"
-              options={statusOptions}
-            />
-            {!teamId && (
+          <Row gutter={[12, 0]}>
+            <Col xs={24} sm={12} lg={6} xl={4}>
               <FilterItem
                 innerProps={{
+                  placeholder: 'Keyword',
                   allowClear: true,
                 }}
-                style={{ width: 250 }}
-                label="Team"
-                name="teamId"
-              >
-                <TeamSelect allowClear />
-              </FilterItem>
+                label="Search"
+                name="query"
+                type="input"
+              />
+            </Col>
+
+            <Col xs={24} sm={12} lg={6} xl={4}>
+              <FilterItem
+                innerProps={{
+                  showSearch: true,
+                  allowClear: true,
+                }}
+                label="Status"
+                name="status"
+                type="select"
+                options={statusOptions}
+              />
+            </Col>
+
+            {!teamId && (
+              <Col xs={24} sm={12} lg={6} xl={4}>
+                <FilterItem
+                  innerProps={{
+                    allowClear: true,
+                  }}
+                  label="Team"
+                  name="teamId"
+                >
+                  <TeamSelect allowClear />
+                </FilterItem>
+              </Col>
             )}
-            <FilterItem label="Filter my trackings" type="checkbox">
-              <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
-            </FilterItem>
-          </>
+            <Col xs={24} sm={12} lg={6} xl={4}>
+              <FilterItem label="Filter my trackings" type="checkbox">
+                <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
+              </FilterItem>
+            </Col>
+          </Row>
         }
       />
       {/* {location.pathname.startsWith(SHOP_PATH) && id != undefined && id.length > 0 && (

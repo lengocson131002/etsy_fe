@@ -5,7 +5,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Drawer, message, Tag } from 'antd';
+import { Button, Col, Drawer, message, Row, Tag } from 'antd';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -158,47 +158,52 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
           },
         ]}
         filterRender={
-          <>
-            <FilterItem
-              innerProps={{
-                placeholder: 'Keyword',
-                allowClear: true,
-              }}
-              label="Search"
-              name="query"
-              type="input"
-            />
-            <FilterItem
-              innerProps={{
-                showSearch: true,
-                allowClear: true,
-              }}
-              style={{ width: 250 }}
-              label="Role"
-              name="role"
-              type="select"
-              options={
-                roles &&
-                roles.map(role => ({
-                  value: role.code,
-                  label: role.name,
-                }))
-              }
-            />
-            {!teamId && (
+          <Row gutter={[12, 0]}>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <FilterItem
+                innerProps={{
+                  placeholder: 'Keyword',
+                  allowClear: true,
+                }}
+                label="Search"
+                name="query"
+                type="input"
+              />
+            </Col>
+            <Col xs={24} sm={12} lg={8} xl={6}>
               <FilterItem
                 innerProps={{
                   showSearch: true,
                   allowClear: true,
                 }}
-                style={{ width: 250 }}
-                label="Team"
-                name="teamId"
-              >
-                <TeamSelect allowClear />
-              </FilterItem>
+                label="Role"
+                name="role"
+                type="select"
+                options={
+                  roles &&
+                  roles.map(role => ({
+                    value: role.code,
+                    label: role.name,
+                  }))
+                }
+              />
+            </Col>
+
+            {!teamId && (
+              <Col xs={24} sm={12} lg={8} xl={6}>
+                <FilterItem
+                  innerProps={{
+                    showSearch: true,
+                    allowClear: true,
+                  }}
+                  label="Team"
+                  name="teamId"
+                >
+                  <TeamSelect allowClear />
+                </FilterItem>
+              </Col>
             )}
-          </>
+          </Row>
         }
       />
 

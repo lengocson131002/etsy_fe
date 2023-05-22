@@ -2,11 +2,11 @@ import type { MyTableOptions } from '@/components/business/table';
 import type { Order } from '@/interface/order';
 import { FC, useEffect, useState } from 'react';
 
-import { Button, Drawer, Image, Tag } from 'antd';
+import { Button, Col, Drawer, Image, Row, Tag } from 'antd';
 import { useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getOrderStatuses, getOrders } from '@/api/orders.api';
+import { countOrderByShopStatus, getOrderStatuses, getOrders } from '@/api/orders.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
@@ -15,7 +15,7 @@ import OrderDetailPage from '@/pages/order/order-detail';
 import { getOrderStatusColor } from '@/utils/color';
 import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
-import './index.less'
+import './index.less';
 import { Pathnames } from '@/utils/paths';
 
 const { Item: FilterItem } = Table.MyFilter;
@@ -138,6 +138,8 @@ interface DateRangeProps {
 
 const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
+  const [shopStatusOptions, setShopStatusOptions] = useState<{ value: string; label: string }[]>([]);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [range, setRange] = useState<DateRangeProps>();
@@ -146,11 +148,30 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
     const loadStatusOptions = async () => {
       const { result, status } = await getOrderStatuses(shopId);
       if (status && result?.items) {
-        setStatusOptions([...result.items.map(item => ({ value: item.status, label: `${normalizeString(item.status)} (${item.count})`}))]);
+        setStatusOptions([
+          ...result.items.map(item => ({
+            value: item.status,
+            label: `${normalizeString(item.status)} (${item.count})`,
+          })),
+        ]);
+      }
+    };
+
+    const loadShopStatusOptions = async () => {
+      const { result, status } = await countOrderByShopStatus();
+      if (status && result?.items) {
+        setShopStatusOptions([
+          ...result.items.map(item => ({
+            value: item.status,
+            label: `${normalizeString(item.status)} (${item.count})`,
+          })),
+        ]);
       }
     };
 
     loadStatusOptions();
+    loadShopStatusOptions();
+
   }, []);
 
   const getShopOrderAPI = useCallback(
@@ -178,7 +199,6 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
     { label: 'This month', value: [dayjs().startOf('month'), dayjs()] },
     { label: 'This year', value: [dayjs().startOf('year'), dayjs()] },
     { label: 'Last year', value: [dayjs().add(-1, 'y').startOf('year'), dayjs().add(-1, 'y').endOf('year')] },
-
   ];
 
   const onRangeChange = (dates: null | (Dayjs | null)[], dateStrings: string[]) => {
@@ -199,39 +219,60 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         tableOptions={columnOptions}
         filterApi={getShopOrderAPI}
         filterRender={
-          <>
-            <FilterItem
-              innerProps={{
-                placeholder: 'Keyword',
-                allowClear: true,
-              }}
-              label="Search"
-              name="query"
-              type="input"
-            />
-            <FilterItem
-              innerProps={{
-                showSearch: true,
-                allowClear: true,
-              }}
-              style={{ width: 200 }}
-              label="Status"
-              name="status"
-              type="select"
-              options={statusOptions}
-            />
+          <Row gutter={[12, 6]}>
+            <Col xs={24} sm={12} lg={5} xl={4}>
+              <FilterItem
+                innerProps={{
+                  placeholder: 'Keyword',
+                  allowClear: true,
+                }}
+                label="Search"
+                name="query"
+                type="input"
+              />
+            </Col>
+            <Col xs={24} sm={12} lg={5} xl={4}>
+              <FilterItem
+                innerProps={{
+                  showSearch: true,
+                  allowClear: true,
+                }}
+                label="Order Status"
+                name="status"
+                type="select"
+                options={statusOptions}
+              />
+            </Col>
 
-            <FilterItem
-              label="Date range:"
-              innerProps={{
-                presets: rangePresets,
-                format: 'DD/MM/YYYY',
-                onChange: onRangeChange,
-                value: range && range.from && range.to ? [range?.from, range?.to] : null,
-              }}
-              type="range-picker"
-            />
-          </>
+            {!shopId && (
+              <Col xs={24} sm={12} lg={5} xl={4}>
+                <FilterItem
+                  innerProps={{
+                    showSearch: true,
+                    allowClear: true,
+                  }}
+
+                  label="Shop Status"
+                  name="shopStatus"
+                  type="select"
+                  options={shopStatusOptions}
+                />
+              </Col>
+            )}
+
+            <Col xs={24} sm={12} lg={9} xl={6}>
+              <FilterItem
+                label="Date range"
+                innerProps={{
+                  presets: rangePresets,
+                  format: 'DD/MM/YYYY',
+                  onChange: onRangeChange,
+                  value: range && range.from && range.to ? [range?.from, range?.to] : null,
+                }}
+                type="range-picker"
+              />
+            </Col>
+          </Row>
         }
       />
 

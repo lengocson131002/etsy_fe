@@ -45,9 +45,9 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
         onChange={onChange}
         {...rest}
         form={form}
-        layout="inline">
+        layout="vertical">
         {children}
-        <MyForm.Item>
+        <MyForm.Item className='filter-actions'>
           <MyButton danger onClick={handleReset}>{formatMessage({ id: 'component.search.reset' })}</MyButton>
         </MyForm.Item>
       </MyForm>
@@ -63,26 +63,32 @@ export default MyFilter;
 
 const styles = css`
   // padding: 20px 0 10px 0;
+  flex: 1;
+  width: 100%;
+
+  .filter-actions {
+    margin-top: 10px;
+  }
   .ant-form-item {
     margin-bottom: 10px;
 
-    @media(max-width: 500px) {
-      width: 100% !important;
+    // @media(max-width: 500px) {
+    //   width: 100% !important;
 
-      & .ant-form-item-control {
-        margin-left: auto;
-        width: 100%;
-      }
+    //   & .ant-form-item-control {
+    //     margin-left: auto;
+    //     width: 100%;
+    //   }
 
-      & .ant-form-item-label {
-        width: 100%;
-      }
-    }
+    //   & .ant-form-item-label {
+    //     width: 100%;
+    //   }
+    // }
 
-    & .ant-form-item-label {
-      min-width: 50px;
-      text-align: start;
-    }
+    // & .ant-form-item-label {
+    //   min-width: 50px;
+    //   text-align: start;
+    // }
 
   }
 

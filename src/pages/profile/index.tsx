@@ -4,7 +4,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Drawer, message, Space } from 'antd';
+import { Button, Col, Drawer, message, Row, Space } from 'antd';
 import { lazy, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -113,17 +113,19 @@ const ProfilePage: FC = () => {
           },
         ]}
         filterRender={
-          <>
-            <FilterItem
-              label="Search"
-              type="input"
-              name="query"
-              innerProps={{
-                placeholder: 'Keyword',
-                allowClear: true,
-              }}
-            />
-          </>
+          <Row gutter={[12, 0]}>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <FilterItem
+                label="Search"
+                type="input"
+                name="query"
+                innerProps={{
+                  placeholder: 'Keyword',
+                  allowClear: true,
+                }}
+              />
+            </Col>
+          </Row>
         }
       />
 

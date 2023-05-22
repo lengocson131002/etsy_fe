@@ -35,3 +35,15 @@ export const getOrderStatuses = (shopId?: string) =>
       },
     },
   );
+
+  export const countOrderByShopStatus = () =>
+  request<ListResponse<StatusCount>>(
+    'get',
+    '/api/v1/orders/count/shop-status',
+    {},
+    {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );

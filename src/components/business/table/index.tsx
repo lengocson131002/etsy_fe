@@ -183,9 +183,6 @@ const styles = css`
     display: flex;
     overflow: hidden;
   }
-  .search {
-    // margin-bottom: 10px;
-  }
 
   .aside-main {
     display: flex;
@@ -211,9 +208,10 @@ const styles = css`
 const filterStyles = css`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: start;
   margin: 20px 0;
+  gap: 10px;
 
   @media (max-width: 600px) {
     flex-direction: column;

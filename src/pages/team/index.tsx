@@ -1,7 +1,7 @@
 import { getAllTeams } from '@/api/team.api';
 import Table, { MyTableOptions, RefTableProps } from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
-import { Button, Drawer } from 'antd';
+import { Button, Col, Drawer, Row } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -10,7 +10,6 @@ import AddTeamForm from '../components/team-form/add-team-form';
 import { useSearchParams } from 'react-router-dom';
 import { Pathnames } from '@/utils/paths';
 
-
 const { Item: FilterItem } = Table.MyFilter;
 
 const TeamPage: FC = () => {
@@ -18,7 +17,6 @@ const TeamPage: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   console.log(searchParams);
-
 
   const [addFormOpen, setAddFormOpen] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +37,7 @@ const TeamPage: FC = () => {
     <div>
       <Table
         extras={[
-          <Button type='primary' onClick={() => setAddFormOpen(true)}>
+          <Button type="primary" onClick={() => setAddFormOpen(true)}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
               <AiOutlinePlusCircle /> Add team
             </div>
@@ -116,17 +114,19 @@ const TeamPage: FC = () => {
           },
         ]}
         filterRender={
-          <>
-            <FilterItem
-              innerProps={{
-                placeholder: 'Keyword',
-                allowClear: true,
-              }}
-              label="Search"
-              name="query"
-              type="input"
-            />
-          </>
+          <Row gutter={[12, 0]}>
+            <Col xs={24} sm={12} lg={8} xl={6}>
+              <FilterItem
+                innerProps={{
+                  placeholder: 'Keyword',
+                  allowClear: true,
+                }}
+                label="Search"
+                name="query"
+                type="input"
+              />
+            </Col>
+          </Row>
         }
       />
       <Drawer
