@@ -121,13 +121,19 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             key: 'address',
           },
           {
-            title: 'Team',
-            dataIndex: 'teamName',
-            key: 'teamName',
+            title: 'Teams',
+            dataIndex: 'teams',
+            key: 'teams',
             render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${record.teamId}`}>
-                {value}
-              </Link>
+              <>
+                {record.teams.map(team => (
+                  <Tag color="blue">
+                    <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
+                      {team.name}
+                    </Link>
+                  </Tag>
+                ))}
+              </>
             ),
           },
           {
@@ -137,7 +143,11 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: (roles: Role[]) => (
               <>
                 {roles.map(role => (
-                  <Tag color="blue">{role.name}</Tag>
+                  <Tag color="blue">
+                    <Link style={{ textDecoration: 'none' }} to={''}>
+                      {role.name}
+                    </Link>
+                  </Tag>
                 ))}
               </>
             ),

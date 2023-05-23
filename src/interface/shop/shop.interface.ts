@@ -1,6 +1,7 @@
 import type { ShopDashboard } from '../dashboard';
 import type { Profile } from '../profile';
 import type { Staff } from '../staff';
+import { Team } from '../team';
 
 export interface Shop {
   id: string;
@@ -16,12 +17,13 @@ export interface Shop {
   revenue?: number;
   profile?: Profile;
   isTracked?: boolean;
-  trackers?: string[];
+  trackers: Staff[];
   teamId?: number;
   teamName?: string;
   lastSyncAt?: string;
   banner?: string;
   avatar?: string;
+  teams: Team[]
 }
 
 export interface ShopDetail {
@@ -44,4 +46,5 @@ export interface ShopDetail {
   lastSyncAt?: string;
   banner?: string;
   avatar?: string;
+  teams: Team[]
 }

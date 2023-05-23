@@ -1,6 +1,7 @@
 import type { Role } from '../role';
 import type { Device } from '@/interface/layout/index.interface';
 import type { MenuChild } from '@/interface/layout/menu.interface';
+import { Team } from '../team';
 
 export type Locale = 'zh_CN' | 'en_US';
 
@@ -33,6 +34,8 @@ export interface UserState {
   newUser: boolean;
 
   permission: Permission;
+
+  teams?: Team[]
 }
 
 export interface Account {
@@ -49,6 +52,7 @@ export interface Account {
   createdBy?: string;
   updatedAt?: Date;
   updatedBy?: string;
+  teams?: Team[]
 }
 
 export interface Permission {

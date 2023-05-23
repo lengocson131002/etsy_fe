@@ -22,6 +22,8 @@ import TeamSelect from '../components/team-select';
 import { getStatusColor } from '@/utils/color';
 import { Typography } from 'antd';
 import { Pathnames } from '@/utils/paths';
+import { Team } from '@/interface/team';
+import { RoleCode } from '@/interface/permission/role.interface';
 
 const { Text } = Typography;
 
@@ -30,7 +32,7 @@ const { Item: FilterItem } = Table.MyFilter;
 const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const ref = useRef<RefTableProps>(null);
   const { id } = useParams();
-  const { userId, username } = useSelector(state => state.user);
+  const { userId, username, roles } = useSelector(state => state.user);
   const [myTrackings, setMyTrackings] = useState(false);
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
   const [selectedShopId, setSelectedShopId] = useState<string>();
@@ -73,7 +75,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
   const getAllShopsAPI = useCallback(
     (params: any) => {
       return getAllShops({
-        teamId,
+        teamIds: teamId,
         ...params,
         trackerId: myTrackings ? userId : null,
       });
@@ -201,23 +203,35 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
           },
           {
-            title: 'Team',
-            dataIndex: 'teamName',
-            key: 'teamName',
+            title: 'Teams',
+            dataIndex: 'teams',
+            key: 'teams',
             render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`/team/${record.teamId}`}>
-                {value}
-              </Link>
+              <>
+                {record.teams.map(team => (
+                  <Tag color="blue">
+                    {' '}
+                    <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
+                      {team.name}
+                    </Link>
+                  </Tag>
+                ))}
+              </>
             ),
           },
           {
             title: 'Trackers',
             dataIndex: 'trackers',
             key: 'trackers',
-            render: (value: string[]) => (
+            render: (value, record) => (
               <>
-                {value?.map(val => (
-                  <Tag color="blue">{val}</Tag>
+                {record.trackers.map(staff => (
+                  <Tag color="blue">
+                    {' '}
+                    <Link style={{ textDecoration: 'none' }} to={`${Pathnames.STAFFS}/${staff.id}`}>
+                      {staff.fullName}
+                    </Link>
+                  </Tag>
                 ))}
               </>
             ),
@@ -241,7 +255,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
                 <Link to={`${Pathnames.SHOPS}/${record.id}`}>
                   <Button>Detail</Button>
                 </Link>
-                {record?.trackers?.find(tracker => tracker === username) ? (
+                {record?.trackers?.find(tracker => tracker.id === userId) ? (
                   <Button danger onClick={() => onUnTrack(record.id)}>
                     Untrack
                   </Button>
@@ -318,14 +332,15 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
               />
             </Col>
 
-            {!teamId && (
+            {/* Only admin see this filter */}
+            {!teamId && roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
               <Col xs={24} sm={12} lg={6} xl={4}>
                 <FilterItem
                   innerProps={{
                     allowClear: true,
                   }}
                   label="Team"
-                  name="teamId"
+                  name="teamIds"
                 >
                   <TeamSelect allowClear />
                 </FilterItem>

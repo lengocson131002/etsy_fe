@@ -1,5 +1,6 @@
 import type { Role } from '../role';
 import { Shop } from '../shop/shop.interface';
+import { Team } from '../team';
 
 export interface Staff {
   id: number;
@@ -18,6 +19,7 @@ export interface Staff {
   updatedBy?: string;
   trackings?: Shop[]
   teamId?: number,
+  teams: Team[],
   teamName?: string
 }
 
@@ -31,6 +33,7 @@ export interface CreateStaffRequest {
   address?: string;
   description?: string;
   roles: string[];
+  teamIds?: number[]
 }
 
 export interface UpdateStaffRequest {
@@ -44,4 +47,5 @@ export interface UpdateStaffRequest {
   address?: string;
   description?: string;
   roles: string[];
+  teamIds?: number[]
 }

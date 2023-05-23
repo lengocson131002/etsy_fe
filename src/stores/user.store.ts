@@ -23,6 +23,7 @@ const initialState: UserState = {
     isCS: false,
     isSeller: false,
   },
+  teams: []
 };
 
 const userSlice = createSlice({

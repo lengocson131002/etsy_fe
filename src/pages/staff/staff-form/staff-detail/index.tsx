@@ -49,7 +49,7 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
       address: values['address'],
       description: values['description'],
       roles: values['roles'],
-      teamId: values['teamId'],
+      teamIds: values['teamIds'],
     };
 
     const { result, status } = await updateStaff(data.id, updatedData);
@@ -142,8 +142,8 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
               />
             </Col>
             <Col md={12} xs={24}>
-              <MyForm.Item label="Team" name="teamId" initialValue={data?.teamId}>
-                <TeamSelect allowClear />
+              <MyForm.Item label="Teams" name="teamIds" initialValue={data?.teams.map(team => team.id)}>
+                <TeamSelect allowClear mode='multiple' />
               </MyForm.Item>
             </Col>
             <Col md={12} xs={24}>

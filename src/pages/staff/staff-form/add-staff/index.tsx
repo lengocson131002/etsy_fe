@@ -36,7 +36,7 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
       address: values['address'],
       description: values['description'],
       roles: values['roles'],
-      teamId: values['teamId'],
+      teamIds: values['teamIds'],
     };
 
     const { result, status } = await createStaff(staffData);
@@ -77,11 +77,7 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
           <Col md={12} xs={24}>
             <MyForm.Item label="Fullname" name="fullName" type="input" />
           </Col>
-          <Col md={12} xs={24}>
-            <MyForm.Item label="Team" name="teamId">
-              <TeamSelect allowClear />
-            </MyForm.Item>
-          </Col>
+
           <Col md={12} xs={24}>
             <MyForm.Item
               label="Role"
@@ -105,6 +101,13 @@ const AddStaffForm: FC<AddStaffFormProps> = ({ closeForm }) => {
               }
             />
           </Col>
+
+          <Col md={12} xs={24}>
+            <MyForm.Item label="Team" name="teamIds">
+              <TeamSelect allowClear mode='multiple' />
+            </MyForm.Item>
+          </Col>
+
           <Col md={12} xs={24}>
             <MyForm.Item
               label="Username"

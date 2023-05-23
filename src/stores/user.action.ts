@@ -37,6 +37,7 @@ export const loadProfile = createAsyncAction<string, boolean>(token => {
           userId: result.id,
           username: result.username,
           roles: result.roles.map(role => role.code),
+          teams: result.teams
         }),
       );
 

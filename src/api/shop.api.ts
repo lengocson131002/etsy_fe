@@ -39,20 +39,45 @@ export const getShopStatuses = () =>
   );
 
 export const deactivateShop = (shopId: string, configs: AxiosRequestConfig = {}) =>
-  request<StatusResponse>('put', `/api/v1/shops/${shopId}/deactivate`, {}, {
-    ...configs,
-    headers: {
-      ...configs?.headers,
-      Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+  request<StatusResponse>(
+    'put',
+    `/api/v1/shops/${shopId}/deactivate`,
+    {},
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
     },
-  });
-
+  );
 
 export const activateShop = (shopId: string, configs: AxiosRequestConfig = {}) =>
-request<StatusResponse>('put', `/api/v1/shops/${shopId}/activate`, {}, {
-  ...configs,
-  headers: {
-    ...configs?.headers,
-    Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
-  },
-});
+  request<StatusResponse>(
+    'put',
+    `/api/v1/shops/${shopId}/activate`,
+    {},
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );
+
+export const updateTeams = (shopId: string, teamIds: number[], configs: AxiosRequestConfig = {}) =>
+  request<StatusResponse>(
+    'put',
+    `/api/v1/shops/${shopId}/teams`,
+    {
+      teamIds,
+    },
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );

@@ -3,11 +3,26 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Card, Col, ColProps, Empty, message, Modal, Row, Select, Space, Tag, theme, Tooltip, Typography } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  ColProps,
+  Empty,
+  message,
+  Modal,
+  Row,
+  Select,
+  Space,
+  Tag,
+  theme,
+  Tooltip,
+  Typography,
+} from 'antd';
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { getShop, deactivateShop, activateShop } from '@/api/shop.api';
+import { getShop, deactivateShop, activateShop, updateTeams } from '@/api/shop.api';
 import MyTabs, { MyTabsOption } from '@/components/business/tabs';
 import { Shop } from '@/interface/shop/shop.interface';
 import { dateToStringWithFormat, GLOBAL_DATE_FORMAT, GLOBAL_DATETIME_FORMAT } from '@/utils/datetime';
@@ -17,7 +32,6 @@ import { EtsyUrlPrefixes } from '@/utils/etsy';
 import TeamSelect from '@/pages/components/team-select';
 import MyForm from '@/components/core/form';
 import { addShopToTeam, removeShopFromTeam } from '@/api/team.api';
-import { stat } from 'fs';
 import { useForm } from 'antd/es/form/Form';
 import { getStatusColor } from '@/utils/color';
 import { normalizeString } from '@/utils/string';
@@ -52,8 +66,8 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   }, [id]);
 
   const handleUpdateTeam = async (values: any) => {
-    if (values.teamId && shopData) {
-      const { result, status } = await addShopToTeam(values.teamId, shopData.id);
+    if (values.teamIds && shopData) {
+      const { result, status } = await updateTeams(shopData.id, values.teamIds);
       if (result?.status && status) {
         message.success('Update team successfully');
         await loadShopData(shopData.id);
@@ -75,6 +89,11 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
     }
   };
 
+  const onSelectTeamChange = (value: any) => {
+      console.log(value);
+      setChangedTeam(value.length !== shopData?.teams.length || !shopData?.teams.every(team => value.includes(team.id)));
+  };
+
   return (
     <div className="shop-detail-containier">
       {shopData ? (
@@ -87,28 +106,28 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
               <div>
                 <MyForm form={form} onFinish={handleUpdateTeam}>
                   <Row>
-                    <MyForm.Item style={{ width: 200, marginRight: 10 }} initialValue={shopData.teamId} name="teamId">
-                      <TeamSelect
-                        onChange={value => setChangedTeam(value != shopData.teamId)}
-                        placeholder="Select team"
-                      />
+                    <MyForm.Item
+                      style={{ width: 400, marginRight: 10 }}
+                      initialValue={shopData.teams.map(team => team.id)}
+                      name="teamIds"
+                    >
+                      <TeamSelect mode="multiple" onChange={onSelectTeamChange} placeholder="Select team" />
                     </MyForm.Item>
                     {changedTeam && (
                       <Button type="primary" htmlType="submit">
-                        Change
+                        Update
                       </Button>
                     )}
 
-                    {shopData.teamId && (
+                    {/* {shopData.teamId && (
                       <Button danger onClick={handleRemoveTeam}>
                         Discard
                       </Button>
-                    )}
+                    )} */}
                   </Row>{' '}
                 </MyForm>
               </div>
             )}
-
           </Card>
 
           {shopData.dashboard &&
@@ -164,7 +183,8 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                         Opened date :
                       </Text>
                       <Text className="shop-detail-overview-item-info">
-                        {shopData.openedDate && dateToStringWithFormat(new Date(shopData.openedDate), GLOBAL_DATE_FORMAT)}
+                        {shopData.openedDate &&
+                          dateToStringWithFormat(new Date(shopData.openedDate), GLOBAL_DATE_FORMAT)}
                       </Text>
                     </div>
                     <div className="shop-detail-overview-item">

@@ -17,6 +17,8 @@ import dayjs from 'dayjs';
 import { Dayjs } from 'dayjs';
 import './index.less';
 import { Pathnames } from '@/utils/paths';
+import { RoleCode } from '@/interface/permission/role.interface';
+import { useSelector } from 'react-redux';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -143,6 +145,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [range, setRange] = useState<DateRangeProps>();
+  const { roles } = useSelector(state => state.user);
 
   useEffect(() => {
     const loadStatusOptions = async () => {
@@ -171,7 +174,6 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
 
     loadStatusOptions();
     loadShopStatusOptions();
-
   }, []);
 
   const getShopOrderAPI = useCallback(
@@ -244,14 +246,14 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
               />
             </Col>
 
-            {!shopId && (
+            {/* Only admin see this filter */}
+            {!shopId && roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
               <Col xs={24} sm={12} lg={5} xl={4}>
                 <FilterItem
                   innerProps={{
                     showSearch: true,
                     allowClear: true,
                   }}
-
                   label="Shop Status"
                   name="shopStatus"
                   type="select"
