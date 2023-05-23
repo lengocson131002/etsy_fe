@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const GLOBAL_DATETIME_FORMAT = 'DD/MM/YYYY hh:mm:ss';
+export const GLOBAL_DATETIME_FORMAT = 'DD/MM/YYYY HH:mm:ss';
 
 export const GLOBAL_DATE_FORMAT = 'DD/MM/YYYY';
 
