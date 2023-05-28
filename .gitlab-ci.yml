@@ -2,6 +2,7 @@ variables:
   DOCKER_BUILDKIT: 1
   APP_NAME: "shop-fe"
   PORT: "3001"
+  NETWORK: "lang-net"
 
 stages:
   - build
