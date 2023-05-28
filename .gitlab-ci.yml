@@ -28,12 +28,12 @@ build:
 deploy:
   stage: deploy
   script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    - docker stop $APP_NAME || true
-    - docker rm $APP_NAME || true
-    - docker pull $CI_REGISTRY_IMAGE
-    - docker container run -d --name $APP_NAME -p $PORT:80 $CI_REGISTRY_IMAGE
-    - docker logout
+    - sudo docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - sudo docker stop $APP_NAME || true
+    - sudo docker rm $APP_NAME || true
+    - sudo docker pull $CI_REGISTRY_IMAGE
+    - sudo docker container run -d --name $APP_NAME -p $PORT:80 $CI_REGISTRY_IMAGE
+    - sudo docker logout
   tags:
     - shell
   only:
