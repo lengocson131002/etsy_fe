@@ -2,6 +2,7 @@ variables:
   DOCKER_BUILDKIT: 1
   APP_NAME: "shop-fe"
   PORT: "3001"
+  NETWORK: "lang-net"
 
 stages:
   - build
@@ -32,7 +33,7 @@ deploy:
     - docker stop $APP_NAME || true
     - docker rm $APP_NAME || true
     - docker pull $CI_REGISTRY_IMAGE
-    - docker container run -d --name $APP_NAME -p $PORT:80 $CI_REGISTRY_IMAGE
+    - docker container run -d  --network $NETWORK --name $APP_NAME -p $PORT:80 $CI_REGISTRY_IMAGE
     - docker logout
   tags:
     - shell
