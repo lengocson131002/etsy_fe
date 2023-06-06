@@ -133,7 +133,7 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
             <Col xs={24} sm={12} lg={6} xl={6}>
               <FilterItem
                 innerProps={{
-                  placeholder: 'Name, Profile ID, Profile Name',
+                  placeholder: 'Search',
                   allowClear: true,
                 }}
                 label="Search"

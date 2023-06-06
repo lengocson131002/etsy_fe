@@ -202,40 +202,40 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             sorter: true,
             render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
           },
-          {
-            title: 'Teams',
-            dataIndex: 'teams',
-            key: 'teams',
-            render: (value, record) => (
-              <>
-                {record.teams.map(team => (
-                  <Tag color="blue">
-                    {' '}
-                    <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
-                      {team.name}
-                    </Link>
-                  </Tag>
-                ))}
-              </>
-            ),
-          },
-          {
-            title: 'Trackers',
-            dataIndex: 'trackers',
-            key: 'trackers',
-            render: (value, record) => (
-              <>
-                {record.trackers.map(staff => (
-                  <Tag color="blue">
-                    {' '}
-                    <Link style={{ textDecoration: 'none' }} to={`${Pathnames.STAFFS}/${staff.id}`}>
-                      {staff.fullName}
-                    </Link>
-                  </Tag>
-                ))}
-              </>
-            ),
-          },
+          // {
+          //   title: 'Teams',
+          //   dataIndex: 'teams',
+          //   key: 'teams',
+          //   render: (value, record) => (
+          //     <>
+          //       {record.teams.map(team => (
+          //         <Tag color="blue">
+          //           {' '}
+          //           <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
+          //             {team.name}
+          //           </Link>
+          //         </Tag>
+          //       ))}
+          //     </>
+          //   ),
+          // },
+          // {
+          //   title: 'Trackers',
+          //   dataIndex: 'trackers',
+          //   key: 'trackers',
+          //   render: (value, record) => (
+          //     <>
+          //       {record.trackers.map(staff => (
+          //         <Tag color="blue">
+          //           {' '}
+          //           <Link style={{ textDecoration: 'none' }} to={`${Pathnames.STAFFS}/${staff.id}`}>
+          //             {staff.fullName}
+          //           </Link>
+          //         </Tag>
+          //       ))}
+          //     </>
+          //   ),
+          // },
           {
             title: 'Last sync at',
             dataIndex: 'lastSyncAt',
