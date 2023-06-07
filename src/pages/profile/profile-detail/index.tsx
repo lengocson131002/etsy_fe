@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Empty, Modal, Space, message } from 'antd';
+import { Button, Empty, Image, Modal, Space, Tag, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -13,6 +13,8 @@ import MyForm from '@/components/core/form';
 import { getProfile, removeProfile, updateProfile } from '@/api/profile.api';
 import { Link, useParams } from 'react-router-dom';
 import { Pathnames } from '@/utils/paths';
+import MyTable from '@/components/core/table';
+import { normalizeString } from '@/utils/string';
 
 interface ProfileFormProps {
   data?: Profile;
@@ -144,28 +146,46 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
             }}
           />
           <MyForm.Item label="Notes" name="notes" type="text-area" initialValue={data?.notes} />
-          {data && (
+          {data && data.shops && (
             <>
-              <MyForm.Item
-                innerProps={{ disabled: true }}
-                label="Shop ID"
-                name="shopId"
-                type="input"
-                initialValue={data?.shopId}
-              />
-              <MyForm.Item
-                innerProps={{
-                  disabled: true,
-                  suffix: (
-                    <Link to={`${Pathnames.SHOPS}/${data.shopId}`}>
-                      <Button type="primary">Shop detail</Button>
-                    </Link>
-                  ),
-                }}
-                label="Shop Name"
-                name="shopName"
-                type="input"
-                initialValue={data?.shopName}
+              <p>Shops ({data?.shops?.length || 0})</p>
+              <MyTable
+                pagination={false}
+                dataSource={data?.shops}
+                columns={[
+                  {
+                    title: 'Avatar',
+                    dataIndex: 'avatar',
+                    key: 'imageUrl',
+                    render: (image: string) => (
+                      <>
+                        <Image width={90} height={90} style={{ objectFit: 'contain' }} src={image} />
+                      </>
+                    ),
+                  },
+                  {
+                    title: 'Etsy Shop ID',
+                    dataIndex: 'id',
+                    key: 'id',
+                  },
+                  {
+                    title: 'Name',
+                    dataIndex: 'name',
+                    key: 'name',
+                    render: (value, record) => <Link to={`${Pathnames.SHOPS}/${record.id}`}>{value}</Link>,
+                  },
+                  {
+                    title: 'Status',
+                    dataIndex: 'status',
+                    key: 'status',
+                    render: status => (
+                      <Tag color="blue" key={status + ''}>
+                        {normalizeString(status)}
+                      </Tag>
+                    ),
+                    align: 'center',
+                  },
+                ]}
               />
             </>
           )}
@@ -173,7 +193,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
             <Button type="primary" htmlType="submit">
               Save
             </Button>
-            {data && !data.shopId && (
+            {data && (!data.shops || data.shops.length == 0) && (
               <>
                 <Button danger onClick={() => onRemoveProfile()}>
                   Remove

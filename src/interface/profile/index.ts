@@ -1,3 +1,5 @@
+import { Shop } from "../shop/shop.interface";
+
 export interface CreateProfile {
   goLoginProfileId: string;
   name: string;
@@ -17,4 +19,5 @@ export interface Profile {
   folderName?: string;
   shopId?: string;
   shopName?: string;
+  shops?: Shop[]
 }

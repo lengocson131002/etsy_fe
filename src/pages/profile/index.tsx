@@ -54,16 +54,6 @@ const ProfilePage: FC = () => {
         filterApi={getAllProfiles}
         tableOptions={[
           {
-            title: 'Shop',
-            dataIndex: 'shopName',
-            key: 'shopName',
-            render: (value, record) => (
-              <Link style={{ textDecoration: 'none' }} to={`${Pathnames.SHOPS}/${record.shopId}`}>
-                {value}
-              </Link>
-            ),
-          },
-          {
             title: 'Goloin Profile ID',
             dataIndex: 'goLoginProfileId',
             key: 'goLoginProfileId',
