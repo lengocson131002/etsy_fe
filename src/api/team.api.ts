@@ -73,6 +73,22 @@ export const addShopToTeam = (teamId: number, shopId: string, configs: AxiosRequ
     },
   );
 
+  export const addShopsToTeam = (teamId: number, shopIds: string[], configs: AxiosRequestConfig = {}) =>
+  request<StatusResponse>(
+    'put',
+    `/api/v1/teams/${teamId}/shops`,
+    {
+      shopIds
+    },
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );
+
 export const removeShopFromTeam = (teamId: number, shopId: string, configs: AxiosRequestConfig = {}) =>
   request<StatusResponse>(
     'delete',
@@ -86,3 +102,54 @@ export const removeShopFromTeam = (teamId: number, shopId: string, configs: Axio
       },
     },
   );
+
+
+  export const removeShopsFromTeam = (teamId: number, shopIds: string[], configs: AxiosRequestConfig = {}) =>
+  request<StatusResponse>(
+    'delete',
+    `/api/v1/teams/${teamId}/shops`,
+    {
+      shopIds
+    },
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    },
+  );
+
+  export const addStaffsToTeam = (teamId: number, staffIds: number[], configs: AxiosRequestConfig = {}) =>
+  request<StatusResponse>(
+    'put',
+    `/api/v1/teams/${teamId}/staffs`,
+    {
+      staffIds
+    },
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    }
+  );
+
+
+  export const removeStaffsFromTeam = (teamId: number, staffIds: number[], configs: AxiosRequestConfig = {}) =>
+  request<StatusResponse>(
+    'delete',
+    `/api/v1/teams/${teamId}/staffs`,
+    {
+      staffIds
+    },
+    {
+      ...configs,
+      headers: {
+        ...configs?.headers,
+        Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
+      },
+    }
+  );
+

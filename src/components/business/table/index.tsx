@@ -1,6 +1,6 @@
 import type { MyResponse } from '@/api/request';
 import type { PageData, SortDirection } from '@/interface';
-import type { ColumnsType, FilterValue, SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
+import type { ColumnsType, FilterValue, SorterResult, TablePaginationConfig, TableRowSelection } from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
@@ -26,6 +26,7 @@ export interface TableProps<S> {
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
   extras?: React.ReactNode[];
   onFilterReset?: () => void
+  rowSelection?: TableRowSelection<ParseDataType<S>>
 }
 
 export interface RefTableProps {
@@ -47,7 +48,7 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras, onFilterReset } = props;
+  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras, onFilterReset, rowSelection } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
 
@@ -132,13 +133,17 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
             <div className="table">
               <MyTable
                 // height="100%"
-                dataSource={filterPagingData.data}
+                rowSelection={rowSelection}
+                dataSource={filterPagingData.data?.map(item => ({
+                  key: item?.id ?? null,
+                  ...item
+                }))}
                 columns={tableOptions}
                 showHeader={filterPagingData?.data?.length > 0}
                 onChange={handleTableChange}
                 pagination={{
-                  showTotal: (total) => (<>
-                  Total: <strong>{total}</strong> items
+                  showTotal: (total, range) => (<>
+                  Show <strong>{range[0]} - {range[1]}</strong> of <strong>{total}</strong> items
                   </> ),
                   showSizeChanger: true,
                   current: filterPagingData.pageNum,
@@ -199,7 +204,7 @@ const styles = css`
     overflow: hidden;
     @media screen and (max-height: 800px) {
       overflow: auto;
-      min-height: 500px;
+      // min-height: 500px;
     }
   }
 `;

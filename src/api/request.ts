@@ -1,8 +1,7 @@
 import type { AxiosRequestConfig, Method } from 'axios';
-
 import { message as $message } from 'antd';
 import axios from 'axios';
-
+import Qs from 'qs'
 import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
 import { apiRefreshToken } from './user.api';
@@ -14,6 +13,7 @@ const axiosInstance = axios.create({
   validateStatus: function (status) {
     return status >= 200 && status < 300;
   },
+  paramsSerializer: params => Qs.stringify(params, {arrayFormat: 'repeat'})
 });
 
 axiosInstance.interceptors.request.use(
@@ -141,7 +141,10 @@ export const request = <T = any>(
     case 'put':
       return axiosInstance.put(url, data, config);
     case 'delete':
-      return axiosInstance.delete(url, config);
+      return axiosInstance.delete(url, {
+        ...config,
+        data: data
+      });
     case 'get':
     default:
       return axiosInstance.get(url, {

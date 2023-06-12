@@ -207,7 +207,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
                     allowClear: true,
                   }}
                   label="Team"
-                  name="teamId"
+                  name="teamIds"
                 >
                   <TeamSelect allowClear />
                 </FilterItem>

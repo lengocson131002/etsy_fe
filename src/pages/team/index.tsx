@@ -1,9 +1,9 @@
 import { getAllTeams } from '@/api/team.api';
 import Table, { MyTableOptions, RefTableProps } from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
-import { Button, Col, Drawer, Row } from 'antd';
+import { Button, Col, Drawer, Row, Space } from 'antd';
 import { FC, useEffect, useRef, useState } from 'react';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiOutlinePlusCircle, AiOutlineShop, AiOutlineUser } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import TeamDetailForm from '../components/team-form/team-detail-form';
 import AddTeamForm from '../components/team-form/add-team-form';
@@ -15,10 +15,10 @@ const { Item: FilterItem } = Table.MyFilter;
 const TeamPage: FC = () => {
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-
-  console.log(searchParams);
-
   const [addFormOpen, setAddFormOpen] = useState(false);
+  const [addShopOpen, setAddShopOpen] = useState(false);
+  const [addStaffOpen, setAddStaffOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const ref = useRef<RefTableProps>(null);
@@ -52,11 +52,6 @@ const TeamPage: FC = () => {
             key: 'name',
             sorter: true,
           },
-          // {
-          //   title: 'Code',
-          //   dataIndex: 'code',
-          //   key: 'code',
-          // },
           {
             title: 'Shop count',
             dataIndex: 'shopCount',
@@ -148,8 +143,31 @@ const TeamPage: FC = () => {
           onClose={() => navigate(Pathnames.TEAMS)}
           open={true}
           closable={true}
+          extra={
+            <Space>
+              <Button
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                onClick={() => setAddShopOpen(true)}
+              >
+                <AiOutlineShop />
+                <span>Add shop</span>
+              </Button>
+              <Button
+                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                onClick={() => setAddStaffOpen(true)}
+              >
+                <AiOutlineUser />
+                <span>Add staff</span>
+              </Button>
+            </Space>
+          }
         >
-          <TeamDetailForm closeForm={closeDetailForm} />
+          <TeamDetailForm
+            shopsOpen = {addShopOpen}
+            closeShops = {() => setAddShopOpen(false)}
+            staffsOpen = {addStaffOpen}
+            closeStaffs = {() => setAddStaffOpen(false)}
+            closeForm={closeDetailForm} />
         </Drawer>
       )}
     </div>
