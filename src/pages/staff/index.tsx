@@ -228,7 +228,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
         <AddStaffForm closeForm={onCloseAddForm} />
       </Drawer>
 
-      {location.pathname.startsWith(Pathnames.STAFFS) && id != undefined && (
+      {/* {location.pathname.startsWith(Pathnames.STAFFS) && id != undefined && (
         <Drawer
           title={'STAFF DETAIL'}
           placement="right"
@@ -239,7 +239,7 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
         >
           <StaffDetailForm closeForm={onCloseDetailForm} />
         </Drawer>
-      )}
+      )} */}
     </div>
   );
 };

@@ -278,7 +278,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         }
       />
 
-      {location.pathname.startsWith(Pathnames.ORDERS) && id !== undefined && (
+      {/* {location.pathname.startsWith(Pathnames.ORDERS) && id !== undefined && (
         <Drawer
           onClose={() => navigate(Pathnames.ORDERS)}
           title={'ORDER DETAIL'}
@@ -288,7 +288,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         >
           <OrderDetailPage />
         </Drawer>
-      )}
+      )} */}
     </div>
   );
 };

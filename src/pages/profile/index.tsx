@@ -130,7 +130,7 @@ const ProfilePage: FC = () => {
         <AddProfileForm closeForm={onCloseAddProfileForm} />
       </Drawer>
 
-      {location.pathname.startsWith(Pathnames.PROFILES) && id && (
+      {/* {location.pathname.startsWith(Pathnames.PROFILES) && id && (
         <Drawer
           title={'PROFILE DETAIL'}
           placement="right"
@@ -141,7 +141,7 @@ const ProfilePage: FC = () => {
         >
           <ProfileDetailForm closeForm={onCloseProfileDetail} />
         </Drawer>
-      )}
+      )} */}
     </div>
   );
 };

@@ -16,8 +16,6 @@ const TeamPage: FC = () => {
   const { id } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const [addFormOpen, setAddFormOpen] = useState(false);
-  const [addShopOpen, setAddShopOpen] = useState(false);
-  const [addStaffOpen, setAddStaffOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -134,42 +132,6 @@ const TeamPage: FC = () => {
       >
         <AddTeamForm closeForm={onCloseAddForm} />
       </Drawer>
-
-      {location.pathname.startsWith(Pathnames.TEAMS) && id !== undefined && (
-        <Drawer
-          title={'TEAM DETAIL'}
-          placement="right"
-          width={window.innerWidth >= 1000 ? 1000 : window.innerWidth}
-          onClose={() => navigate(Pathnames.TEAMS)}
-          open={true}
-          closable={true}
-          extra={
-            <Space>
-              <Button
-                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
-                onClick={() => setAddShopOpen(true)}
-              >
-                <AiOutlineShop />
-                <span>Add shop</span>
-              </Button>
-              <Button
-                style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
-                onClick={() => setAddStaffOpen(true)}
-              >
-                <AiOutlineUser />
-                <span>Add staff</span>
-              </Button>
-            </Space>
-          }
-        >
-          <TeamDetailForm
-            shopsOpen = {addShopOpen}
-            closeShops = {() => setAddShopOpen(false)}
-            staffsOpen = {addStaffOpen}
-            closeStaffs = {() => setAddStaffOpen(false)}
-            closeForm={closeDetailForm} />
-        </Drawer>
-      )}
     </div>
   );
 };

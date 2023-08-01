@@ -12,7 +12,7 @@ import {
 import MyButton from '@/components/basic/button';
 import MyForm from '@/components/core/form';
 import { Team } from '@/interface/team';
-import { Button, Col, Drawer, Empty, Modal, Row, Space, Tag, message } from 'antd';
+import { Button, Card, Col, Drawer, Empty, Modal, Row, Space, Tag, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { FC, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './index.less';
@@ -21,19 +21,13 @@ import MyTabs from '@/components/business/tabs';
 import StaffPage from '@/pages/staff';
 import { useParams } from 'react-router-dom';
 import TeamShops from '@/pages/components/team-form/team-detail-form/team-shops';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiOutlinePlusCircle, AiOutlineShop, AiOutlineUser } from 'react-icons/ai';
 import { getAllStaffs } from '@/api/staff.api';
 import TeamStaffs from './team-staff';
 import { RefTableProps } from '@/components/business/table';
 
-interface TeamFormProps {
-  closeForm: () => void;
-  shopsOpen: boolean;
-  closeShops: () => void;
-  staffsOpen: boolean;
-  closeStaffs: () => void;
-}
-const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, closeShops, closeStaffs }) => {
+interface TeamFormProps {}
+const TeamDetailForm: FC<TeamFormProps> = props => {
   const [team, setTeam] = useState<Team>();
   const [form] = useForm();
   const [modalOpen, setModalOpen] = useState(false);
@@ -48,6 +42,17 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
   const shopRef = useRef<RefTableProps>(null);
   const staffRef = useRef<RefTableProps>(null);
 
+  const [shopsOpened, setShopsOpened] = useState(false);
+  const [staffsOpened, setStaffsOpened] = useState(false);
+
+  const closeShops = () => {
+    setShopsOpened(false);
+  };
+
+  const closeStaffs = () => {
+    setStaffsOpened(false);
+  };
+
   useEffect(() => {
     const teamId = id ? Number.parseInt(id) : undefined;
     if (teamId) {
@@ -59,9 +64,7 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
               setTeam(result);
             }
           })
-          .catch(ex => {
-            closeForm();
-          });
+          .catch(ex => {});
       };
       loadTeamData(teamId);
     }
@@ -87,7 +90,6 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
     const { result, status } = await updateTeam(team.id, data);
     if (result?.status && status) {
       message.success('Update team successfully');
-      closeForm();
     }
   };
 
@@ -99,7 +101,6 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
     const { result, status } = await removeTeam(team.id);
     if (result?.status && status) {
       message.success('Remove team successfully');
-      closeForm();
       setModalOpen(false);
     }
   };
@@ -205,50 +206,68 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
   return (
     <div>
       {team ? (
-        <div>
-          <MyForm<Team>
-            className="form-update"
-            form={form}
-            onFinish={handleUpdateTeam}
-            layout="vertical"
-            style={{ maxWidth: 1000, margin: 'auto', width: '90%' }}
-          >
-            <MyForm.Item rules={[{ required: true }]} label="Name" name="name" type="input" initialValue={team?.name} />
-            <MyForm.Item
-              innerProps={{
-                rows: 4,
-              }}
-              label="Description"
-              name="description"
-              type="text-area"
-              initialValue={team?.description}
-            />
-            <Space>
-              <MyForm.Item>
-                <MyButton type="primary" htmlType="submit">
-                  Save
-                </MyButton>
-                {team && (
-                  <>
-                    <MyButton danger onClick={() => setModalOpen(true)}>
-                      Remove
+        <Row gutter={[12, 12]}>
+          <Col xl={8} xs={24}>
+            <Card>
+              <MyForm<Team>
+                className="form-update"
+                form={form}
+                onFinish={handleUpdateTeam}
+                layout="vertical"
+                style={{ maxWidth: 1000, margin: 'auto', width: '90%' }}
+              >
+                <MyForm.Item
+                  rules={[{ required: true }]}
+                  label="Name"
+                  name="name"
+                  type="input"
+                  initialValue={team?.name}
+                />
+                <MyForm.Item
+                  innerProps={{
+                    rows: 4,
+                  }}
+                  label="Description"
+                  name="description"
+                  type="text-area"
+                  initialValue={team?.description}
+                />
+                <MyForm.Item>
+                  <Space>
+                    <MyButton type="primary" htmlType="submit">
+                      Save
                     </MyButton>
-                    <Modal
-                      title={'Delete team'}
-                      open={modalOpen}
-                      onOk={handleRemoveTeam}
-                      onCancel={() => setModalOpen(false)}
-                    >
-                      <p>Do you want to remove this team?</p>
-                    </Modal>
-                  </>
-                )}
-              </MyForm.Item>
-            </Space>
-          </MyForm>
 
-          {team && (
-            <div className="shops-wrapper">
+                    <>
+                      <MyButton danger onClick={() => setModalOpen(true)}>
+                        Remove
+                      </MyButton>
+                      <Modal title={'Delete team'} open={modalOpen} onOk={handleRemoveTeam} onCancel={closeShops}>
+                        <p>Do you want to remove this team?</p>
+                      </Modal>
+                  </>
+                    <MyButton
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                      onClick={() => setShopsOpened(true)}
+                    >
+                      <AiOutlineShop />
+                      <span>Add shop</span>
+                    </MyButton>
+                    <MyButton
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
+                      onClick={() => setStaffsOpened(true)}
+                    >
+                      <AiOutlineUser />
+                      <span>Add staff</span>
+                    </MyButton>
+                  </Space>
+                </MyForm.Item>
+              </MyForm>
+            </Card>
+          </Col>
+
+          <Col xl={16}>
+            <div>
               <MyTabs
                 type="card"
                 defaultActiveKey={'listing'}
@@ -258,17 +277,19 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
                     value: 'shop',
                     children: (
                       <Suspense fallback={null}>
-                        <TeamShops
-                          ref={shopRef}
-                          shopQuery={getShops}
-                          setSelectedIds={(ids: string[]) => setRemovedShopIds(ids)}
-                          selectedIds={removedShopIds}
-                        />
-                        {removedShopIds.length > 0 && (
-                          <Button danger onClick={removeShops}>
-                            Remove {removedShopIds.length} shops from team
-                          </Button>
-                        )}
+                        <Card>
+                          <TeamShops
+                            ref={shopRef}
+                            shopQuery={getShops}
+                            setSelectedIds={(ids: string[]) => setRemovedShopIds(ids)}
+                            selectedIds={removedShopIds}
+                          />
+                          {removedShopIds.length > 0 && (
+                            <Button danger onClick={removeShops}>
+                              Remove {removedShopIds.length} shops from team
+                            </Button>
+                          )}
+                        </Card>
                       </Suspense>
                     ),
                   },
@@ -277,36 +298,38 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
                     value: 'staff',
                     children: (
                       <Suspense fallback={null}>
-                        <TeamStaffs
-                          ref={staffRef}
-                          staffQuery={getStaffs}
-                          setSelectedIds={(ids: number[]) => setRemovedStaffIds(ids)}
-                          selectedIds={removedStaffIds}
-                        />
-                        {removedStaffIds.length > 0 && (
-                          <Button danger onClick={removeStaffs}>
-                            Remove {removedStaffIds.length} staffs from team
-                          </Button>
-                        )}
+                        <Card>
+                          <TeamStaffs
+                            ref={staffRef}
+                            staffQuery={getStaffs}
+                            setSelectedIds={(ids: number[]) => setRemovedStaffIds(ids)}
+                            selectedIds={removedStaffIds}
+                          />
+                          {removedStaffIds.length > 0 && (
+                            <Button danger onClick={removeStaffs}>
+                              Remove {removedStaffIds.length} staffs from team
+                            </Button>
+                          )}
+                        </Card>
                       </Suspense>
                     ),
                   },
                 ]}
               />
             </div>
-          )}
+          </Col>
 
           <Drawer
             title="ADD SHOPS TO TEAM"
-            width={window.innerWidth >= 700 ? 700 : window.innerWidth - 50}
+            width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
             closable={true}
             onClose={closeShops}
             destroyOnClose={true}
-            open={shopsOpen}
+            open={shopsOpened}
             extra={
               <>
                 {addedShopIds.length > 0 && (
-                  <Button type='primary' onClick={addShops}>
+                  <Button type="primary" onClick={addShops}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                       <AiOutlinePlusCircle /> Add {addedShopIds.length} shops to team
                     </div>
@@ -324,15 +347,15 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
 
           <Drawer
             title="ADD STAFFS TO TEAM"
-            width={window.innerWidth >= 700 ? 700 : window.innerWidth - 50}
+            width={window.innerWidth >= 1000 ? 1000 : window.innerWidth - 50}
             closable={true}
             onClose={closeStaffs}
             destroyOnClose={true}
-            open={staffsOpen}
+            open={staffsOpened}
             extra={
               <>
                 {addedStaffIds.length > 0 && (
-                  <Button type='primary' onClick={addStaffs}>
+                  <Button type="primary" onClick={addStaffs}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                       <AiOutlinePlusCircle /> Add {addedStaffIds.length} staff to team
                     </div>
@@ -347,7 +370,7 @@ const TeamDetailForm: FC<TeamFormProps> = ({ closeForm, shopsOpen, staffsOpen, c
               setSelectedIds={(ids: number[]) => setAddedStaffIds(ids)}
             />
           </Drawer>
-        </div>
+        </Row>
       ) : (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}

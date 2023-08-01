@@ -20,6 +20,9 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const { logged } = useSelector(state => state.user);
 
+  const name = import.meta.env.VITE_NAME;
+  console.log(name);
+
   const setTheme = (dark = true) => {
     dispatch(
       setGlobalState({

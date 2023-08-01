@@ -16,6 +16,10 @@ import { LocalStorageConstants } from '@/utils/constants';
 import WrapperRouteComponent from './config';
 import ShopDetailPage from '@/pages/shop/shop-detail';
 import HomePage from '@/pages/home';
+import OrderDetailPage from '@/pages/order/order-detail';
+import TeamDetailForm from '@/pages/components/team-form/team-detail-form';
+import StaffDetailForm from '@/pages/staff/staff-form/staff-detail';
+import ProfileDetailForm from '@/pages/profile/profile-detail';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -60,7 +64,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'teams/:id',
-        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamPage />} titleId="title.team" />,
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<TeamDetailForm />} titleId="title.team" />,
       },
       {
         path: 'staffs',
@@ -68,7 +72,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: 'staffs/:id',
-        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffPage />} titleId="title.staff" />,
+        element: <WrapperRouteComponent allowedRoles={['ROLE_ADMIN']} element={<StaffDetailForm />} titleId="title.staff" />,
       },
       {
         path: 'profiles',
@@ -85,7 +89,7 @@ const routeList: RouteObject[] = [
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER']}
-            element={<ProfilePage />}
+            element={<ProfileDetailForm />}
             titleId="title.profile"
           />
         ),
@@ -135,7 +139,7 @@ const routeList: RouteObject[] = [
         element: (
           <WrapperRouteComponent
             allowedRoles={['ROLE_ADMIN', 'ROLE_LEADER', 'ROLE_SELLER', 'ROLE_CS']}
-            element={<OrderPage />}
+            element={<OrderDetailPage />}
             titleId="title.order.detail"
           />
         ),
