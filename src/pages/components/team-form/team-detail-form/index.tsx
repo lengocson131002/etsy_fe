@@ -207,7 +207,7 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
     <div>
       {team ? (
         <Row gutter={[12, 12]}>
-          <Col xl={8} xs={24}>
+          <Col xl={10} xs={24}>
             <Card>
               <MyForm<Team>
                 className="form-update"
@@ -233,19 +233,16 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
                   initialValue={team?.description}
                 />
                 <MyForm.Item>
-                  <Space>
+                  <Row gutter={[6,6]}>
                     <MyButton type="primary" htmlType="submit">
                       Save
                     </MyButton>
-
-                    <>
-                      <MyButton danger onClick={() => setModalOpen(true)}>
-                        Remove
-                      </MyButton>
-                      <Modal title={'Delete team'} open={modalOpen} onOk={handleRemoveTeam} onCancel={closeShops}>
-                        <p>Do you want to remove this team?</p>
-                      </Modal>
-                  </>
+                    <MyButton danger onClick={() => setModalOpen(true)}>
+                      Remove
+                    </MyButton>
+                    <Modal title={'Delete team'} open={modalOpen} onOk={handleRemoveTeam} onCancel={closeShops}>
+                      <p>Do you want to remove this team?</p>
+                    </Modal>
                     <MyButton
                       style={{ display: 'flex', alignItems: 'center', gap: '5px' }}
                       onClick={() => setShopsOpened(true)}
@@ -260,13 +257,13 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
                       <AiOutlineUser />
                       <span>Add staff</span>
                     </MyButton>
-                  </Space>
+                  </Row>
                 </MyForm.Item>
               </MyForm>
             </Card>
           </Col>
 
-          <Col xl={16}>
+          <Col xl={14}>
             <div>
               <MyTabs
                 type="card"
