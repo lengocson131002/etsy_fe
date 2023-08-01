@@ -1,6 +1,12 @@
 import type { MyResponse } from '@/api/request';
 import type { PageData, SortDirection } from '@/interface';
-import type { ColumnsType, FilterValue, SorterResult, TablePaginationConfig, TableRowSelection } from 'antd/es/table/interface';
+import type {
+  ColumnsType,
+  FilterValue,
+  SorterResult,
+  TablePaginationConfig,
+  TableRowSelection,
+} from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
@@ -25,8 +31,8 @@ export interface TableProps<S> {
   tableOptions?: MyTableOptions<ParseDataType<S>>;
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
   extras?: React.ReactNode[];
-  onFilterReset?: () => void
-  rowSelection?: TableRowSelection<ParseDataType<S>>
+  onFilterReset?: () => void;
+  rowSelection?: TableRowSelection<ParseDataType<S>>;
 }
 
 export interface RefTableProps {
@@ -121,13 +127,13 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     <div css={styles}>
       <div className="tabs-main">
         <div className="aside-main">
-          <div  css={filterStyles}>
+          <div css={filterStyles}>
             {filterRender && (
               <MyFilter className="search" onFilter={onFilter} onReset={onFilterReset}>
                 {filterRender}
               </MyFilter>
             )}
-            <div className='extra'>{extras}</div>
+            <div className="extra">{extras}</div>
           </div>
           {tableOptions && (
             <div className="table">
@@ -136,20 +142,26 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
                 rowSelection={rowSelection}
                 dataSource={filterPagingData.data?.map(item => ({
                   key: item?.id ?? null,
-                  ...item
+                  ...item,
                 }))}
                 columns={tableOptions}
                 showHeader={filterPagingData?.data?.length > 0}
                 onChange={handleTableChange}
                 pagination={{
-                  showTotal: (total, range) => (<>
-                  Show <strong>{range[0]} - {range[1]}</strong> of <strong>{total}</strong> items
-                  </> ),
+                  showTotal: (total, range) => (
+                    <>
+                      Show{' '}
+                      <strong>
+                        {range[0]} - {range[1]}
+                      </strong>{' '}
+                      of <strong>{total}</strong> items
+                    </>
+                  ),
                   showSizeChanger: true,
                   current: filterPagingData.pageNum,
                   pageSize: filterPagingData.pageSize,
                   total: filterPagingData.total,
-                  pageSizeOptions: ['10', '20', '30', '50', '100']
+                  pageSizeOptions: ['10', '20', '30', '50', '100'],
                 }}
               >
                 {tableRender?.(filterPagingData.data)}
@@ -209,20 +221,23 @@ const styles = css`
   }
 `;
 
-
 const filterStyles = css`
   display: flex;
   flex-direction: row;
   // justify-content: space-between;
-  align-items: start;
+  // align-items: center;
   margin: 20px 0;
   gap: 10px;
 
+  .extra {
+    margin-top: 30px;
+  }
   @media (max-width: 600px) {
     flex-direction: column;
 
     .extra {
       padding: 20px 0;
+      margin-top: 0;
     }
   }
-`
+`;

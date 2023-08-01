@@ -44,11 +44,11 @@ const columnOptions: MyTableOptions<Order> = [
       </Link>
     ),
   },
-  {
-    title: 'Etsy Order ID',
-    dataIndex: 'etsyOrderId',
-    key: 'etsyOrderId',
-  },
+  // {
+  //   title: 'Etsy Order ID',
+  //   dataIndex: 'etsyOrderId',
+  //   key: 'etsyOrderId',
+  // },
   {
     title: 'Order time',
     dataIndex: 'orderTime',
@@ -111,13 +111,13 @@ const columnOptions: MyTableOptions<Order> = [
     key: 'trackingNumber',
   },
 
-  {
-    title: 'Mark as gift?',
-    dataIndex: 'markAsGift',
-    key: 'markAsGift',
-    align: 'center',
-    render: value => (value ? <Tag color="green">Marked</Tag> : <Tag color="red">Unmarked</Tag>),
-  },
+  // {
+  //   title: 'Mark as gift?',
+  //   dataIndex: 'markAsGift',
+  //   key: 'markAsGift',
+  //   align: 'center',
+  //   render: value => (value ? <Tag color="green">Marked</Tag> : <Tag color="red">Unmarked</Tag>),
+  // },
   {
     title: 'Action',
     key: 'action',

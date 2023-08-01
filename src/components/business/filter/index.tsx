@@ -6,12 +6,13 @@ import MyButton from '@/components/basic/button';
 import MyForm from '@/components/core/form';
 import { useLocale } from '@/locales';
 import { useState } from 'react';
-
+import { Row } from 'antd';
+import "./index.less"
 interface FilterProps<T> extends MyFormProps<T> {
   onFilter: (values: T) => void;
   disabled?: boolean;
   onChange?: () => void;
-  onReset?: () => void
+  onReset?: () => void;
 }
 
 const BaseFilter = <T extends object>(props: FilterProps<T>) => {
@@ -24,9 +25,8 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
     if (values) {
       onFilter(values);
       console.log(values);
-
     }
-  }
+  };
 
   const handleReset = () => {
     if (onReset) {
@@ -35,21 +35,17 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
 
     form.resetFields();
     onValuesChange();
-  }
-
+  };
 
   return (
     <div css={styles}>
-      <MyForm
-        onValuesChange={onValuesChange}
-        onChange={onChange}
-        {...rest}
-        form={form}
-        layout="vertical">
-        {children}
-        <MyForm.Item className='filter-actions'>
-          <MyButton danger onClick={handleReset}>{formatMessage({ id: 'component.search.reset' })}</MyButton>
-        </MyForm.Item>
+      <MyForm onValuesChange={onValuesChange} onChange={onChange} {...rest} form={form} layout="vertical" className='filter-form'>
+          {children}
+          <MyForm.Item className="filter-actions">
+            <MyButton danger onClick={handleReset}>
+              {formatMessage({ id: 'component.search.reset' })}
+            </MyButton>
+          </MyForm.Item>
       </MyForm>
     </div>
   );
@@ -67,7 +63,7 @@ const styles = css`
   width: 100%;
 
   .filter-actions {
-    margin-top: 10px;
+    // margin-top: 10px;
   }
   .ant-form-item {
     margin-bottom: 10px;
@@ -89,7 +85,5 @@ const styles = css`
     //   min-width: 50px;
     //   text-align: start;
     // }
-
   }
-
 `;
