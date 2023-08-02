@@ -1,41 +1,33 @@
 import type { StatusCountItem } from '@/interface/dashboard';
-import { FC, useEffect, useState } from 'react';
+import { FC} from 'react';
 
-import { Card, Empty, theme, Typography } from 'antd';
+import { Card, Empty, theme } from 'antd';
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
   Cell,
-  Label,
-  LabelList,
-  Legend,
   Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
-  YAxis,
 } from 'recharts';
 
 import { useLocale } from '@/locales';
 import { normalizeString } from '@/utils/string';
-import { getStatusColor, randomColor } from '@/utils/color';
-
-const { Text } = Typography;
+import { randomColor } from '@/utils/color';
 
 const { useToken } = theme;
 
-interface StatusChartItem extends StatusCountItem {
+interface ProfileChartItem {
+  status: string,
+  count: number,
   label?: string;
 }
 
-interface StatusChartProps {
-  items: StatusChartItem[];
+interface ProfileStatusChart {
+  items: ProfileChartItem[];
   loading: boolean;
 }
 
-const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
+const ProfileStatusChart: FC<ProfileStatusChart> = ({ items, loading }) => {
   const { token } = useToken();
   const { formatMessage } = useLocale();
 
@@ -44,9 +36,9 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
       <Card
         loading={loading}
         className="status-chart-card"
-        title={formatMessage({ id: 'app.dashboard.statusStatistic' })}
+        title={"Profile status"}
       >
-        <ResponsiveContainer height={180}>
+        <ResponsiveContainer height={210}>
           {items.length > 0 ? (
             <PieChart>
               <Tooltip
@@ -70,20 +62,20 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
                 strokeOpacity={1}
                 data={items}
                 innerRadius={0}
-                outerRadius={60}
+                outerRadius={80}
                 paddingAngle={0}
                 dataKey="count"
                 label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}
               >
                 {items.map((_, index) => (
                   <>
-                    <Cell key={`cell-${index}`} fill={getStatusColor(items[index].status)} />
+                    <Cell key={`cell-${index}`} fill={randomColor()} />
                   </>
                 ))}
               </Pie>
             </PieChart>
           ) : (
-            <Empty style={{ margin: 'auto'}}  image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            <Empty style={{ margin: 'auto' }} image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </ResponsiveContainer>
       </Card>
@@ -91,4 +83,4 @@ const StatusChart: FC<StatusChartProps> = ({ items, loading }) => {
   );
 };
 
-export default StatusChart;
+export default ProfileStatusChart;

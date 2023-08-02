@@ -1,5 +1,5 @@
-import type { DashboardOVerview, DateRange } from '@/interface/dashboard';
-import { Button, ColProps, Space } from 'antd';
+import type { DashboardOVerview, DateRange, ProfileStatuses } from '@/interface/dashboard';
+import { Button, ColProps, Divider, Space } from 'antd';
 import type { FC } from 'react';
 
 import './index.less';
@@ -16,6 +16,9 @@ import RevenueStatistic from './revenues';
 import StatusChart from './statusChart';
 import { getShopStatuses } from '@/api/shop.api';
 import { normalizeString } from '@/utils/string';
+import ProfileStatusChart from './profileStatusChart';
+import ColCard from './colCard';
+import { numberWithCommas } from '@/utils/number';
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -32,7 +35,7 @@ const DashBoardPage: FC = () => {
   const [statusOptions, setStatusOptions] = useState<{ value: string; label: string }[]>([]);
   const [filter, setFilter] = useState({
     dateRange: DateRanges[0].value,
-    status: undefined
+    status: undefined,
   });
 
   useEffect(() => {
@@ -70,7 +73,7 @@ const DashBoardPage: FC = () => {
           <Select
             value={filter.dateRange}
             style={{ width: 120 }}
-            onChange={value => setFilter(prev => ({...prev, dateRange: value}))}
+            onChange={value => setFilter(prev => ({ ...prev, dateRange: value }))}
             options={DateRanges}
           />
           <Select
@@ -78,20 +81,28 @@ const DashBoardPage: FC = () => {
             allowClear
             placeholder="Shop status"
             style={{ width: 140 }}
-            onChange={value => setFilter(prev => ({...prev, status: value}))}
+            onChange={value => setFilter(prev => ({ ...prev, status: value }))}
             options={statusOptions}
           />
-          <Button danger onClick={() => setFilter(prev => ({
-            dateRange: DateRanges[0].value,
-            status: undefined
-          }))}>
+          <Button
+            danger
+            onClick={() =>
+              setFilter(prev => ({
+                dateRange: DateRanges[0].value,
+                status: undefined,
+              }))
+            }
+          >
             Reset
           </Button>
         </Space>
       </div>
       {dashboard && (
         <>
-          <Row gutter={[12, 12]}>
+          <Divider orientation="left" orientationMargin={0}>
+            OVERVIEW
+          </Divider>
+          <Row gutter={[12, 12]} style={{ marginBottom: 20 }}>
             <Col lg={9} xs={24}>
               <StatusChart
                 loading={loading}
@@ -102,7 +113,64 @@ const DashBoardPage: FC = () => {
               <Overview overview={dashboard} loading={loading} />
             </Col>
           </Row>
-          <RevenueStatistic data={dashboard.revenues ?? []} loading={loading} />
+
+          <Divider orientation="left" orientationMargin={0}>
+            REVENUE
+          </Divider>
+          <div style={{ marginBottom: 30 }}>
+            <RevenueStatistic data={dashboard.revenues ?? []} loading={loading} />
+          </div>
+
+          <Divider orientation="left" orientationMargin={0}>
+            PROFILES
+          </Divider>
+          <Row gutter={[12, 12]}>
+            <Col lg={9} xs={24}>
+              <ProfileStatusChart
+                loading={loading}
+                items={Object.keys(dashboard.profileStatuses).map(key => ({
+                  status: key,
+                  count: dashboard.profileStatuses[key as keyof ProfileStatuses],
+                  label: `${key} ${dashboard.profileStatuses[key as keyof ProfileStatuses]}`,
+                }))}
+              />
+            </Col>
+            <Col lg={15} xs={24}>
+              <Row gutter={[12, 12]} style={{ marginBottom: '10px' }}>
+                <ColCard
+                  loading={loading}
+                  metaName={"Logout"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.logout ?? 0)}
+                />
+                 <ColCard
+                  loading={loading}
+                  metaName={"Failed proxy"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.failedProxy ?? 0)}
+                />
+                 <ColCard
+                  loading={loading}
+                  metaName={"Deleted"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.deleted ?? 0)}
+                />
+                 <ColCard
+                  loading={loading}
+                  metaName={"Too many request"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.tooManyRequest ?? 0)}
+                />
+                 <ColCard
+                  loading={loading}
+                  metaName={"Empty"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.empty ?? 0)}
+                />
+                  <ColCard
+                  loading={loading}
+                  metaName={"Sync"}
+                  metaCount={numberWithCommas(dashboard?.profileStatuses?.sync ?? 0)}
+                />
+
+              </Row>
+            </Col>
+          </Row>
         </>
       )}
     </div>

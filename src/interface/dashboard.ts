@@ -9,6 +9,15 @@ export interface StatusCountItem {
   count: number;
 }
 
+export interface ProfileStatuses {
+  logout: number,
+  failedProxy: number,
+  deleted: number,
+  tooManyRequest: number,
+  empty: number,
+  sync: number
+}
+
 export interface DashboardOVerview {
   shopCount: number;
   orderCount: number;
@@ -16,6 +25,7 @@ export interface DashboardOVerview {
   listingCount: number;
   revenues: RevenueStatisticItem[];
   statusCount: StatusCountItem[];
+  profileStatuses: ProfileStatuses
 }
 
 export interface DashboardItem {

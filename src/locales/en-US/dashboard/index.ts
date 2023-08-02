@@ -23,4 +23,6 @@ export const enUS_dashboard = {
   'app.dashboard.overview.listings': 'Total listings',
   'app.dashboard.overview.unit.listings': 'Listings',
   'app.dashboard.statusStatistic': 'Shop status',
+  'app.dashboard.profileStatusStatistic': 'Profile status',
+
 };
