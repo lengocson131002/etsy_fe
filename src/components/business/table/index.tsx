@@ -15,6 +15,7 @@ import MyTable from '@/components/core/table';
 import { useStates } from '@/utils/use-states';
 
 import MyFilter from '../filter';
+import { useSelector } from 'react-redux';
 
 export interface SearchApi {
   (params?: any): MyResponse<PageData<any>>;
@@ -30,9 +31,11 @@ export interface TableProps<S> {
   pageParams?: object;
   tableOptions?: MyTableOptions<ParseDataType<S>>;
   tableRender?: (data: MyTableOptions<ParseDataType<S>>[]) => React.ReactNode;
-  extras?: React.ReactNode[];
+  extras?: React.ReactNode[] | React.ReactNode;
   onFilterReset?: () => void;
   rowSelection?: TableRowSelection<ParseDataType<S>>;
+  exportExcel?: React.ReactNode;
+  exportApi?: (params: any) => any
 }
 
 export interface RefTableProps {
@@ -54,9 +57,21 @@ const filterPagingInitData = {
 };
 
 const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<RefTableProps>) => {
-  const { filterApi, pageParams, filterRender, tableOptions, tableRender, extras, onFilterReset, rowSelection } = props;
+  const {
+    filterApi,
+    pageParams,
+    filterRender,
+    tableOptions,
+    tableRender,
+    extras,
+    onFilterReset,
+    rowSelection,
+    exportExcel,
+    exportApi
+  } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
+  const { loading } = useSelector(state => state.global);
 
   const getTableData = useCallback(
     async (params: Record<string, any> = {}) => {
@@ -123,6 +138,23 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     });
   };
 
+  const handleExport = async () => {
+    if (!exportApi) {
+      return;
+    }
+    const queryObject: Record<string, any> = {
+      ...pageParams,
+      ...filterPagingData.filter,
+      sortBy: filterPagingData.sortBy,
+      sortDir: filterPagingData.sortDir,
+    };
+
+    console.log(filterPagingData);
+
+    await exportApi(queryObject);
+
+  }
+
   return (
     <div css={styles}>
       <div className="tabs-main">
@@ -166,6 +198,18 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
               >
                 {tableRender?.(filterPagingData.data)}
               </MyTable>
+              {filterPagingData?.data && filterPagingData.data.length > 0 && (
+                <div
+                  onClick={handleExport}
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    bottom: '10px',
+                  }}
+                >
+                  {exportExcel}
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -214,6 +258,7 @@ const styles = css`
   .table {
     flex: 1;
     overflow: hidden;
+    position: relative;
     @media screen and (max-height: 800px) {
       overflow: auto;
       // min-height: 500px;

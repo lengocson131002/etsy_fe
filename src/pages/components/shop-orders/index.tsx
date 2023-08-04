@@ -6,7 +6,7 @@ import { Button, Col, Drawer, Image, Row, Tag } from 'antd';
 import { useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { countOrderByShopStatus, getOrderStatuses, getOrders } from '@/api/orders.api';
+import { countOrderByShopStatus, exportOrders, getOrderStatuses, getOrders } from '@/api/orders.api';
 import Table from '@/components/business/table';
 import { dateToStringWithFormat } from '@/utils/datetime';
 import { numberWithCommas } from '@/utils/number';
@@ -19,8 +19,12 @@ import './index.less';
 import { Pathnames } from '@/utils/paths';
 import { RoleCode } from '@/interface/permission/role.interface';
 import { useSelector } from 'react-redux';
+import { AiOutlineDownload } from 'react-icons/ai';
+import { DownloadOutlined, SettingFilled } from '@ant-design/icons';
 
 const { Item: FilterItem } = Table.MyFilter;
+import FileDownload from 'js-file-download';
+
 
 interface ShopOrderProps {
   shopId?: string;
@@ -214,12 +218,42 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
     }
   };
 
+  const onExport = async (params: any) => {
+    console.log(params);
+    const data = await exportOrders({
+      ...params,
+      from: range?.from?.toISOString(),
+      to: range?.to?.toISOString(),
+    });
+
+    const url = window.URL.createObjectURL(new Blob([data.result], {
+      type: 'application/octet-stream',
+    }))
+
+    const link = document.createElement('a')
+
+    link.href = url
+    link.setAttribute('download', `orders-report-${range?.from?.toISOString()}-${range?.to?.toISOString()}.xlsx`)
+    document.body.appendChild(link)
+    link.click()
+
+    document.body.removeChild(link)
+
+  }
+
   return (
     <div>
       <Table
         onFilterReset={() => setRange(undefined)}
         tableOptions={columnOptions}
         filterApi={getShopOrderAPI}
+        exportApi={onExport}
+        exportExcel={
+          <Button type="primary" icon={<DownloadOutlined />} size="large">
+            Export excel
+          </Button>
+
+        }
         filterRender={
           <Row gutter={[12, 6]}>
             <Col xs={24} sm={12} lg={5} xl={4}>

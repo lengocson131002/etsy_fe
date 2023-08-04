@@ -47,3 +47,17 @@ export const getOrderStatuses = (shopId?: string) =>
       },
     },
   );
+
+
+  export const exportOrders = (params: any) => request<any>(
+    'get',
+    '/api/v1/orders/export',
+    params,
+    {
+      headers:
+      {
+          'Content-Type': 'blob'
+      },
+      responseType: 'arraybuffer',
+    },
+  )

@@ -17,7 +17,16 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  config => {
+  (config) => {
+    if (config.headers) {
+      let token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      } else {
+        config.headers.Authorization = `Bearer `
+      }
+    }
+
     store.dispatch(
       setGlobalState({
         loading: true,
@@ -26,7 +35,7 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  error => {
+  (error) => {
     store.dispatch(
       setGlobalState({
         loading: false,
@@ -111,6 +120,8 @@ axiosInstance.interceptors.response.use(
   },
 );
 
+export default axiosInstance;
+
 export type Response<T = any> = {
   status: boolean;
   message: string;
@@ -150,6 +161,8 @@ export const request = <T = any>(
       return axiosInstance.get(url, {
         params: data,
         ...config,
+
       });
   }
 };
+
