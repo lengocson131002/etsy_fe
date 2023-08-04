@@ -249,7 +249,7 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         filterApi={getShopOrderAPI}
         exportApi={onExport}
         exportExcel={
-          <Button type="primary" icon={<DownloadOutlined />} size="large">
+          <Button type="primary" icon={<AiOutlineDownload />} size="large">
             Export excel
           </Button>
 
