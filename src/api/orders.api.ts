@@ -58,6 +58,6 @@ export const getOrderStatuses = (shopId?: string) =>
       {
           'Content-Type': 'blob'
       },
-      responseType: 'arraybuffer',
+      responseType: 'blob',
     },
   )
