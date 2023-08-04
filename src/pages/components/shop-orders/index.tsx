@@ -20,7 +20,6 @@ import { Pathnames } from '@/utils/paths';
 import { RoleCode } from '@/interface/permission/role.interface';
 import { useSelector } from 'react-redux';
 import { AiOutlineDownload } from 'react-icons/ai';
-import { DownloadOutlined, SettingFilled } from '@ant-design/icons';
 
 const { Item: FilterItem } = Table.MyFilter;
 import FileDownload from 'js-file-download';

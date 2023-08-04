@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 
-import { SettingOutlined } from '@ant-design/icons';
 import { Dropdown } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,7 +33,7 @@ const TagsViewAction: FC = () => {
       }}
     >
       <span id="pageTabs-actions">
-        <SettingOutlined className="tagsView-extra" />
+        {/* <SettingOutlined className="tagsView-extra" /> */}
       </span>
     </Dropdown>
   );
