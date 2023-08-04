@@ -218,16 +218,16 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   };
 
   const onExport = async (params: any) => {
-    console.log(params);
     const data = await exportOrders({
       ...params,
       from: range?.from?.toISOString(),
       to: range?.to?.toISOString(),
     });
 
-    const url = window.URL.createObjectURL(new Blob([data.result], {
-      type: 'application/octet-stream',
-    }))
+    console.log(typeof(data.result));
+
+
+    const url = window.URL.createObjectURL(new Blob([data.result.toString()]))
 
     const link = document.createElement('a')
 
@@ -246,13 +246,13 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         onFilterReset={() => setRange(undefined)}
         tableOptions={columnOptions}
         filterApi={getShopOrderAPI}
-        exportApi={onExport}
-        exportExcel={
-          <Button type="primary" icon={<AiOutlineDownload />} size="large">
-            Export excel
-          </Button>
+        // exportApi={onExport}
+        // exportExcel={
+        //   <Button type="primary" icon={<AiOutlineDownload />} size="large">
+        //     Export excel
+        //   </Button>
 
-        }
+        // }
         filterRender={
           <Row gutter={[12, 6]}>
             <Col xs={24} sm={12} lg={5} xl={4}>
