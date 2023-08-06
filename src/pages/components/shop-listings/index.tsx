@@ -63,24 +63,10 @@ const columnOptions: MyTableOptions<Listing> = [
     sorter: true,
   },
   {
-    title: 'Price from',
-    dataIndex: 'priceFrom',
-    key: 'priceFrom',
-    align: 'right',
-    render: (priceFrom, record) => (
-      <span>
-        {numberWithCommas(priceFrom)} {record.currencySymbol}
-      </span>
-    ),
-  },
-
-  {
-    title: 'Price to',
-    dataIndex: 'priceTo',
-    key: 'priceTo',
+    title: 'Price',
     render: (price, record) => (
       <span>
-        {numberWithCommas(price) ? `${numberWithCommas(price)} ${record.currencySymbol}` : ''} {}
+        {numberWithCommas(record.priceFrom) ? `${numberWithCommas(record.priceFrom)} ${record.currencySymbol}` : ''} - {numberWithCommas(record.priceTo) ? `${numberWithCommas(record.priceTo)} ${record.currencySymbol}` : ''}
       </span>
     ),
     align: 'right',

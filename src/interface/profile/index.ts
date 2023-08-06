@@ -19,5 +19,6 @@ export interface Profile {
   folderName?: string;
   shopId?: string;
   shopName?: string;
-  shops?: Shop[]
+  shops?: Shop[];
+  status?: string[]
 }

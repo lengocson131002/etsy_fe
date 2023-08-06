@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Card, Col, Empty, Image, Modal, Row, Space, Tag, message } from 'antd';
+import { Button, Card, Col, Empty, Image, Modal, Row, Select, Space, Tag, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import dayjs from 'dayjs';
 import moment from 'moment';
@@ -128,6 +128,17 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
                   type="input"
                   initialValue={data?.proxy}
                 />
+                <MyForm.Item
+                  innerProps={{
+                    disabled: true
+                  }}
+                  label="Status"
+                  initialValue={data.status}
+                >
+                  <Select disabled ={true} options={data.status?.map(status => ({value: status}))} mode='multiple' value={data.status}/>
+                </MyForm.Item>
+
+
                 <MyForm.Item label="Folder name" name="folderName" type="input" initialValue={data?.folderName} />
                 <MyForm.Item
                   rules={[

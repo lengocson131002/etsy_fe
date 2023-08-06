@@ -4,7 +4,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Col, Drawer, message, Row, Space } from 'antd';
+import { Button, Col, Drawer, message, Row, Space, Tag } from 'antd';
 import { lazy, useRef, useState } from 'react';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { dateToStringWithFormat } from '@/utils/datetime';
 import ProfileDetailForm from './profile-detail';
 import AddProfileForm from './add-profile';
 import { Pathnames } from '@/utils/paths';
+import { ProfileStatus } from '@/components/core/table-column/type';
 
 const { Item: FilterItem } = Table.MyFilter;
 const ProfilePage: FC = () => {
@@ -39,6 +40,29 @@ const ProfilePage: FC = () => {
     navigate(Pathnames.PROFILES);
     resetTable();
   };
+
+  const statusOptions = [
+    {
+      value: ProfileStatus.FAILED_PROXY,
+      label: "Failed proxy"
+    },
+    {
+      value: ProfileStatus.LOGOUT,
+      label: "Logout"
+    },
+    {
+      value: ProfileStatus.DELETED,
+      label: "Deleted"
+    },
+    {
+      value: ProfileStatus.TOO_MANY_REQUEST,
+      label: "Too many request"
+    },
+    {
+      value: ProfileStatus.EMPTY,
+      label: "Empty"
+    },
+  ]
 
   return (
     <div className="profile-list-container">
@@ -68,6 +92,18 @@ const ProfilePage: FC = () => {
             dataIndex: 'proxy',
             key: 'proxy',
           },
+
+          {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (status: string[], record) => <div>
+              {
+                status.map(stat => <Tag style={{marginBottom: 5}} color='red'>{stat}</Tag>)
+              }
+            </div>
+          },
+
           {
             title: 'Folder name',
             dataIndex: 'folderName',
@@ -115,6 +151,18 @@ const ProfilePage: FC = () => {
                 }}
               />
             </Col>
+            <Col xs={24} sm={12} lg={6} xl={4}>
+              <FilterItem
+                innerProps={{
+                  showSearch: true,
+                  allowClear: true,
+                }}
+                label="Status"
+                name="status"
+                type="select"
+                options={statusOptions}
+              />
+            </Col>{' '}
           </Row>
         }
       />

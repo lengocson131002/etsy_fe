@@ -7,5 +7,6 @@ export const Pathnames = {
   SHOPS: '/shops',
   LISTINGS: '/listings',
   ORDERS: '/orders',
-  MESSAGES: '/messages'
+  MESSAGES: '/messages',
+  LOGIN: '/login'
 }

@@ -22,6 +22,8 @@ const LoginForm: FC = () => {
   const onFinished = async (form: LoginParams) => {
     const res = await dispatch(await loginAsync(form));
 
+    console.log("RES: ", res);
+
     if (!!res) {
       const search = formatSearch(location.search);
       const from = search.from || { pathname: '/' };

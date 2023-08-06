@@ -1,5 +1,4 @@
 import './styles/index.less';
-import './mock';
 
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

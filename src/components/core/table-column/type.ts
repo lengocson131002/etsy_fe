@@ -45,3 +45,11 @@ export interface MyTableColumnProps<T> extends ColumnProps<T> {
   date?: DateType | boolean;
   time?: TimeType | boolean;
 }
+
+export enum ProfileStatus {
+  FAILED_PROXY = "FAILED_PROXY",
+  LOGOUT = "LOGOUT",
+  DELETED = "DELETED",
+  TOO_MANY_REQUEST = "TOO_MANY_REQUEST",
+  EMPTY = "EMPTY"
+}

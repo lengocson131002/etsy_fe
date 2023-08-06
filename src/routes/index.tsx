@@ -4,7 +4,7 @@ import type { RouteObject } from 'react-router';
 import { lazy, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
-import { useNavigate, useParams, useRoutes } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useRoutes } from 'react-router-dom';
 
 import { apiAccount } from '@/api/user.api';
 import Dashboard from '@/pages/dashboard';
@@ -20,6 +20,8 @@ import OrderDetailPage from '@/pages/order/order-detail';
 import TeamDetailForm from '@/pages/components/team-form/team-detail-form';
 import StaffDetailForm from '@/pages/staff/staff-form/staff-detail';
 import ProfileDetailForm from '@/pages/profile/profile-detail';
+import { Pathnames } from '@/utils/paths';
+import { historyNavigation } from '@/utils/historyNavigation';
 
 const NotFound = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/404'));
 const Documentation = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/doucumentation'));
@@ -187,15 +189,18 @@ const RenderRouter: FC = () => {
   const navigate = useNavigate();
   const { logged } = useSelector(state => state.user);
 
+  historyNavigation.navigate = useNavigate();
+  historyNavigation.location = useLocation();
+
   useEffect(() => {
-    if (location.pathname === '/login') {
+    if (location.pathname === Pathnames.LOGIN) {
       return;
     }
 
     const token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
 
     if (!token) {
-      navigate('/login');
+      navigate(Pathnames.LOGIN);
       return;
     }
 
@@ -203,7 +208,7 @@ const RenderRouter: FC = () => {
       const res = await dispatch(await loadProfile(token));
 
       if (!res) {
-        navigate('/login');
+        navigate(Pathnames.LOGIN);
       }
     };
 

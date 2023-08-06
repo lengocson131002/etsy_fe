@@ -6,6 +6,8 @@ import store from '@/stores';
 import { setGlobalState } from '@/stores/global.store';
 import { apiRefreshToken } from './user.api';
 import { LocalStorageConstants } from '@/utils/constants';
+import { historyNavigation } from '@/utils/historyNavigation';
+import { Pathnames } from '@/utils/paths';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + '',
@@ -18,15 +20,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.headers) {
-      let token = localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-      } else {
-        config.headers.Authorization = `Bearer `
-      }
-    }
-
     store.dispatch(
       setGlobalState({
         loading: true,
@@ -75,6 +68,7 @@ axiosInstance.interceptors.response.use(
 
     if (error?.status === 401 && config && !config?.__isRetryRequest) {
       config.__isRetryRequest = true;
+
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${localStorage.getItem(LocalStorageConstants.REFRESH_TOKEN_KEY)}`,
@@ -97,7 +91,11 @@ axiosInstance.interceptors.response.use(
 
     } else if (error?.status === 401) {
       $message.error('Session expired. Login again');
-      window.location.href = '/login';
+      historyNavigation.navigate(Pathnames.LOGIN)
+
+      localStorage.removeItem(LocalStorageConstants.ACCESS_TOKEN_KEY);
+      localStorage.removeItem(LocalStorageConstants.REFRESH_TOKEN_KEY);
+
       return Promise.reject(error);
     }
 

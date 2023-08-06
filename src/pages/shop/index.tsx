@@ -128,11 +128,7 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
               </>
             ),
           },
-          {
-            title: 'Etsy Shop ID',
-            dataIndex: 'id',
-            key: 'id',
-          },
+
           {
             title: 'Name',
             dataIndex: 'name',
