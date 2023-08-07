@@ -19,12 +19,13 @@ import './index.less';
 import ShopPage from '@/pages/shop';
 import MyTabs from '@/components/business/tabs';
 import StaffPage from '@/pages/staff';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TeamShops from '@/pages/components/team-form/team-detail-form/team-shops';
 import { AiOutlinePlusCircle, AiOutlineShop, AiOutlineUser } from 'react-icons/ai';
 import { getAllStaffs } from '@/api/staff.api';
 import TeamStaffs from './team-staff';
 import { RefTableProps } from '@/components/business/table';
+import { Pathnames } from '@/utils/paths';
 
 interface TeamFormProps {}
 const TeamDetailForm: FC<TeamFormProps> = props => {
@@ -44,6 +45,8 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
 
   const [shopsOpened, setShopsOpened] = useState(false);
   const [staffsOpened, setStaffsOpened] = useState(false);
+
+  const navigate = useNavigate();
 
   const closeShops = () => {
     setShopsOpened(false);
@@ -102,7 +105,9 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
     if (result?.status && status) {
       message.success('Remove team successfully');
       setModalOpen(false);
+      navigate(Pathnames.TEAMS);
     }
+
   };
 
   const addShops = async () => {
