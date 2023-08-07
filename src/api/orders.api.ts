@@ -36,7 +36,7 @@ export const getOrderStatuses = (shopId?: string) =>
     },
   );
 
-  export const countOrderByShopStatus = () =>
+export const countOrderByShopStatus = () =>
   request<ListResponse<StatusCount>>(
     'get',
     '/api/v1/orders/count/shop-status',
@@ -48,16 +48,10 @@ export const getOrderStatuses = (shopId?: string) =>
     },
   );
 
-
-  export const exportOrders = (params: any) => request<any>(
-    'get',
-    '/api/v1/orders/export',
-    params,
-    {
-      headers:
-      {
-          'Content-Type': 'blob'
-      },
-      responseType: 'blob',
+export const exportOrders = (params: any) =>
+  request<any>('get', '/api/v1/orders/export', params, {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem(LocalStorageConstants.ACCESS_TOKEN_KEY),
     },
-  )
+    responseType: 'blob'
+  });

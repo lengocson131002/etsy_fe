@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 import MyForm from '@/components/core/form';
 import { getProfile, removeProfile, updateProfile } from '@/api/profile.api';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Pathnames } from '@/utils/paths';
 import MyTable from '@/components/core/table';
 import { normalizeString } from '@/utils/string';
@@ -25,6 +25,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [form] = useForm();
   const [data, setData] = useState<Profile>();
+  const navigate = useNavigate();
 
   const { id } = useParams();
 
@@ -82,6 +83,7 @@ const ProfileDetailForm: FC<ProfileFormProps> = ({ closeForm }) => {
     if (result && status) {
       message.success('Remove profile successfully');
       setModalOpen(false);
+      navigate(Pathnames.PROFILES);
     }
   };
 

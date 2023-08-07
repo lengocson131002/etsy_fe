@@ -38,9 +38,9 @@ const BreadCrumbsComponent: FC = () => {
                 const isLast = index === pathname.length - 1;
 
                 return isLast ? (
-                  <Breadcrumb.Item>{normalizeString(item)}</Breadcrumb.Item>
+                  <Breadcrumb.Item key={route}>{normalizeString(item)}</Breadcrumb.Item>
                 ) : (
-                  <Breadcrumb.Item>
+                  <Breadcrumb.Item key={route}>
                     <Link to={route}>{normalizeString(item)}</Link>
                   </Breadcrumb.Item>
                 )

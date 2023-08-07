@@ -2,7 +2,7 @@ import type { MyTableOptions } from '@/components/business/table';
 import type { Order } from '@/interface/order';
 import { FC, useEffect, useState } from 'react';
 
-import { Button, Col, Drawer, Image, Row, Tag } from 'antd';
+import { Button, Col, Drawer, Image, Row, Tag, message } from 'antd';
 import { useCallback } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -23,6 +23,7 @@ import { AiOutlineDownload } from 'react-icons/ai';
 
 const { Item: FilterItem } = Table.MyFilter;
 import FileDownload from 'js-file-download';
+import { DownloadOutlined } from '@ant-design/icons';
 
 
 interface ShopOrderProps {
@@ -218,26 +219,22 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
   };
 
   const onExport = async (params: any) => {
-    const data = await exportOrders({
+    if (!range?.from || !range?.to) {
+      message.error("Please choose date range to export");
+      return;
+    }
+
+    const {result, status} = await exportOrders({
       ...params,
       from: range?.from?.toISOString(),
       to: range?.to?.toISOString(),
     });
 
-    console.log(typeof(data.result));
-
-
-    const url = window.URL.createObjectURL(new Blob([data.result.toString()]))
-
-    const link = document.createElement('a')
-
-    link.href = url
-    link.setAttribute('download', `orders-report-${range?.from?.toISOString()}-${range?.to?.toISOString()}.xlsx`)
-    document.body.appendChild(link)
-    link.click()
-
-    document.body.removeChild(link)
-
+    if (status) {
+      FileDownload(result, `orders_report_${range?.from?.toISOString()}_${range?.to?.toISOString()}.xlsx`);
+    } else {
+      message.error("Fail to export. Try again");
+    }
   }
 
   return (
@@ -246,13 +243,13 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         onFilterReset={() => setRange(undefined)}
         tableOptions={columnOptions}
         filterApi={getShopOrderAPI}
-        // exportApi={onExport}
-        // exportExcel={
-        //   <Button type="primary" icon={<AiOutlineDownload />} size="large">
-        //     Export excel
-        //   </Button>
+        exportApi={onExport}
+        exportExcel={
+          <Button type="primary" icon={<DownloadOutlined />} size="large">
+            Export excel
+          </Button>
+        }
 
-        // }
         filterRender={
           <Row gutter={[12, 6]}>
             <Col xs={24} sm={12} lg={5} xl={4}>
