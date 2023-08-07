@@ -240,7 +240,7 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
                     <MyButton danger onClick={() => setModalOpen(true)}>
                       Remove
                     </MyButton>
-                    <Modal title={'Delete team'} open={modalOpen} onOk={handleRemoveTeam} onCancel={closeShops}>
+                    <Modal title={'Delete team'} open={modalOpen} onOk={handleRemoveTeam} onCancel={() => setModalOpen(false)}>
                       <p>Do you want to remove this team?</p>
                     </Modal>
                     <MyButton
