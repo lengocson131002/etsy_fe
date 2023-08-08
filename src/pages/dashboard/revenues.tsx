@@ -53,9 +53,7 @@ const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label, unit })
   if (active && payload && payload.length) {
     return (
       <div className="chart-tooltip">
-        <span className="chart-tooltip-label">{`${numberWithCommas(payload[0].value)}  ${normalizeString(
-          label,
-        )}`}</span>
+        <span className="chart-tooltip-label">{`${numberWithCommas(payload[0].value)}  ${label}`}</span>
       </div>
     );
   }
