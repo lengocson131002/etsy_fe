@@ -47,3 +47,23 @@ export const getListingStatusColor = (status?: string): string => {
     return 'purple';
   }
 };
+
+export const getProfileStatusColor = (status?: string): string => {
+  console.log(status?.toLowerCase());
+
+  if (status?.toLowerCase() === 'logout') {
+    return 'red';
+  } else if (status?.toLowerCase() === 'deleted') {
+    return 'orange';
+  } else if (status?.toLowerCase() === 'empty'){
+    return 'cyan'
+  } else if (status?.toLowerCase() === 'sync') {
+    return 'green'
+  } else if (status?.toLowerCase() === 'toomanyrequest') {
+    return 'blue'
+  } else if (status?.toLowerCase() === 'failedproxy') {
+    return 'volcano'
+  } else {
+    return 'purple';
+  }
+};

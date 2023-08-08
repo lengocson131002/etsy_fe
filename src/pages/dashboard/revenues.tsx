@@ -46,7 +46,7 @@ interface CustomTooltipProps {
 }
 
 interface RevenueChartItem extends RevenueStatisticItem {
-  label?: string
+  label?: string;
 }
 
 const CustomTooltip: FC<CustomTooltipProps> = ({ active, payload, label, unit }) => {
@@ -71,11 +71,10 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
   const { formatMessage } = useLocale();
 
   useEffect(() => {
-    const newData = data
-        .map(item => ({
-          ...item,
-          label: `${numberWithCommas(item.value)}${item.currencySymbol}`
-        }))
+    const newData = data.map(item => ({
+      ...item,
+      label: `${numberWithCommas(item.value)}${item.currencySymbol}`,
+    }));
     setRevenueData(newData);
   }, [sort, data]);
 
@@ -100,7 +99,7 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
                   <YAxis />
                   <Tooltip content={<CustomTooltip active={''} payload={''} label={''} />} />
                   <Bar dataKey="value" barSize={40} fill={token.colorPrimary} name="Status">
-                    <LabelList angle={-50} dataKey="label" position="top" style={{color: token.colorPrimary}}/>
+                    <LabelList angle={-50} dataKey="label" position="top" style={{ color: token.colorPrimary }} />
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
@@ -112,12 +111,10 @@ const RevenueStatistic: FC<{ loading: boolean; data: RevenueStatisticItem[] }> =
                 renderItem={(item, index) => {
                   return (
                     <List.Item>
-                      <div>
-                        <Tag color="blue">{item.currencyCode}</Tag>
-                        <span>
-                          {numberWithCommas(item.value)} {item.currencySymbol}
-                        </span>
-                      </div>
+                      <Tag color="blue">{item.currencyCode}</Tag>
+                      <span>
+                        {numberWithCommas(item.value)} {item.currencySymbol}
+                      </span>
                     </List.Item>
                   );
                 }}

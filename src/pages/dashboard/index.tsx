@@ -124,53 +124,14 @@ const DashBoardPage: FC = () => {
           <Divider orientation="left" orientationMargin={0}>
             PROFILES
           </Divider>
-          <Row gutter={[12, 12]}>
-            <Col lg={9} xs={24}>
-              <ProfileStatusChart
-                loading={loading}
-                items={Object.keys(dashboard.profileStatuses).map(key => ({
-                  status: key,
-                  count: dashboard.profileStatuses[key as keyof ProfileStatuses],
-                  label: `${key} ${dashboard.profileStatuses[key as keyof ProfileStatuses]}`,
-                }))}
-              />
-            </Col>
-            <Col lg={15} xs={24}>
-              <Row gutter={[12, 12]} style={{ marginBottom: '10px' }}>
-                <ColCard
-                  loading={loading}
-                  metaName={"Logout"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.logout ?? 0)}
-                />
-                 <ColCard
-                  loading={loading}
-                  metaName={"Failed proxy"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.failedProxy ?? 0)}
-                />
-                 <ColCard
-                  loading={loading}
-                  metaName={"Deleted"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.deleted ?? 0)}
-                />
-                 <ColCard
-                  loading={loading}
-                  metaName={"Too many request"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.tooManyRequest ?? 0)}
-                />
-                 <ColCard
-                  loading={loading}
-                  metaName={"Empty"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.empty ?? 0)}
-                />
-                  <ColCard
-                  loading={loading}
-                  metaName={"Sync"}
-                  metaCount={numberWithCommas(dashboard?.profileStatuses?.sync ?? 0)}
-                />
-
-              </Row>
-            </Col>
-          </Row>
+          <ProfileStatusChart
+            loading={loading}
+            items={Object.keys(dashboard.profileStatuses).map(key => ({
+              status: key,
+              count: dashboard.profileStatuses[key as keyof ProfileStatuses],
+              label: `${key} ${dashboard.profileStatuses[key as keyof ProfileStatuses]}`,
+            }))}
+          />
         </>
       )}
     </div>
