@@ -166,6 +166,14 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
               </MyFilter>
             )}
             <div className="extra">{extras}</div>
+            {filterPagingData?.data && filterPagingData.data.length > 0 && (
+                <div
+                  className='export'
+                  onClick={handleExport}
+                >
+                  {exportExcel}
+                </div>
+              )}
           </div>
           {tableOptions && (
             <div className="table">
@@ -198,18 +206,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
               >
                 {tableRender?.(filterPagingData.data)}
               </MyTable>
-              {filterPagingData?.data && filterPagingData.data.length > 0 && (
-                <div
-                  onClick={handleExport}
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    bottom: '10px',
-                  }}
-                >
-                  {exportExcel}
-                </div>
-              )}
+
             </div>
           )}
         </div>
@@ -274,14 +271,16 @@ const filterStyles = css`
   margin: 20px 0;
   gap: 10px;
 
-  .extra {
+  .extra,
+  .export {
     margin-top: 30px;
   }
   @media (max-width: 600px) {
     flex-direction: column;
 
-    .extra {
-      padding: 20px 0;
+    .extra,
+    .export {
+      // padding: 20px 0;
       margin-top: 0;
     }
   }
