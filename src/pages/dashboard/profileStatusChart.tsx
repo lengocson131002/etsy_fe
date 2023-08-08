@@ -45,7 +45,7 @@ const ProfileStatusChart: FC<ProfileStatusChart> = ({ items, loading }) => {
               display: 'flex',
               alignItems: 'center'
             }}>
-              <ResponsiveContainer height={210}>
+              <ResponsiveContainer height={250}>
                 <PieChart>
                   <Tooltip
                     content={({ active, payload }: any) => {
@@ -68,7 +68,7 @@ const ProfileStatusChart: FC<ProfileStatusChart> = ({ items, loading }) => {
                     strokeOpacity={1}
                     data={items}
                     innerRadius={0}
-                    outerRadius={80}
+                    outerRadius={100}
                     paddingAngle={0}
                     dataKey="count"
                     // label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}

@@ -52,17 +52,17 @@ export const getProfileStatusColor = (status?: string): string => {
   console.log(status?.toLowerCase());
 
   if (status?.toLowerCase() === 'logout') {
-    return 'red';
+    return '#fd7e14';
   } else if (status?.toLowerCase() === 'deleted') {
-    return 'orange';
+    return '#ffd43b';
   } else if (status?.toLowerCase() === 'empty'){
-    return 'cyan'
+    return '#1864ab'
   } else if (status?.toLowerCase() === 'sync') {
-    return 'green'
+    return '#66a80f'
   } else if (status?.toLowerCase() === 'toomanyrequest') {
-    return 'blue'
+    return '#0b7285'
   } else if (status?.toLowerCase() === 'failedproxy') {
-    return 'volcano'
+    return '#e03131'
   } else {
     return 'purple';
   }
