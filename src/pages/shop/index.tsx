@@ -4,7 +4,21 @@ import { FC, useCallback, useEffect } from 'react';
 
 import './index.less';
 
-import { Checkbox, Col, Drawer, DropDownProps, Image, message, Modal, Row, SelectProps, Space, Tag } from 'antd';
+import {
+  Checkbox,
+  Col,
+  Drawer,
+  Dropdown,
+  DropDownProps,
+  Image,
+  MenuProps,
+  message,
+  Modal,
+  Row,
+  SelectProps,
+  Space,
+  Tag,
+} from 'antd';
 import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -24,6 +38,7 @@ import { Typography } from 'antd';
 import { Pathnames } from '@/utils/paths';
 import { Team } from '@/interface/team';
 import { RoleCode } from '@/interface/permission/role.interface';
+import { DotChartOutlined, DragOutlined, MoreOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -155,6 +170,22 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             align: 'center',
           },
           {
+            title: 'Last sync at',
+            dataIndex: 'lastSyncAt',
+            key: 'lastSyncAt',
+            align: 'center',
+            sorter: true,
+            render: (value, record) => value && <span>{getLastTimestamp(new Date(value))}</span>,
+          },
+          {
+            title: 'Opened Date',
+            dataIndex: 'openedDate',
+            key: 'openedDate',
+            align: 'center',
+            sorter: true,
+            render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
+          },
+          {
             title: 'Total orders',
             dataIndex: 'orderCount',
             key: 'allTimeDashboardOrders',
@@ -191,176 +222,130 @@ const ShopPage: FC<{ teamId?: number }> = ({ teamId }) => {
             render: value => <span>{value}%</span>,
           },
           {
-            title: 'Opened Date',
-            dataIndex: 'openedDate',
-            key: 'openedDate',
-            align: 'center',
-            sorter: true,
-            render: openedDate => <span>{dateToStringWithFormat(openedDate, GLOBAL_DATE_FORMAT)}</span>,
-          },
-          // {
-          //   title: 'Teams',
-          //   dataIndex: 'teams',
-          //   key: 'teams',
-          //   render: (value, record) => (
-          //     <>
-          //       {record.teams.map(team => (
-          //         <Tag color="blue">
-          //           {' '}
-          //           <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
-          //             {team.name}
-          //           </Link>
-          //         </Tag>
-          //       ))}
-          //     </>
-          //   ),
-          // },
-          // {
-          //   title: 'Trackers',
-          //   dataIndex: 'trackers',
-          //   key: 'trackers',
-          //   render: (value, record) => (
-          //     <>
-          //       {record.trackers.map(staff => (
-          //         <Tag color="blue">
-          //           {' '}
-          //           <Link style={{ textDecoration: 'none' }} to={`${Pathnames.STAFFS}/${staff.id}`}>
-          //             {staff.fullName}
-          //           </Link>
-          //         </Tag>
-          //       ))}
-          //     </>
-          //   ),
-          // },
-          {
-            title: 'Last sync at',
-            dataIndex: 'lastSyncAt',
-            key: 'lastSyncAt',
-            align: 'center',
-            sorter: true,
-            render: (value, record) => value && <span>{getLastTimestamp(new Date(value))}</span>,
-          },
-          {
             title: 'Action',
             key: 'action',
             dataIndex: 'action',
-            align: 'left',
+            align: 'center',
             fixed: 'right',
-            render: (_, record) => (
-              <Space>
-                <Link to={`${Pathnames.SHOPS}/${record.id}`}>
-                  <Button>Detail</Button>
-                </Link>
-                {record?.trackers?.find(tracker => tracker.id === userId) ? (
-                  <Button danger onClick={() => onUnTrack(record.id)}>
-                    Untrack
-                  </Button>
-                ) : (
-                  <Button onClick={() => onTracking(record.id)}>Tracking</Button>
-                )}
+            width: 50,
+            render: (_, record) => {
+              var tracked = record?.trackers?.find(tracker => tracker.id === userId) !== undefined;
+              var active = record?.status !== 'inactive';
 
-                {record?.status !== 'inactive' ? (
-                  <>
-                    <Button
-                      onClick={() => {
-                        setSelectedShopId(record.id);
-                      }}
-                      danger
-                    >
-                      Deactivate
-                    </Button>
-                    <Modal
-                      title={'Deactivate shop'}
-                      open={record.id === selectedShopId}
-                      onOk={handleDeactivate}
-                      onCancel={() => setSelectedShopId(undefined)}
-                    >
-                      <p>Do you want to deactivate this shop?</p>
-                    </Modal>
-                  </>
-                ) : (
-                  <>
-                    <Button
-                      onClick={() => {
-                        setSelectedShopId(record.id);
-                      }}
-                    >
-                      Activate
-                    </Button>
-                    <Modal
-                      title={'Activate shop'}
-                      open={record.id === selectedShopId}
-                      onOk={handleActivate}
-                      onCancel={() => setSelectedShopId(undefined)}
-                    >
-                      <p>Do you want to activate this shop?</p>
-                    </Modal>
-                  </>
-                )}
-              </Space>
-            ),
+              var items = [
+                { key: '1', label: <Link to={`${Pathnames.SHOPS}/${record.id}`}>Detail</Link> },
+                {
+                  key: '2',
+                  label: tracked ? (
+                    <div onClick={() => onUnTrack(record.id)}>Untrack</div>
+                  ) : (
+                    <div onClick={() => onTracking(record.id)}>Tracking</div>
+                  ),
+                  danger: tracked,
+                },
+                {
+                  key: '3',
+                  label: active ? (
+                    <>
+                      <div
+                        onClick={() => {
+                          setSelectedShopId(record.id);
+                        }}
+                      >
+                        Deactivate
+                      </div>
+                      <Modal
+                        title={'Deactivate shop'}
+                        open={record.id === selectedShopId}
+                        onOk={handleDeactivate}
+                        onCancel={() => setSelectedShopId(undefined)}
+                      >
+                        <p>Do you want to deactivate this shop?</p>
+                      </Modal>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        onClick={() => {
+                          setSelectedShopId(record.id);
+                        }}
+                      >
+                        Activate
+                      </div>
+                      <Modal
+                        title={'Activate shop'}
+                        open={record.id === selectedShopId}
+                        onOk={handleActivate}
+                        onCancel={() => setSelectedShopId(undefined)}
+                      >
+                        <p>Do you want to activate this shop?</p>
+                      </Modal>
+                    </>
+                  ),
+                  danger: active
+                },
+              ];
+              return (
+                <>
+                  <Dropdown menu={{ items }}>
+                    <a>
+                      <MoreOutlined />
+                    </a>
+                  </Dropdown>
+                </>
+              );
+            },
           },
         ]}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Keyword',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
+          <>
+            <FilterItem
+              innerProps={{
+                placeholder: 'Keyword',
+                allowClear: true,
+              }}
+              label="Search"
+              name="query"
+              type="input"
+            />
+            <FilterItem
+              innerProps={{
+                showSearch: true,
+                allowClear: true,
+              }}
+              label="Status"
+              name="status"
+              type="select"
+              options={statusOptions}
+            />
 
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem
-                innerProps={{
-                  showSearch: true,
-                  allowClear: true,
-                }}
-                label="Status"
-                name="status"
-                type="select"
-                options={statusOptions}
-              />
-            </Col>
-
-            {/* Only admin see this filter */}
             {!teamId && roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
-              <Col xs={24} sm={12} lg={6} xl={4}>
-                <FilterItem
-                  innerProps={{
-                    allowClear: true,
-                  }}
-                  label="Team"
-                  name="teamIds"
-                >
-                  <TeamSelect allowClear />
-                </FilterItem>
-              </Col>
-            )}
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem label="Filter my trackings" type="checkbox">
-                <Checkbox checked={myTrackings} onChange={onFilterMyTrackings}></Checkbox>
+              <FilterItem
+                innerProps={{
+                  allowClear: true,
+                }}
+                label="Team"
+                name="teamIds"
+              >
+                <TeamSelect allowClear />
               </FilterItem>
-            </Col>
-          </Row>
+            )}
+            <FilterItem
+              innerProps={{
+                showSearch: true,
+                allowClear: true,
+              }}
+              label="Trackings"
+              name="tracked"
+              type="select"
+              options={[
+                {label: 'My tracked shops', value: true},
+                {label: 'Not tracked shops', value: false}
+              ]}
+            />
+          </>
         }
       />
-      {/* {location.pathname.startsWith(SHOP_PATH) && id != undefined && id.length > 0 && (
-        <Drawer
-          title={'SHOP DETAIL'}
-          open={true}
-          closable
-          onClose={() => navigate(SHOP_PATH)}
-          width={window.innerWidth > 1000 ? 1000 : window.innerWidth - 100}
-        >
-          <ShopDetailPage reload={() => ref.current?.load()} />
-        </Drawer>
-      )} */}
     </div>
   );
 };

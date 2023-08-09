@@ -112,6 +112,12 @@ const OrderDetailPage: FC = () => {
               </div>
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">
+                  Order Email :
+                </Text>
+                <Text className="order-detail-info-content">{orderData.orderEmail}</Text>
+              </div>
+              <div className="order-detail-info">
+                <Text strong className="order-detail-info-title">
                   Order time :
                 </Text>
                 <Text className="order-detail-info-content">
@@ -142,7 +148,9 @@ const OrderDetailPage: FC = () => {
                 <Text strong className="order-detail-info-title">
                   Shipping address :
                 </Text>
-                <Text className="order-detail-info-content">{orderData.shippingAddress?.replace(/(\n){2,}/g, "\n",)}</Text>
+                <Text className="order-detail-info-content">
+                  {orderData.shippingAddress?.replace(/(\n){2,}/g, '\n')}
+                </Text>
               </div>
               <div className="order-detail-info">
                 <Text strong className="order-detail-info-title">

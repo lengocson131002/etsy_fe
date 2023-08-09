@@ -238,7 +238,7 @@ const TeamDetailForm: FC<TeamFormProps> = props => {
                   initialValue={team?.description}
                 />
                 <MyForm.Item>
-                  <Row gutter={[6,6]}>
+                  <Row>
                     <MyButton type="primary" htmlType="submit">
                       Save
                     </MyButton>

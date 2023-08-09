@@ -19,6 +19,7 @@ import { normalizeString } from '@/utils/string';
 import ProfileStatusChart from './profileStatusChart';
 import ColCard from './colCard';
 import { numberWithCommas } from '@/utils/number';
+import { ReloadOutlined } from '@ant-design/icons';
 
 const wrapperCol: ColProps = {
   xs: 24,
@@ -85,6 +86,7 @@ const DashBoardPage: FC = () => {
             options={statusOptions}
           />
           <Button
+            icon={<ReloadOutlined />}
             danger
             onClick={() =>
               setFilter(prev => ({

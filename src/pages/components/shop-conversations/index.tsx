@@ -129,31 +129,27 @@ const ShopConversations: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         tableOptions={columnOptions}
         filterApi={getShopConversationAPI}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={6} xl={6}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Search',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
-            <Col xs={24} sm={12} lg={6} xl={6}>
-              <FilterItem
-                label="Date range"
-                innerProps={{
-                  presets: rangePresets,
-                  format: 'DD/MM/YYYY',
-                  onChange: onRangeChange,
-                  value: range && range.from && range.to ? [range?.from, range?.to] : null,
-                }}
-                type="range-picker"
-              />
-            </Col>
-          </Row>
+          <>
+            <FilterItem
+              innerProps={{
+                placeholder: 'Search',
+                allowClear: true,
+              }}
+              label="Search"
+              name="query"
+              type="input"
+            />
+            <FilterItem
+              label="Date range"
+              innerProps={{
+                presets: rangePresets,
+                format: 'DD/MM/YYYY',
+                onChange: onRangeChange,
+                value: range && range.from && range.to ? [range?.from, range?.to] : null,
+              }}
+              type="range-picker"
+            />
+          </>
         }
       />
 

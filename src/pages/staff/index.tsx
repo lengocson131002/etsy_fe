@@ -22,6 +22,7 @@ import { totalmem } from 'os';
 import TeamSelect from '../components/team-select';
 import { Typography } from 'antd';
 import { Pathnames } from '@/utils/paths';
+import { PlusCircleFilled, PlusCircleOutlined } from '@ant-design/icons';
 
 const { Text } = Typography;
 
@@ -78,10 +79,8 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
         extras={
           !teamId
             ? [
-                <Button type="primary" onClick={() => setAddFormOpen(true)}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                    <AiOutlinePlusCircle /> Add staff
-                  </div>
+                <Button icon={<PlusCircleOutlined/>} type="primary" onClick={() => setAddFormOpen(true)}>
+                   Add staff
                 </Button>,
               ]
             : []
@@ -120,38 +119,6 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
             dataIndex: 'address',
             key: 'address',
           },
-          // {
-          //   title: 'Teams',
-          //   dataIndex: 'teams',
-          //   key: 'teams',
-          //   render: (value, record) => (
-          //     <>
-          //       {record.teams.map(team => (
-          //         <Tag color="blue">
-          //           <Link style={{ textDecoration: 'none' }} to={`${Pathnames.TEAMS}/${team.id}`}>
-          //             {team.name}
-          //           </Link>
-          //         </Tag>
-          //       ))}
-          //     </>
-          //   ),
-          // },
-          // {
-          //   title: 'Roles',
-          //   dataIndex: 'roles',
-          //   key: 'roles',
-          //   render: (roles: Role[]) => (
-          //     <>
-          //       {roles.map(role => (
-          //         <Tag color="blue">
-          //           <Link style={{ textDecoration: 'none' }} to={''}>
-          //             {role.name}
-          //           </Link>
-          //         </Tag>
-          //       ))}
-          //     </>
-          //   ),
-          // },
           {
             title: 'Action',
             dataIndex: 'action',
@@ -168,52 +135,46 @@ const StaffPage: FC<{ teamId?: number }> = ({ teamId }) => {
           },
         ]}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={8} xl={6}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Keyword',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
-            <Col xs={24} sm={12} lg={8} xl={6}>
+          <>
+            <FilterItem
+              innerProps={{
+                placeholder: 'Keyword',
+                allowClear: true,
+              }}
+              label="Search"
+              name="query"
+              type="input"
+            />
+            <FilterItem
+              innerProps={{
+                showSearch: true,
+                allowClear: true,
+              }}
+              label="Role"
+              name="role"
+              type="select"
+              options={
+                roles &&
+                roles.map(role => ({
+                  value: role.code,
+                  label: role.name,
+                }))
+              }
+            />
+
+            {!teamId && (
               <FilterItem
                 innerProps={{
                   showSearch: true,
                   allowClear: true,
                 }}
-                label="Role"
-                name="role"
-                type="select"
-                options={
-                  roles &&
-                  roles.map(role => ({
-                    value: role.code,
-                    label: role.name,
-                  }))
-                }
-              />
-            </Col>
-
-            {!teamId && (
-              <Col xs={24} sm={12} lg={8} xl={6}>
-                <FilterItem
-                  innerProps={{
-                    showSearch: true,
-                    allowClear: true,
-                  }}
-                  label="Team"
-                  name="teamIds"
-                >
-                  <TeamSelect allowClear />
-                </FilterItem>
-              </Col>
+                label="Team"
+                name="teamIds"
+              >
+                <TeamSelect allowClear />
+              </FilterItem>
             )}
-          </Row>
+          </>
         }
       />
 

@@ -4,9 +4,9 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Card, Col, Empty, Modal, Row, Space, Tag, message } from 'antd';
+import { Button, Card, Col, Empty, Modal, Row, Space, Tag, message } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { getAllRoles } from '@/api/role.api';
@@ -28,11 +28,20 @@ interface StaffDetailFormProps {
 const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { id } = useParams();
+  const staffId = id ? Number.parseInt(id) : undefined;
+
   const [form] = useForm();
   const [data, setData] = useState<Staff>();
   const { userId } = useSelector(state => state.user);
   const [roles, setRoles] = useState<Role[]>([]);
   const { formatMessage } = useLocale();
+
+  const loadStaffData = useCallback(async (staffId: number) => {
+    const { result, status } = await getStaff(staffId);
+    if (result && status) {
+      setData(result);
+    }
+  }, [id])
 
   const onFinish = async (values: any) => {
     if (!data) {
@@ -55,18 +64,15 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
     const { result, status } = await updateStaff(data.id, updatedData);
     if (result && status) {
       message.success('Update staff successfully');
+      if (staffId) {
+        loadStaffData(staffId);
+      }
     }
   };
 
+
   useEffect(() => {
-    const staffId = id ? Number.parseInt(id) : undefined;
     if (staffId) {
-      const loadStaffData = async (staffId: number) => {
-        const { result, status } = await getStaff(staffId);
-        if (result && status) {
-          setData(result);
-        }
-      };
       loadStaffData(staffId);
     }
   }, [id]);
@@ -274,6 +280,16 @@ const StaffDetailForm: FC<StaffDetailFormProps> = ({ closeForm }) => {
                         ),
                         align: 'center',
                       },
+                      {
+                        title: 'Action',
+                        key: 'action',
+                        dataIndex: 'action',
+                        render: (_, record) => (
+                          <Link to={`${Pathnames.SHOPS}/${record.id}`}>
+                            <Button>Detail</Button>
+                          </Link>
+                        )
+                      }
                     ]}
                   />
                 </div>

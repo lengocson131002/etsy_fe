@@ -38,6 +38,7 @@ import { normalizeString } from '@/utils/string';
 import { useSelector } from 'react-redux';
 import { RoleCode } from '@/interface/permission/role.interface';
 import { Pathnames } from '@/utils/paths';
+import MyTable from '@/components/core/table';
 
 const ShopConversations = lazy(() => import('../../components/shop-conversations'));
 const ShopListings = lazy(() => import('../../components/shop-listings'));
@@ -90,8 +91,8 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
   };
 
   const onSelectTeamChange = (value: any) => {
-      console.log(value);
-      setChangedTeam(value.length !== shopData?.teams.length || !shopData?.teams.every(team => value.includes(team.id)));
+    console.log(value);
+    setChangedTeam(value.length !== shopData?.teams.length || !shopData?.teams.every(team => value.includes(team.id)));
   };
 
   return (
@@ -277,6 +278,64 @@ const ShopDetailPage: FC<{ reload?: () => void }> = ({ reload }) => {
                     <Suspense fallback={null}>
                       <ShopConversations shopId={shopData.id} />
                     </Suspense>
+                  ),
+                },
+                {
+                  label: 'Trackers',
+                  value: 'trackers',
+                  children: shopData.trackers && (
+                    <MyTable
+                      style={{marginTop: 20}}
+                      pagination={false}
+                      dataSource={shopData.trackers}
+                      columns={[
+                        {
+                          title: 'Staff ID',
+                          dataIndex: 'staffId',
+                          key: 'staffId',
+                        },
+                        {
+                          title: 'Full name',
+                          dataIndex: 'fullName',
+                          key: 'fullName',
+                        },
+                        {
+                          title: 'Username',
+                          dataIndex: 'username',
+                          key: 'username',
+                        },
+                        {
+                          title: 'Phone Number',
+                          dataIndex: 'phoneNumber',
+                          key: 'phoneNumber',
+                        },
+                        {
+                          title: 'Email',
+                          dataIndex: 'email',
+                          key: 'email',
+                        },
+
+                        {
+                          title: 'Address',
+                          dataIndex: 'address',
+                          key: 'address',
+                        },
+                        {
+                          title: 'Action',
+                          dataIndex: 'action',
+                          key: 'action',
+                          fixed: 'right',
+                          align: 'center',
+                          render: (_, record) => {
+                            return (
+                              <Link to={`${Pathnames.STAFFS}/${record.id}`}>
+                                <Button>Detail</Button>
+                              </Link>
+                            );
+                          },
+                        },
+                      ]}
+                    />
                   ),
                 },
               ]}

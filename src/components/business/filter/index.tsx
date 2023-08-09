@@ -6,17 +6,19 @@ import MyButton from '@/components/basic/button';
 import MyForm from '@/components/core/form';
 import { useLocale } from '@/locales';
 import { useState } from 'react';
-import { Row } from 'antd';
-import "./index.less"
+import { Col, Row } from 'antd';
+import './index.less';
+import { ReloadOutlined, UndoOutlined } from '@ant-design/icons';
 interface FilterProps<T> extends MyFormProps<T> {
   onFilter: (values: T) => void;
   disabled?: boolean;
   onChange?: () => void;
   onReset?: () => void;
+  extras?: React.ReactNode | React.ReactNode[];
 }
 
 const BaseFilter = <T extends object>(props: FilterProps<T>) => {
-  const { children, onFilter, disabled, onChange, onReset, ...rest } = props;
+  const { children, onFilter, disabled, onChange, onReset, extras, ...rest } = props;
   const [form] = MyForm.useForm<T>();
   const { formatMessage } = useLocale();
 
@@ -39,13 +41,19 @@ const BaseFilter = <T extends object>(props: FilterProps<T>) => {
 
   return (
     <div css={styles}>
-      <MyForm onValuesChange={onValuesChange} onChange={onChange} {...rest} form={form} layout="vertical" className='filter-form'>
-          {children}
-          <MyForm.Item className="filter-actions">
-            <MyButton danger onClick={handleReset}>
-              {formatMessage({ id: 'component.search.reset' })}
-            </MyButton>
-          </MyForm.Item>
+      <MyForm
+        {...rest}
+        form={form}
+        layout="vertical"
+        onValuesChange={onFilter}
+        onChange={onChange}
+        className="filter-form"
+      >
+        {children}
+        <MyButton icon={<ReloadOutlined />} style={{marginRight: "auto" }} danger onClick={handleReset}>
+          {formatMessage({ id: 'component.search.reset' })}
+        </MyButton>
+        {extras}
       </MyForm>
     </div>
   );
@@ -58,32 +66,24 @@ const MyFilter = Object.assign(BaseFilter, {
 export default MyFilter;
 
 const styles = css`
-  // padding: 20px 0 10px 0;
-  flex: 1;
-  width: 100%;
-
-  .filter-actions {
-    // margin-top: 10px;
+  margin-bottom: 10px;
+  .filter-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    flex-wrap: wrap;
   }
+
   .ant-form-item {
-    margin-bottom: 10px;
+    margin-bottom: 0;
+    min-width: 200px;
+    max-width: 250px;
+    flex: 1;
+  }
 
-    // @media(max-width: 500px) {
-    //   width: 100% !important;
-
-    //   & .ant-form-item-control {
-    //     margin-left: auto;
-    //     width: 100%;
-    //   }
-
-    //   & .ant-form-item-label {
-    //     width: 100%;
-    //   }
-    // }
-
-    // & .ant-form-item-label {
-    //   min-width: 50px;
-    //   text-align: start;
-    // }
+  @media(max-width: 600px) {
+    .ant-form-item {
+      max-width: 100%;
+    }
   }
 `;

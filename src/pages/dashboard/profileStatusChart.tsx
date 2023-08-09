@@ -67,11 +67,11 @@ const ProfileStatusChart: FC<ProfileStatusChart> = ({ items, loading }) => {
                   <Pie
                     strokeOpacity={1}
                     data={items}
-                    innerRadius={0}
+                    innerRadius={60}
                     outerRadius={100}
-                    paddingAngle={0}
+                    paddingAngle={2}
                     dataKey="count"
-                    // label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}
+                    label={({ index }) => `${normalizeString(items[index].status)}: ${items[index].count}`}
                   >
                     {items.map((_, index) => (
                       <>

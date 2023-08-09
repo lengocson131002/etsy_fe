@@ -16,6 +16,7 @@ import { useStates } from '@/utils/use-states';
 
 import MyFilter from '../filter';
 import { useSelector } from 'react-redux';
+import { Button } from 'antd';
 
 export interface SearchApi {
   (params?: any): MyResponse<PageData<any>>;
@@ -35,7 +36,7 @@ export interface TableProps<S> {
   onFilterReset?: () => void;
   rowSelection?: TableRowSelection<ParseDataType<S>>;
   exportExcel?: React.ReactNode;
-  exportApi?: (params: any) => any
+  exportApi?: (params: any) => any;
 }
 
 export interface RefTableProps {
@@ -67,7 +68,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     onFilterReset,
     rowSelection,
     exportExcel,
-    exportApi
+    exportApi,
   } = props;
 
   const [filterPagingData, setFilterPagingData] = useStates<FilterPagingData<ParseDataType<S>>>(filterPagingInitData);
@@ -87,7 +88,7 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
         };
 
         // remove undefined fields
-        Object.keys(queryObject).forEach(key => (!queryObject[key] ? delete queryObject[key] : {}));
+        // Object.keys(queryObject).forEach(key => (queryObject[key] ? delete queryObject[key] : {}));
 
         const res = await filterApi(queryObject);
 
@@ -152,35 +153,32 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
     console.log(filterPagingData);
 
     await exportApi(queryObject);
-
-  }
+  };
 
   return (
     <div css={styles}>
       <div className="tabs-main">
         <div className="aside-main">
           <div css={filterStyles}>
-            {filterRender && (
-              <MyFilter className="search" onFilter={onFilter} onReset={onFilterReset}>
-                {filterRender}
-              </MyFilter>
-            )}
-            <div className="extra">
-              {extras}
-              {filterPagingData?.data && filterPagingData.data.length > 0 && (
-                <div
-                  onClick={handleExport}
-                >
-                  {exportExcel}
-                </div>
-              )}
-            </div>
-
+            <MyFilter
+              className="search"
+              onFilter={onFilter}
+              onReset={onFilterReset}
+              extras={
+                <>
+                  {extras}
+                  {filterPagingData?.data && filterPagingData.data.length > 0 && (
+                    <div onClick={handleExport}>{exportExcel}</div>
+                  )}
+                </>
+              }
+            >
+              {filterRender}
+            </MyFilter>
           </div>
           {tableOptions && (
             <div className="table">
               <MyTable
-                // height="100%"
                 rowSelection={rowSelection}
                 dataSource={filterPagingData.data?.map(item => ({
                   key: item?.id ?? null,
@@ -208,7 +206,6 @@ const BaseTable = <S extends SearchApi>(props: TableProps<S>, ref: React.Ref<Ref
               >
                 {tableRender?.(filterPagingData.data)}
               </MyTable>
-
             </div>
           )}
         </div>
@@ -260,29 +257,10 @@ const styles = css`
     position: relative;
     @media screen and (max-height: 800px) {
       overflow: auto;
-      // min-height: 500px;
     }
-  }
+  // }
 `;
 
 const filterStyles = css`
-  display: flex;
-  flex-direction: row;
-  // justify-content: space-between;
-  // align-items: center;
-  margin: 20px 0;
-  gap: 10px;
-
-  .extra {
-    margin-top: 30px;
-    display: flex;
-  }
-
-  @media (max-width: 1000px) {
-    flex-direction: column;
-
-    .extra {
-      margin-top: 0;
-    }
-  }
+    margin-bottom: 20px;
 `;

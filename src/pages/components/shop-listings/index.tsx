@@ -31,17 +31,6 @@ const columnOptions: MyTableOptions<Listing> = [
       </>
     ),
   },
-
-  {
-    title: 'Etsy Listing ID',
-    dataIndex: 'etsyListingId',
-    key: 'etsyListingId',
-    render: value => (
-      <Link style={{ textDecoration: 'none' }} target="_blank" to={`${EtsyUrlPrefixes.listings}/${value}`}>
-        {value}
-      </Link>
-    ),
-  },
   {
     title: 'Title',
     dataIndex: 'title',
@@ -66,7 +55,8 @@ const columnOptions: MyTableOptions<Listing> = [
     title: 'Price',
     render: (price, record) => (
       <span>
-        {numberWithCommas(record.priceFrom) ? `${numberWithCommas(record.priceFrom)} ${record.currencySymbol}` : ''} - {numberWithCommas(record.priceTo) ? `${numberWithCommas(record.priceTo)} ${record.currencySymbol}` : ''}
+        {numberWithCommas(record.priceFrom) ? `${numberWithCommas(record.priceFrom)} ${record.currencySymbol}` : ''} -{' '}
+        {numberWithCommas(record.priceTo) ? `${numberWithCommas(record.priceTo)} ${record.currencySymbol}` : ''}
       </span>
     ),
     align: 'right',
@@ -124,6 +114,16 @@ const columnOptions: MyTableOptions<Listing> = [
       </Link>
     ),
   },
+  {
+    title: 'Etsy Listing ID',
+    dataIndex: 'etsyListingId',
+    key: 'etsyListingId',
+    render: value => (
+      <Link style={{ textDecoration: 'none' }} target="_blank" to={`${EtsyUrlPrefixes.listings}/${value}`}>
+        {value}
+      </Link>
+    ),
+  },
 ];
 
 const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
@@ -165,30 +165,26 @@ const ShopListings: FC<ShopListingProps> = ({ shopId, ...rest }) => {
         filterApi={getShopProductsAPI}
         tableOptions={columnOptions}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Name',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem
-                innerProps={{
-                  allowClear: true,
-                }}
-                label="Status"
-                name="status"
-                type="select"
-                options={statusOptions}
-              />
-            </Col>
-          </Row>
+          <>
+            <FilterItem
+              innerProps={{
+                placeholder: 'Name',
+                allowClear: true,
+              }}
+              label="Search"
+              name="query"
+              type="input"
+            />
+            <FilterItem
+              innerProps={{
+                allowClear: true,
+              }}
+              label="Status"
+              name="status"
+              type="select"
+              options={statusOptions}
+            />
+          </>
         }
       />
     </div>

@@ -24,7 +24,8 @@ import { AiOutlineDownload } from 'react-icons/ai';
 const { Item: FilterItem } = Table.MyFilter;
 import FileDownload from 'js-file-download';
 import { DownloadOutlined } from '@ant-design/icons';
-
+import MyForm from '@/components/core/form';
+import MyButton from '@/components/basic/button';
 
 interface ShopOrderProps {
   shopId?: string;
@@ -220,11 +221,11 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
 
   const onExport = async (params: any) => {
     if (!range?.from || !range?.to) {
-      message.error("Please choose date range to export");
+      message.error('Please choose date range to export');
       return;
     }
 
-    const {result, status} = await exportOrders({
+    const { result, status } = await exportOrders({
       ...params,
       from: range?.from?.toISOString(),
       to: range?.to?.toISOString(),
@@ -233,9 +234,9 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
     if (status) {
       FileDownload(result, `orders_report_${range?.from?.toISOString()}_${range?.to?.toISOString()}.xlsx`);
     } else {
-      message.error("Fail to export. Try again");
+      message.error('Fail to export. Try again');
     }
-  }
+  };
 
   return (
     <div>
@@ -245,80 +246,59 @@ const ShopOrders: FC<ShopOrderProps> = ({ shopId, ...rest }) => {
         filterApi={getShopOrderAPI}
         exportApi={onExport}
         exportExcel={
-          <Button type="primary" icon={<DownloadOutlined />} size="large">
+          <Button type="primary" icon={<DownloadOutlined />}>
             Export excel
           </Button>
         }
-
         filterRender={
-          <Row gutter={[12, 6]}>
-            <Col xs={24} sm={12} lg={5} xl={4}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Keyword',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
-            <Col xs={24} sm={12} lg={5} xl={4}>
+          <>
+            <FilterItem
+              innerProps={{
+                placeholder: 'Keyword',
+                allowClear: true,
+              }}
+              label="Search"
+              name="query"
+              type="input"
+            />
+            <FilterItem
+              innerProps={{
+                showSearch: true,
+                allowClear: true,
+              }}
+              label="Order Status"
+              name="status"
+              type="select"
+              options={statusOptions}
+            />
+
+            {/* Only admin see this filter */}
+            {!shopId && roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
               <FilterItem
                 innerProps={{
                   showSearch: true,
                   allowClear: true,
                 }}
-                label="Order Status"
-                name="status"
+                label="Shop Status"
+                name="shopStatus"
                 type="select"
-                options={statusOptions}
+                options={shopStatusOptions}
               />
-            </Col>
-
-            {/* Only admin see this filter */}
-            {!shopId && roles.some(role => role === ('ROLE_ADMIN' as RoleCode)) && (
-              <Col xs={24} sm={12} lg={5} xl={4}>
-                <FilterItem
-                  innerProps={{
-                    showSearch: true,
-                    allowClear: true,
-                  }}
-                  label="Shop Status"
-                  name="shopStatus"
-                  type="select"
-                  options={shopStatusOptions}
-                />
-              </Col>
             )}
 
-            <Col xs={24} sm={12} lg={9} xl={6}>
-              <FilterItem
-                label="Date range"
-                innerProps={{
-                  presets: rangePresets,
-                  format: 'DD/MM/YYYY',
-                  onChange: onRangeChange,
-                  value: range && range.from && range.to ? [range?.from, range?.to] : null,
-                }}
-                type="range-picker"
-              />
-            </Col>
-          </Row>
+            <FilterItem
+              label="Date range"
+              innerProps={{
+                presets: rangePresets,
+                format: 'DD/MM/YYYY',
+                onChange: onRangeChange,
+                value: range && range.from && range.to ? [range?.from, range?.to] : null,
+              }}
+              type="range-picker"
+            />
+          </>
         }
       />
-
-      {/* {location.pathname.startsWith(Pathnames.ORDERS) && id !== undefined && (
-        <Drawer
-          onClose={() => navigate(Pathnames.ORDERS)}
-          title={'ORDER DETAIL'}
-          open={true}
-          width={window.innerWidth > 1000 ? 1000 : window.innerWidth}
-          closable={true}
-        >
-          <OrderDetailPage />
-        </Drawer>
-      )} */}
     </div>
   );
 };

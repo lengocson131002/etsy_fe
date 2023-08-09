@@ -27,7 +27,8 @@ const WrapperRouteComponent: FC<WrapperRouteProps> = ({ titleId, allowedRoles: a
 
   let isAuthorized = !allowRoles || allowRoles.some(role => roles.includes(role));
 
-  return !isAuthorized ? <PrivateRoute {...props} /> : (props.element as ReactElement);
+  // return !isAuthorized ? <PrivateRoute {...props} /> : (props.element as ReactElement);
+  return !isAuthorized ? <></> : (props.element as ReactElement);
 };
 
 export default WrapperRouteComponent;

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { RouteObject } from 'react-router';
 
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useLayoutEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router';
 import { useLocation, useNavigate, useParams, useRoutes } from 'react-router-dom';

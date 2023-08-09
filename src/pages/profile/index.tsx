@@ -17,6 +17,7 @@ import ProfileDetailForm from './profile-detail';
 import AddProfileForm from './add-profile';
 import { Pathnames } from '@/utils/paths';
 import { ProfileStatus } from '@/components/core/table-column/type';
+import { PlayCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 
 const { Item: FilterItem } = Table.MyFilter;
 const ProfilePage: FC = () => {
@@ -44,34 +45,32 @@ const ProfilePage: FC = () => {
   const statusOptions = [
     {
       value: ProfileStatus.FAILED_PROXY,
-      label: "Failed proxy"
+      label: 'Failed proxy',
     },
     {
       value: ProfileStatus.LOGOUT,
-      label: "Logout"
+      label: 'Logout',
     },
     {
       value: ProfileStatus.DELETED,
-      label: "Deleted"
+      label: 'Deleted',
     },
     {
       value: ProfileStatus.TOO_MANY_REQUEST,
-      label: "Too many request"
+      label: 'Too many request',
     },
     {
       value: ProfileStatus.EMPTY,
-      label: "Empty"
+      label: 'Empty',
     },
-  ]
+  ];
 
   return (
     <div className="profile-list-container">
       <Table
         extras={[
-          <Button type="primary" onClick={() => setOpened(true)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <AiOutlinePlusCircle /> Add profile
-            </div>
+          <Button icon={<PlusCircleOutlined />} type="primary" onClick={() => setOpened(true)}>
+            Add profile
           </Button>,
         ]}
         ref={tableRef}
@@ -97,13 +96,25 @@ const ProfilePage: FC = () => {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            render: (status: string[], record) => <div>
-              {
-                status.map(stat => <Tag style={{marginBottom: 5}} color='red'>{stat}</Tag>)
-              }
-            </div>
+            render: (status: string[], record) => (
+              <div>
+                {status.map(stat => (
+                  <Tag style={{ marginBottom: 5 }} color="red">
+                    {stat}
+                  </Tag>
+                ))}
+              </div>
+            ),
           },
 
+          {
+            title: 'Created date',
+            dataIndex: 'createdDate',
+            key: 'createdDate',
+            align: 'center',
+            sorter: true,
+            render: createdDate => <div>{dateToStringWithFormat(createdDate)}</div>,
+          },
           {
             title: 'Folder name',
             dataIndex: 'folderName',
@@ -114,14 +125,6 @@ const ProfilePage: FC = () => {
             dataIndex: 'notes',
             key: 'notes',
             render: (value: string) => <div dangerouslySetInnerHTML={{ __html: value }}></div>,
-          },
-          {
-            title: 'Created date',
-            dataIndex: 'createdDate',
-            key: 'createdDate',
-            align: 'center',
-            sorter: true,
-            render: createdDate => <div>{dateToStringWithFormat(createdDate)}</div>,
           },
           {
             title: 'Action',
@@ -139,31 +142,27 @@ const ProfilePage: FC = () => {
           },
         ]}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={8} xl={6}>
-              <FilterItem
-                label="Search"
-                type="input"
-                name="query"
-                innerProps={{
-                  placeholder: 'Keyword',
-                  allowClear: true,
-                }}
-              />
-            </Col>
-            <Col xs={24} sm={12} lg={6} xl={4}>
-              <FilterItem
-                innerProps={{
-                  showSearch: true,
-                  allowClear: true,
-                }}
-                label="Status"
-                name="status"
-                type="select"
-                options={statusOptions}
-              />
-            </Col>{' '}
-          </Row>
+          <>
+            <FilterItem
+              label="Search"
+              type="input"
+              name="query"
+              innerProps={{
+                placeholder: 'Keyword',
+                allowClear: true,
+              }}
+            />
+            <FilterItem
+              innerProps={{
+                showSearch: true,
+                allowClear: true,
+              }}
+              label="Status"
+              name="status"
+              type="select"
+              options={statusOptions}
+            />
+          </>
         }
       />
 

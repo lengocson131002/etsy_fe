@@ -9,6 +9,7 @@ import TeamDetailForm from '../components/team-form/team-detail-form';
 import AddTeamForm from '../components/team-form/add-team-form';
 import { useSearchParams } from 'react-router-dom';
 import { Pathnames } from '@/utils/paths';
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 const { Item: FilterItem } = Table.MyFilter;
 
@@ -35,10 +36,8 @@ const TeamPage: FC = () => {
     <div>
       <Table
         extras={[
-          <Button type="primary" onClick={() => setAddFormOpen(true)}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-              <AiOutlinePlusCircle /> Add team
-            </div>
+          <Button icon={<PlusCircleOutlined />} type="primary" onClick={() => setAddFormOpen(true)}>
+            Add team
           </Button>,
         ]}
         ref={ref}
@@ -63,12 +62,6 @@ const TeamPage: FC = () => {
             align: 'right',
           },
           {
-            title: 'Description',
-            dataIndex: 'description',
-            key: 'description',
-            width: 300,
-          },
-          {
             title: 'Created at',
             dataIndex: 'createdAt',
             key: 'createdAt',
@@ -76,23 +69,12 @@ const TeamPage: FC = () => {
             align: 'center',
             render: value => <span>{dateToStringWithFormat(value)}</span>,
           },
-          // {
-          //   title: 'Created by',
-          //   dataIndex: 'createdBy',
-          //   key: 'createdBy',
-          // },
-          // {
-          //   title: 'Updated at',
-          //   dataIndex: 'updatedAt',
-          //   key: 'updatedAt',
-          //   sorter: true,
-          //   render: value => <span>{dateToStringWithFormat(value)}</span>,
-          // },
-          // {
-          //   title: 'Updated by',
-          //   dataIndex: 'updatedBy',
-          //   key: 'updatedBy',
-          // },
+          {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            width: 300,
+          },
           {
             title: 'Action',
             dataIndex: 'action',
@@ -107,19 +89,15 @@ const TeamPage: FC = () => {
           },
         ]}
         filterRender={
-          <Row gutter={[12, 0]}>
-            <Col xs={24} sm={12} lg={8} xl={6}>
-              <FilterItem
-                innerProps={{
-                  placeholder: 'Keyword',
-                  allowClear: true,
-                }}
-                label="Search"
-                name="query"
-                type="input"
-              />
-            </Col>
-          </Row>
+          <FilterItem
+            innerProps={{
+              placeholder: 'Keyword',
+              allowClear: true,
+            }}
+            label="Search"
+            name="query"
+            type="input"
+          />
         }
       />
       <Drawer
