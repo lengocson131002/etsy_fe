@@ -27,8 +27,10 @@ import TeamStaffs from './team-staff';
 import { RefTableProps } from '@/components/business/table';
 import { Pathnames } from '@/utils/paths';
 
-interface TeamFormProps {}
-const TeamDetailForm: FC<TeamFormProps> = props => {
+interface TeamFormProps {
+  order?: string
+}
+const TeamDetailForm: FC<TeamFormProps> = ({order}) => {
   const [team, setTeam] = useState<Team>();
   const [form] = useForm();
   const [modalOpen, setModalOpen] = useState(false);
